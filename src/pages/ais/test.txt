@@ -1,0 +1,106 @@
+const exportSheet = async (id) => {
+      const rt = await loadAssessment(id);
+      const dt = sso.databox.mysheets.find((r) => r.id == id);
+      var fileName,
+        data = [];
+      if (rt.success) {
+        // Load & Iterate Data for Students
+        const newData = rt.data.filter(r => !r.flag_visible)
+        if (newData && newData.length > 0) {
+          for (var row of newData) {
+            const ds = {
+              INDEX_NUMBER: row.indexno,
+              STUDENT_NAME: row.name.toUpperCase(),
+              "CLASS_SCORE_(30/40)": row.class.value,
+              "EXAM_SCORE_(70/60)": row.exam.value,
+              "TOTAL_SCORE_(100)":
+                parseInt(row.class.value) + parseInt(row.exam.value),
+              COURSE_CODE: dt.course_code,
+              COURSE_ID: dt.course_id,
+              CALENDAR_ID: dt.session_id,
+            };
+            data.push(ds);
+          }
+  
+          fileName = `${dt.course_name}_${dt.course_code}_${
+            dt.program_name
+          }_YR${Math.ceil(dt.semester / 2)}`;
+          return jsonToExcel(data, fileName);
+  
+        } else {
+          dispatch(
+            updateAlert({
+              show: true,
+              message: `PUBLISHED ASSESSMENT WON'T BE EXPORTED !`,
+              type: "info",
+            })
+          );
+        }
+  
+        setRef(null);
+        
+      } else {
+        dispatch(
+          updateAlert({
+            show: true,
+            message: `NO ASSESSMENT DATA!`,
+            type: "error",
+          })
+        );
+      }
+      setRef(null);
+    };
+
+    const importTrigger = async (id) => {
+      importRef.current.click()
+      setNewId(id)
+      setRef(null);
+    }
+
+    const importSheet = async (e) => {
+        const file = e.target.files[0]
+        if(file && (file.type.match('application/vnd.openxmlformats-officedocument.*') || file.type.match('text/csv'))){
+          var error_count = 0, dataToServer = {};
+          excelToJson(file,async (data) => {
+              if(data && data.length > 0){
+                for (var r of data) {
+
+                  if(Number(r["CLASS_SCORE_(30/40)"]) > 40 || Number(r["EXAM_SCORE_(70/60)"]) > 70)
+                      error_count += 1;
+      
+                  dataToServer[
+                    `${r["CALENDAR_ID"]}_${r["COURSE_ID"]}_${r["INDEX_NUMBER"]}_c`
+                  ] = r["CLASS_SCORE_(30/40)"];
+      
+                  dataToServer[
+                    `${r["CALENDAR_ID"]}_${r["COURSE_ID"]}_${r["INDEX_NUMBER"]}_e`
+                  ] = r["EXAM_SCORE_(70/60)"];
+                }
+      
+                // Throw Error on Error Count more than Zero(0)
+                if(error_count > 0) {
+                  dispatch(
+                    updateAlert({
+                      show: true,
+                      message: `SOME SCORE INPUTS EXCEED RANGE!`,
+                      type: "error",
+                    })
+                  );
+                  
+                  return false;
+                }
+
+                  const res = await saveAssessment({ sid:newId, data:dataToServer });
+                  if(res.success){
+                     dispatch(updateAlert({show:true,message:`ASSESSMENT IMPORTED !`,type:'success'}))
+                  } else{
+                     dispatch(updateAlert({show:true,message:`IMPORT FAILED!`,type:'error'}))
+                  }
+                  window.location.reload();
+              }
+          })
+
+        }else{
+          dispatch(updateAlert({show:true,message:`PLEASE CHOOSE EXCEL ( .XLSX ) FILE ONLY !`,type:'error'}))
+        }
+    }
