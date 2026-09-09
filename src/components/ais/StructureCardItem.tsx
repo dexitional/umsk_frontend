@@ -15,13 +15,13 @@ function StructureCardItem({ data }: Props) {
   const canEditStructure = useHasRole("ais", ["curriculum::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-lg font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-lg font-semibold text-gray-500 uppercase">
         {data?.courseId}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <div className="flex-1 text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="flex-1 text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {data?.course?.title?.toUpperCase()}
           </div>
           <div className="py-0.5 px-2 w-fit text-sm rounded bg-primary/60 text-white font-bold">
@@ -29,7 +29,7 @@ function StructureCardItem({ data }: Props) {
           </div>
         </div>
       </div>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         <div className="flex items-center space-x-2">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span
@@ -54,7 +54,7 @@ function StructureCardItem({ data }: Props) {
             >
               SEMESTER
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {data?.semesterNum % 2 == 0 ? 2 : 1}
             </span>
           </div>
@@ -84,7 +84,7 @@ function StructureCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button
@@ -103,7 +103,7 @@ function StructureCardItem({ data }: Props) {
             >
               SEMESTER
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {data?.semesterNum % 2 == 0 ? "TWO" : "ONE"}
             </span>
           </div>

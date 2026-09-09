@@ -6,7 +6,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdLocalActivity } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { Link, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 
 type Props = {};

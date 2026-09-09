@@ -5,7 +5,7 @@ import { MdEditDocument } from "react-icons/md";
 // @ts-ignore
 import moment from "moment";
 import { Form, Link } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import ListHeading from "./ListHeading";
 
 type Props = {

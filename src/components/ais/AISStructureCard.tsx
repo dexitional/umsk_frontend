@@ -22,12 +22,12 @@ function AISStructureCard({ title,data }: Props) {
           { data.map((row:any) => (
             <div className={`px-3 py-2 border-b grid grid-cols-6 font-medium text-xs ${row.type == 'E' ? 'text-primary-dark/80': 'text-primary/80'}`}>
               <span className="font-bold">{row.code}</span>
-              <span className="col-span-4 font-medium">{row.course}&nbsp;&nbsp;&nbsp;&nbsp;<sub className="text-primary-accent/80"><em>{ row.type == 'E' ? '( ELECTIVE )':'' }</em></sub></span>
+              <span className="col-span-4 font-medium">{row.course}&nbsp;&nbsp;&nbsp;&nbsp;<sub className="text-secondary-accent/80"><em>{ row.type == 'E' ? '( ELECTIVE )':'' }</em></sub></span>
               <span>{row.credit}</span>
             </div>
           ))}
           {/* Totals */}
-          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

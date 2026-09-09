@@ -6,7 +6,7 @@ import { HiAcademicCap } from "react-icons/hi2";
 import { MdNumbers } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { Link, useLoaderData, useNavigation } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
 
@@ -90,7 +90,7 @@ function PgAISScheme({}: Props) {
                       <span className="py-0.5 px-2 w-8 bg-primary/10 font-semibold text-center text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.grade}
                       </span>
-                      <span className="py-0.5 px-2 w-32 bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                      <span className="py-0.5 px-2 w-32 bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.remark}{" "}
                       </span>
                       <span className="py-0.5 px-2 w-8 bg-primary/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
@@ -113,7 +113,7 @@ function PgAISScheme({}: Props) {
                       <span className="w-20 text-xs md:text-sm text-gray-500">
                         {row.max} - {row.min}
                       </span>
-                      <span className="py-0.5 px-2 w-fit bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                      <span className="py-0.5 px-2 w-fit bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.class}{" "}
                       </span>
                     </div>
@@ -130,7 +130,7 @@ function PgAISScheme({}: Props) {
                     <span className="w-40 text-xs md:text-xs text-gray-500 font-semibold">
                       CLASS SCORE
                     </span>
-                    <span className="py-0.5 px-2 w-fit bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                    <span className="py-0.5 px-2 w-fit bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                       {data?.scoreRange?.class}
                     </span>
                   </div>
@@ -140,7 +140,7 @@ function PgAISScheme({}: Props) {
                     <span className="w-40 text-xs md:text-xs text-gray-500 font-semibold">
                       EXAM SCORE
                     </span>
-                    <span className="py-0.5 px-2 w-fit bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                    <span className="py-0.5 px-2 w-fit bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                       {data?.scoreRange?.exam}
                     </span>
                   </div>

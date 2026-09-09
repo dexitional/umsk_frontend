@@ -19,7 +19,7 @@ function ControlCard({ title,desc,action,data,onChange,tag = 'PUBLIC' }: Props) 
             <span className="text-[0.68rem] md:text-[0.87rem] text-primary/80 md:text-primary/80 font-bold md:font-bold">{title}</span>
             <span className="text-xs md:text-sm text-gray-500 font-medium italic">{desc}{data && data[action]}</span>
         </div>
-        <button className={`px-2 py-1 absolute -right-5 top-4 rotate-90  bg-slate-100 ${tag == 'ADMIN' ? 'text-primary-accent/80':'text-primary/80'} text-xs font-bold`}>{tag}</button>
+        <button className={`px-2 py-1 absolute -right-5 top-4 rotate-90  bg-slate-100 ${tag == 'ADMIN' ? 'text-secondary-accent/80':'text-primary/80'} text-xs font-bold`}>{tag}</button>
        
     </label>
   )

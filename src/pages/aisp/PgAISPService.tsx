@@ -5,7 +5,7 @@ import { MdCalendarToday, MdLocalShipping, MdNumbers, MdOutlineDescription, MdOu
 import { TbEdit } from "react-icons/tb";
 import { Link, useLoaderData } from "react-router-dom";
 import AISPBioCard from "../../components/aisp/AISPBioCard";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 
 type Props = {};

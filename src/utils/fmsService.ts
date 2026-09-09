@@ -230,18 +230,6 @@ class FmsService {
         }
     }
 
-    async fetchPaymentVouchers(keyword,page,limit){
-        try {
-            const res = await axios.get(`${REACT_APP_API_URL}/fms/payments/voucher?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`)
-            if(res.status == 200 || res.status == 204)
-              return res.data
-            else throw new(res.data.message)
-        
-        } catch (error) { 
-            return checkSession(error)
-        }
-    }
-
     async fetchPayment(paymentId){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/payments/${encodeURIComponent(paymentId)}`)
@@ -400,79 +388,6 @@ class FmsService {
             return checkSession(error)
         }
     }
-
-    /* Voucher Costs */
-
-    async fetchVcosts(keyword,page,limit){
-        try {
-            const res = await axios.get(`${REACT_APP_API_URL}/fms/vsales?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`)
-            if(res.status == 200 || res.status == 204)
-              return res.data
-            else throw new(res.data.message)
-        
-        } catch (error) { 
-            return checkSession(error)
-        }
-    }
-
-    async fetchVcost(id){
-        try {
-            const res = await axios.get(`${REACT_APP_API_URL}/fms/vsales/${encodeURIComponent(id)}`)
-            if(res.status == 200 || res.status == 204)
-               return res.data
-            else throw new(res.data.message)
-        
-        } catch (error) {
-            return checkSession(error)
-        }
-    }
-
-    async postVcost(data){
-        try {
-            const res = await axios.post(`${REACT_APP_API_URL}/fms/vsales`, data,{
-               headers: { "Content-Type" : "application/json" }
-            })
-            if(res.status == 200){
-               toast.success("Record saved!")
-               return res.data
-            } 
-            else throw new(res.data.message)
-        
-        } catch (error) { 
-            return checkSession(error)
-        }
-    }
-
-    async updateVcost(id,data){
-        try {
-            const res = await axios.patch(`${REACT_APP_API_URL}/fms/vsales/${encodeURIComponent(id)}`, data,{
-               headers: { "Content-Type" : "application/json" }
-            })
-            if(res.status == 200){
-               toast.success("Record saved!")
-               return res.data
-            } 
-            else throw new(res.data.message)
-        
-        } catch (error) { 
-            return checkSession(error)
-        }
-    }
-
-    async deleteVcost(id){
-        try {
-            const res = await axios.delete(`${REACT_APP_API_URL}/fms/vsales/${encodeURIComponent(id)}`)
-            if(res.status == 200){
-               toast.success("Record deleted!")
-               return res.data
-            } 
-            else throw new(res.data.message)
-        
-        } catch (error) { 
-            return checkSession(error)
-        }
-    }
-
 
     /* Bills  */
 

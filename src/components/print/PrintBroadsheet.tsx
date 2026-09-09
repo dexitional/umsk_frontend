@@ -98,7 +98,7 @@ function PrintBroadsheet({}: Props) {
   return (
     <div ref={printRef} className="relative w-full flex flex-col justify-center items-center bg-white print:m-0 print:scale-[85%]">
       
-      <button onClick={handlePrint} className="w-full md:w-fit print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-primary-accent text-white font-bold uppercase">
+      <button onClick={handlePrint} className="w-full md:w-fit print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-secondary-accent text-white font-bold uppercase">
           <span>Print</span> <span className="flex md:hidden">Broadsheet</span>
       </button>
       

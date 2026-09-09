@@ -14,7 +14,7 @@ function LetterTemplate({ data }: Props) {
     content: () => printRef.current,
   });
 
-  // const dm = data?.student ? data : dummyAUCCApplicant;
+  // const dm = data?.student ? data : dummyAKATSICOApplicant;
   // const template = data?.student ? data?.category?.admissionLetter[0]?.template : data?.template
 
   const dm = data;
@@ -28,13 +28,13 @@ function LetterTemplate({ data }: Props) {
 
   return (
     <div className="p-2 w-full relative md:scale-[85%] print:scale-[85%] print:-mt-6" ref={printRef}>
-        <button onClick={handlePrint} className="w-full md:w-fit md:absolute md:-top-24 md:-left-20 print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-primary-accent text-white font-bold uppercase">
+        <button onClick={handlePrint} className="w-full md:w-fit md:absolute md:-top-24 md:-left-20 print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-secondary-accent text-white font-bold uppercase">
           <span>Print</span> <span className="flex md:hidden">Letter</span>
         </button>
         <PrintHeader />
         <main className="hidden print:block md:block w-full text-base print:text-[12pt] font-arial-narrow print:mt-6">
            <section className="mb-10 md:mb-10 flex flex-col space-y-6">
-              {/* <h1 className="text-primary-accent text-2xl print:text-xl text-center font-semibold print:font-bold tracking-widest">{data?.title || 'LETTER SAMPLE'}</h1> */}
+              {/* <h1 className="text-secondary-accent text-2xl print:text-xl text-center font-semibold print:font-bold tracking-widest">{data?.title || 'LETTER SAMPLE'}</h1> */}
               <div className="w-full flex justify-between space-y-6 print:space-y-6">
                 <address className="order-2 text-sm print:text-[12pt]">
                   <p className="text-primary-dark font-semibold uppercase not-italic">REFERENCE: {data?.student?.id || '24010001'}</p>
@@ -45,7 +45,7 @@ function LetterTemplate({ data }: Props) {
                      ? <div className="order-1 font-semibold text-xl space-y-2 print:space-y-1">
                           <h2>{data?.student?.fname}{data?.student?.mname ? data?.student?.mname+' ':''} {data?.student?.lname || 'Evans Jerry Amissah'}</h2>
                           <h2>{data?.student?.indexno || '24010001'}</h2>
-                          <h2>AUCB</h2>
+                          <h2>AKATSICO</h2>
                        </div>
                      : <h2 className="order-1 font-semibold text-xl">TO WHOM IT MAY CONCERN</h2>
                   }

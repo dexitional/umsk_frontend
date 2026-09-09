@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 // @ts-ignore
-import Logo from '../assets/img/logo_portalbr_.png'
+import Logo from '../../assets/img/logo.webp';
 import { MdMeetingRoom, MdOutlineSupportAgent } from 'react-icons/md'
 import { GiLetterBomb, GiVote } from 'react-icons/gi'
 import AppCard from '../../components/AppCard'
@@ -12,7 +12,6 @@ import { useUserStore } from '../../utils/authService'
 import { FaUsersViewfinder } from 'react-icons/fa6'
 import { SiCashapp } from 'react-icons/si'
 import { HiAcademicCap } from "react-icons/hi2";
-import { PiStudentFill } from 'react-icons/pi'
 import { RiLockPasswordFill } from 'react-icons/ri'
 
 function HomeShims() {
@@ -31,7 +30,6 @@ function HomeShims() {
                 { evsRole && <ServiceCard title="General Elections Portal" Icon={GiVote} link="/evs/dash" /> }
                 { [1].includes(user?.user?.group_id) && <ServiceCard title="Student Portal System" Icon={FaUsersViewfinder} link="/aisp" />}
                 {/* <ServiceCard title="Staff Portal System" Icon={FaUsersViewfinder} link="#" /> */}
-                {[3].includes(user?.user?.group_id) && <ServiceCard title="Admission Portal System" Icon={FaUsersViewfinder} link="" />}
                 {/* { [4,2].includes(user?.user?.group_id) && <ServiceCard title="Single-Sign-On (SSO)" Icon={MdOutlineSupportAgent} link="" /> } */}
                 {/* <ServiceCard title="Support tickets & Request" Icon={MdOutlineSupportAgent} link="" /> */}
                 {/* <ServiceCard title="Setup SSO on Account" Icon={GiLockedDoor} link="" />
@@ -80,17 +78,6 @@ function HomeShims() {
                   />
                   }
                   
-                  { user?.roles?.find((r: any) => r?.app?.toLowerCase() == 'ams') &&
-                  <AppCard 
-                    title="Admission Management System &reg;"
-                    desc="Manage new admission applications and new enrolments." 
-                    Icon={PiStudentFill} 
-                    links={[
-                      { title:'Goto Application', url:'/ams/dash'},
-                    ]} 
-                  />
-                  }
-
                   { user?.roles?.find((r: any) => r?.app?.toLowerCase() == 'ais') &&
                  <AppCard 
                     title="Academic Management System &reg;"

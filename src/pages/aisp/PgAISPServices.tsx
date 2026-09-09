@@ -23,7 +23,7 @@ function PgAISPServices({}: Props) {
   return (
     <div className="p-4 md:p-0 space-y-6 md:space-y-8">
       <AISPPageHeader title="Service Requests" subtitle="Document and certificate requests" />
-      <div className="p-4 rounded-2xl bg-primary-accent/5 border border-primary-accent/10 space-y-1.5">
+      <div className="p-4 rounded-2xl bg-secondary-accent/5 border border-secondary-accent/10 space-y-1.5">
         <p className="text-sm text-primary/80">
           Document requests are created automatically after payment at the
           bank or via USSD. Please update the request with the recipient

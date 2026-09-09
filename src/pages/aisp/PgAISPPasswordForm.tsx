@@ -7,7 +7,7 @@ import { useUserStore } from "../../utils/authService";
 type Props = {};
 
 const inputClass =
-  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-primary-accent/20 focus:border-primary-accent/40 transition-colors";
+  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-secondary-accent/20 focus:border-secondary-accent/40 transition-colors";
 const labelClass = "text-xs font-semibold text-slate-500 uppercase tracking-wider";
 
 // Save Form
@@ -75,7 +75,7 @@ function PgAISPPasswordForm({}: Props) {
           <div className="flex items-center gap-3 pt-2">
             <input type="hidden" name="tag" defaultValue={user?.user?.tag} />
             <button
-              className="flex-1 py-2.5 px-4 rounded-lg bg-primary-accent text-white font-semibold text-sm hover:bg-primary-accent/90 transition-colors"
+              className="flex-1 py-2.5 px-4 rounded-lg bg-secondary-accent text-white font-semibold text-sm hover:bg-secondary-accent/90 transition-colors"
               type="submit"
             >
               Change

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // @ts-ignore
 import Adinkra from "../../assets/img/adinkra-bullet.png";
 // @ts-ignore
-import Logo from "../../assets/img/logo_sso.png";
+import Logo from "../../assets/img/logo.webp";
 // @ts-ignore
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -88,7 +88,7 @@ function PrivacyPolicy() {
                   <p>
                     If you have any questions about this Privacy Policy or our data practices, please contact us at:
                     <br />
-                    Email: privacy@aucb.edu.gh
+                    Email: privacy@akatsico.edu.gh
                     <br />
                     Phone: +233 50 123 4567
                   </p>
@@ -113,7 +113,7 @@ function PrivacyPolicy() {
           {/* Footer */}
           <div className="h-14 w-full flex items-center justify-center">
             <p className="text-white text-xs font-medium">
-              Copyright &copy; {new Date().getFullYear()} AUCB
+              Copyright &copy; {new Date().getFullYear()} AKATSICO
             </p>
           </div>
         </section>

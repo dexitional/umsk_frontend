@@ -18,14 +18,14 @@ function ServiceListItem({ data }: Props) {
       ? "bg-primary/10 text-primary"
       : !data.receipient
       ? "bg-red-50 text-red-500"
-      : "bg-primary-accent/10 text-primary-accent";
+      : "bg-secondary-accent/10 text-secondary-accent";
   return (
     <div className="px-4 md:px-6 py-4 grid md:grid-cols-8 gap-3 md:gap-4 md:items-center border-b border-slate-50 last:border-0 hover:bg-slate-50/70 transition-colors">
       <div className="md:col-span-2 flex flex-col space-y-1.5">
         <ListHeading title="Document" />
         <div className="flex items-center space-x-3 min-w-0">
-          <div className="h-8 w-8 shrink-0 rounded-lg bg-primary-accent/10 flex items-center justify-center">
-            <TbMessage2Check className="h-4 w-4 text-primary-accent" />
+          <div className="h-8 w-8 shrink-0 rounded-lg bg-secondary-accent/10 flex items-center justify-center">
+            <TbMessage2Check className="h-4 w-4 text-secondary-accent" />
           </div>
           <span className="text-sm font-medium text-primary truncate">{data?.transact?.transtype?.title}</span>
         </div>
@@ -53,7 +53,7 @@ function ServiceListItem({ data }: Props) {
       <div className="flex flex-col space-y-1.5">
         <ListHeading title="Status" />
         <span className={`inline-flex w-fit items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusStyle}`}>
-          <span className={`h-1.5 w-1.5 rounded-full ${data.status == "COMPLETED" ? "bg-primary" : !data.receipient ? "bg-red-500" : "bg-primary-accent"}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${data.status == "COMPLETED" ? "bg-primary" : !data.receipient ? "bg-red-500" : "bg-secondary-accent"}`} />
           {data?.status}
         </span>
       </div>

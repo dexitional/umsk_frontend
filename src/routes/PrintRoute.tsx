@@ -8,7 +8,6 @@ const user = useUserStore.getState().user
 const isAuthenticated = useUserStore.getState().isAuthenticated
 
 const evsRole = user?.roles?.find(r => r?.app_tag?.toLowerCase() == 'evs')
-const amsRole = user?.roles?.find(r => r?.app_tag?.toLowerCase() == 'ams')
 
 const PublicRoute:any =   {
    path: "print",
@@ -21,14 +20,6 @@ const PublicRoute:any =   {
       },
       {  path:'registration/:registrationId',
          lazy: () => import('../components/print/PrintRegisterSlip').then(m => ({ Component: m.default, loader: m.loader })),
-      },
-
-      // Admission Slip
-      {  path:'admission',
-         lazy: () => import('../components/print/PrintAdmissionSlip').then(m => ({ Component: m.default, loader: m.loader })),
-      },
-      {  path:'admission/:voucherId',
-         lazy: () => import('../components/print/PrintAdmissionSlip').then(m => ({ Component: m.default, loader: m.loader })),
       },
 
       // Transwift

@@ -43,6 +43,7 @@ function AISRoleNav({ user }: Props) {
             { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Progression Log" url="progression" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Registration Log" url="registrations" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Evaluation Log" url="evaluations" Icon={GrDashboard}></Menu.Item>) }
+            { aisRoles?.find((r:any) => ['evaluation::admin'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Evaluation Manager" url="evaluation-forms" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['sheet::admin','sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Assessment Sheet" url="sheets" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['mysheet::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Assessor Sheet" url="mysheets" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['resit::admin','resit::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="My Resits" url="my-resits" Icon={GrDashboard}></Menu.Item>) }
@@ -50,7 +51,6 @@ function AISRoleNav({ user }: Props) {
             { aisRoles?.find((r:any) => ['resit::admin','resit::clerk','resit::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Resit Module" url="resits" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Graduation Session" url="graduate-sessions" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Graduation Module" url="graduates" Icon={GrDashboard}></Menu.Item>) }
-            { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Graduation Logs" url="graduate-logs" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Backlog Module" url="backlogs" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['transwift::admin','transwift::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Transwift Module" url="transwifts" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Service Letter" url="letters" Icon={GrDashboard}></Menu.Item>) }

@@ -95,7 +95,7 @@ function AISGraduateIssueStudentCard({ title,data, index }: Props) {
           </span>
           <span className="col-span-2 font-bold self-center">{row.student?.indexno}</span>
           <span className="col-span-3 font-bold self-center">{row.student?.program?.shortName}</span>
-          <span className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
+          <span className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
           <div className={`col-span-2 self-center flex flex-col gap-2`}>
             <span>{row.verifiedRemark}</span>
           </div>

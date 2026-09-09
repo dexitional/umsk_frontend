@@ -34,7 +34,7 @@ function AISResitScoreCard({ title,data }: Props) {
               <span className="col-span-3 font-bold self-center">{(row.student?.fname+' '+(row.student?.mname && row.student?.mname+' ')+row.student?.lname).toUpperCase()} </span>
               <span className="font-medium text-sm self-center">{row.course?.id}</span>
               <span className="font-bold text-sm self-center">{row.totalScore || '--'}</span>
-              <span className={`font-bold text-sm self-center ${ data.approveScore ? 'text-green-700':'text-primary-accent'}`}>{row.grade}</span>
+              <span className={`font-bold text-sm self-center ${ data.approveScore ? 'text-green-700':'text-secondary-accent'}`}>{row.grade}</span>
             </div>
           ))}
          

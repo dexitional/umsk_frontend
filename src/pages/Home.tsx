@@ -3,7 +3,6 @@ import React from "react";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { GiVote } from "react-icons/gi";
 import { HiAcademicCap } from "react-icons/hi2";
-import { PiStudentFill } from "react-icons/pi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { SiCashapp } from "react-icons/si";
 import { useNavigation } from "react-router-dom";
@@ -19,7 +18,7 @@ function Home() {
   const aisRole = user?.roles?.findLast((r) => r?.appRole?.app?.tag?.toLowerCase() == "ais");
   const isEvsAdmin = user?.roles?.find((r) => r?.appRole?.app?.tag?.toLowerCase() == "evs" && r?.isAdmin);
   const navigation = useNavigation();
-  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs", "ams"].includes(r));
+  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs"].includes(r));
   const aisPage = ['ais admin','ais registrar','ais dean','ais head'].includes(aisRole?.appRole?.title?.toLowerCase()) ? '/ais/dash' : ['ais assessor'].includes(aisRole?.appRole?.title?.toLowerCase()) ? '/ais/mysheets' :'/ais/students';
   // const aisPage = ['ais admin','ais registrar','ais dean','ais head'].includes(aisRole?.appRole?.title?.toLowerCase()) ? '/ais/dash' :  '/ais/mysheets';
   // console.log("evsRole", evsRole)
@@ -50,13 +49,6 @@ function Home() {
               />
             )}
             {/* <ServiceCard title="Staff Portal System" Icon={FaUsersViewfinder} link="#" /> */}
-            {[3].includes(user?.user?.group_id) && (
-              <ServiceCard
-                title="Admission Portal System"
-                Icon={FaUsersViewfinder}
-                link=""
-              />
-            )}
             {/* { [4,2].includes(user?.user?.group_id) && <ServiceCard title="Single-Sign-On (SSO)" Icon={MdOutlineSupportAgent} link="" /> } */}
             {/* <ServiceCard title="Support tickets & Request" Icon={MdOutlineSupportAgent} link="" /> */}
             {/* <ServiceCard title="Setup SSO on Account" Icon={GiLockedDoor} link="" />
@@ -111,19 +103,6 @@ function Home() {
                       ]} 
                   />
                   } */}
-
-              {user?.roles?.find(
-                (r) => r?.appRole?.app?.tag?.toLowerCase() == "ams"
-              ) && (
-                <AppCard
-                  title="Admission Management System &reg;"
-                  desc="Manage new admission applications and new enrolments."
-                  Icon={PiStudentFill}
-                  links={[{ title: "Goto Application", url: "/ams/dash" }]}
-                  tag="ams"
-                  page={loadModule}
-                />
-              )}
 
               { user?.roles?.find((r) => r?.appRole?.app?.tag?.toLowerCase() == "ais") && (
                 <AppCard

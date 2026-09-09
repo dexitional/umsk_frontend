@@ -6,7 +6,7 @@ import moment from "moment";
 import { FaLayerGroup } from "react-icons/fa6";
 import { GrGroup } from "react-icons/gr";
 import { TbEdit, TbTrash } from "react-icons/tb";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import Service from "../../utils/evsService";
 const { REACT_APP_API_URL } = import.meta.env;

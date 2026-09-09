@@ -16,7 +16,7 @@ import { formatCurrency } from "../../utils/util";
 
 type Props = {};
 
-const PALETTE = ["#E77B1D", "#AD5913", "rgba(52,52,52,0.8)", "#4A5578", "#C2836B", "#7C8A99", "#B08968"];
+const PALETTE = ["#5599c3", "#29688e", "rgba(52,52,52,0.8)", "#4A5578", "#a1c6de", "#7C8A99", "#B08968"];
 const colorAt = (i: number) => PALETTE[i % PALETTE.length];
 
 export async function loader({ params }) {
@@ -60,8 +60,8 @@ function PgFMSDash({}: Props) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div className="dash-fade-up" style={{ animationDelay: "0ms" }}>
           <DashStatCard
-            icon={<FaCalendarDay className="h-5 w-5 text-primary-accent" />}
-            iconBg="bg-primary-accent/10"
+            icon={<FaCalendarDay className="h-5 w-5 text-secondary-accent" />}
+            iconBg="bg-secondary-accent/10"
             label="Today"
             value={feesPayment.today}
             currency
@@ -124,7 +124,7 @@ function PgFMSDash({}: Props) {
             </h2>
             <Link
               to="/fms/reports"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View Reports
             </Link>
@@ -133,8 +133,8 @@ function PgFMSDash({}: Props) {
             {allTypes.map((t: any, i: number) => (
               <div key={i} className="py-3 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary-accent/10 flex items-center justify-center shrink-0">
-                    <FaChartPie className="h-3.5 w-3.5 text-primary-accent" />
+                  <div className="h-8 w-8 rounded-lg bg-secondary-accent/10 flex items-center justify-center shrink-0">
+                    <FaChartPie className="h-3.5 w-3.5 text-secondary-accent" />
                   </div>
                   <span className="text-sm font-medium text-primary capitalize">{t.label}</span>
                 </div>
@@ -172,7 +172,7 @@ function PgFMSDash({}: Props) {
           </h2>
           <DashBarChart
             categories={allTypes.map((t: any) => t.label)}
-            series={[{ key: "v", label: "Collected", color: "#E77B1D" }]}
+            series={[{ key: "v", label: "Collected", color: "#5599c3" }]}
             data={allTypes.map((t: any) => ({ v: t.month || 0 }))}
           />
         </div>
@@ -187,14 +187,14 @@ function PgFMSDash({}: Props) {
             </h2>
             <Link
               to="/fms/bills"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View Bills
             </Link>
           </div>
           <DashHBarChart
             rows={topByYear.map((t: any) => ({ label: t.label, value: t.year || 0 }))}
-            color="#AD5913"
+            color="#29688e"
           />
         </div>
       </div>
@@ -206,7 +206,7 @@ function PgFMSDash({}: Props) {
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-bold font-poppins text-primary flex items-center space-x-2">
-            <FaChartPie className="h-4 w-4 text-primary-accent" />
+            <FaChartPie className="h-4 w-4 text-secondary-accent" />
             <span>Payment Types Breakdown</span>
           </h2>
         </div>

@@ -57,11 +57,11 @@ function AISSheetStudentCard({ title,data }: Props) {
               <span className="col-span-2 font-bold self-center">{row.indexno}</span>
               <span className="col-span-3 font-medium self-center">{(row.student?.fname+' '+(row.student?.mname ? row.student?.mname+' ':'')+row.student?.lname).toUpperCase()} </span>
               <span className=' self-center'>{row.student?.gender == 'M' ? 'MALE':'FEMALE'}</span>
-              <span className={`${row.student?.deferStatus ? 'text-primary-accent/80  self-center':' self-center'}`}>{row.student?.deferStatus ? 'DEFERRED':'ACTIVE'}</span>
+              <span className={`${row.student?.deferStatus ? 'text-secondary-accent/80  self-center':' self-center'}`}>{row.student?.deferStatus ? 'DEFERRED':'ACTIVE'}</span>
             </div>
           ))}
           {/* Totals */}
-          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

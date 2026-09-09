@@ -5,7 +5,7 @@ import { HiAcademicCap } from "react-icons/hi2";
 import { MdNumbers } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { Link, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 
 type Props = {};
@@ -79,7 +79,7 @@ function PgAISUnit({}: Props) {
                       <span className="py-0.5 px-2 w-8 bg-primary/10 font-semibold text-center text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.grade}
                       </span>
-                      <span className="py-0.5 px-2 w-32 bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                      <span className="py-0.5 px-2 w-32 bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.remark}{" "}
                       </span>
                       <span className="py-0.5 px-2 w-8 bg-primary/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
@@ -102,7 +102,7 @@ function PgAISUnit({}: Props) {
                       <span className="w-20 text-xs md:text-sm text-gray-500">
                         {row.max} - {row.min}
                       </span>
-                      <span className="py-0.5 px-2 w-fit bg-primary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
+                      <span className="py-0.5 px-2 w-fit bg-secondary-accent/10 font-semibold text-[0.6rem] md:text-xs text-gray-500 rounded uppercase">
                         {row.class}{" "}
                       </span>
                     </div>

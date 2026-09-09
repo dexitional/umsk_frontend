@@ -42,8 +42,8 @@ function RegistrationListItem({ row }: Props) {
         <div className="flex flex-col space-y-1.5 md:items-end">
           <ListHeading title="Action" />
           { hasCode
-          ? <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-accent/10 text-primary-accent text-xs font-semibold">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary-accent" />
+          ? <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-accent/10 text-secondary-accent text-xs font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-secondary-accent" />
               Chosen
             </span>
           : <button onClick={() => choose(row?.code)} className="px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-full hover:bg-primary/90 transition-colors">Choose</button>

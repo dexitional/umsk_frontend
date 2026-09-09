@@ -78,7 +78,7 @@ function AISResultCard({ title,data,meta }: Props) {
              </div>
           ))}
           {/* Totals */}
-          <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ meta?.cgpa == null ? '--' : meta.cgpa }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{ meta?.gpa == null ? '--' : meta.gpa }</span>

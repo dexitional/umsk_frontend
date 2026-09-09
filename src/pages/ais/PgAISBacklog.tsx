@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { HiAcademicCap } from "react-icons/hi2";
 import { TbEdit } from "react-icons/tb";
 import { Link, redirect, useLoaderData, useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
 import PgAISBacklogRecord from "./PgAISBacklogRecord";

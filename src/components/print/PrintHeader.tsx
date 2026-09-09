@@ -1,5 +1,5 @@
 import React from 'react'
-import PrintHeaderAucc from './PrintHeaderAucc'
+import PrintHeaderAkatsico from './PrintHeaderAucc'
 import PrintNoHeader from './PrintNoHeader'
 import { useLocation } from 'react-router'
 
@@ -10,16 +10,16 @@ function PrintHeader({}: Props) {
   const location = useLocation();
   const { pathname } = location;
    
-  if(pathname.includes('/ams/') || pathname.includes('/print/transwift/') || pathname.includes('/amsp/'))
+  if(pathname.includes('/print/transwift/'))
     return (
       <div className="print:mt-2 print:mb-4">
-        <div className="block print:block"><PrintHeaderAucc /></div>
+        <div className="block print:block"><PrintHeaderAkatsico /></div>
       </div>
     )
   else
     return (
       <div>
-        <div className="block print:hidden"><PrintHeaderAucc /></div>
+        <div className="block print:hidden"><PrintHeaderAkatsico /></div>
         <div className="hidden print:block"><PrintNoHeader /></div>
       </div>
     )

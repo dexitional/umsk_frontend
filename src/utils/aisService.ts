@@ -383,17 +383,15 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/students/stage`,{ studentId },{
                 headers: { "x-access-token" : token }
             })
-            console.log(res.status)
             if(res.status == 200 || res.status == 202){
+                toast.success("Student portal access staged!")
                 return res.data
-            } else if(res.status == 500){
-              console.error("Portal account already staged")
             }
             else throw new(res.data.message)
-        
+
         } catch (error) {
+            toast.error(error?.response?.data || "Failed to stage student portal access")
             console.log(error?.response)
-            console.error(error?.response?.data)
         }
     }
 
@@ -472,32 +470,31 @@ class Service {
            })
           if(res.status == 200){
              const data = res.data;
-             toast.success(`${studentId} password is ${data}`);
+             toast.success(`Email generated: ${data?.instituteEmail}`);
              return data;
-          } 
+          }
           else throw new(res.data.message)
-      
-      } catch (error) { 
+
+      } catch (error) {
          return checkSession(error)
       }
   }
 
-    async pardonStudent(data){
+    async pardonStudent(studentId){
         try {
-            const res = await axios.post(`${REACT_APP_API_URL}/ais/students/pardon`, data,{
+            const res = await axios.post(`${REACT_APP_API_URL}/ais/students/pardon`, { studentId },{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
             if(res.status == 200){
                toast.success("Student pardon activated!")
                return res.data
-            } 
+            }
             else throw new(res.data.message)
-        
-        } catch (error) { 
+
+        } catch (error) {
            return checkSession(error)
         }
     }
-
 
     async postStudent(data){
         try {
@@ -1639,21 +1636,6 @@ class Service {
    }
 
 
-   /* Graduation Logs */
-   async fetchGraduateLogs(keyword,page,limit){
-      try {
-          const res = await axios.get(`${REACT_APP_API_URL}/ais/graduate-logs?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
-              headers: { "Content-Type" : "application/json", "x-access-token" : token }
-          })
-          if(res.status == 200 || res.status == 202)
-            return res.data
-          else throw new(res.data.message)
-      
-      } catch (error) { 
-         return checkSession(error)
-      }
-   }
-
    /* Graduate Session */
    async fetchGraduateSessionList(sessionId){
       try {
@@ -2406,19 +2388,17 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/registrations`, data,{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            console.log(res.data)
             if(res.status == 200){
                toast.success("Registration completed!")
                return res.data
-            } 
+            }
             else if(res.status == 202){
-                console.log(res)
-                toast.success(res.data?.message)
-            } 
-            else throw(res.data.message)
-        
-        } catch (error) { 
-            toast.success(error.message)
+                toast.error(res.data?.message || "No selected courses found!")
+            }
+            else throw new Error(res.data?.message)
+
+        } catch (error) {
+           toast.error(error?.response?.data?.message || error.message || "Registration failed")
         }
      }
 
@@ -3193,7 +3173,275 @@ class Service {
        return base64;
      }
 
-    
+
+    /* Evaluation Manager */
+    async fetchEvaluationForms(keyword,page,limit){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/eva/evaluation-forms?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+              return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async fetchEvaluationForm(formId){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/eva/evaluation-forms/${encodeURIComponent(formId)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+               return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async postEvaluationForm(data){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/eva/evaluation-forms`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Record created!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async updateEvaluationForm(formId,data){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/eva/evaluation-forms/${encodeURIComponent(formId)}`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Record updated!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async deleteEvaluationForm(formId){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/eva/evaluation-forms/${encodeURIComponent(formId)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Record deleted!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async postEvaluationFormYearGroup(formId,yearGroup,silent = false){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/eva/evaluation-forms/${encodeURIComponent(formId)}/year-groups`, { yearGroup },{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Year group added!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async deleteEvaluationFormYearGroup(formId,yearGroup,silent = false){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/eva/evaluation-forms/${encodeURIComponent(formId)}/year-groups/${encodeURIComponent(yearGroup)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Year group removed!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async postEvaluationQuestion(data,silent = false){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/eva/evaluation-questions`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Question added!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async updateEvaluationQuestion(questionId,data,silent = false){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/eva/evaluation-questions/${encodeURIComponent(questionId)}`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Question updated!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async deleteEvaluationQuestion(questionId,silent = false){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/eva/evaluation-questions/${encodeURIComponent(questionId)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Question removed!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async postEvaluationGuide(data,silent = false){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/eva/evaluation-guides`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Guide added!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async updateEvaluationGuide(guideId,data,silent = false){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/eva/evaluation-guides/${encodeURIComponent(guideId)}`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Guide updated!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async deleteEvaluationGuide(guideId,silent = false){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/eva/evaluation-guides/${encodeURIComponent(guideId)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200){
+               if(!silent) toast.success("Guide removed!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async postEvaluationOption(data){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/eva/evaluation-options`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Option added!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async updateEvaluationOption(optionId,data){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/eva/evaluation-options/${encodeURIComponent(optionId)}`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Option updated!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async deleteEvaluationOption(optionId){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/eva/evaluation-options/${encodeURIComponent(optionId)}`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Option deleted!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+
+    /* Student Evaluation */
+    async fetchAvailableEvaluationForms(){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/eva/forms/available`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200) return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
 }
 
 export default new Service();

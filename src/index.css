@@ -32,3 +32,44 @@
 @media (prefers-reduced-motion: reduce) {
   .dash-fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
+
+/* 3D press button with a per-letter reveal on hover (default label sits on
+   an ::before overlay driven by data-label, sliding away on hover to
+   uncover the individually-staggered <i class="letter"> children). */
+.btn-3d-letters {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 60ms cubic-bezier(.5,.7,.4,1), transform 60ms cubic-bezier(.5,.7,.4,1);
+}
+.btn-3d-letters:active {
+  box-shadow: none !important;
+  transform: translateY(5px);
+}
+.btn-3d-letters::before {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+}
+.btn-3d-letters:hover::before {
+  transition: transform 0s, opacity 0s;
+  transform: translateY(100%);
+  opacity: 0;
+}
+.btn-3d-letters .letter {
+  display: inline-block;
+  font-style: normal;
+  transform: translateY(-14px);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn-3d-letters:hover .letter {
+  transform: translateY(0);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-3d-letters, .btn-3d-letters::before, .btn-3d-letters .letter { transition: none !important; }
+}

@@ -6,7 +6,7 @@ import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { GiMoneyStack } from "react-icons/gi";
 import { HiMiniAcademicCap } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/fmsService";
 import Helper from "../../utils/aisService";
 
@@ -46,13 +46,13 @@ function AccountCardItem({ data }: Props) {
   };
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-2 md:group">
-      <h2 className="text-base md:text-base font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-2 md:group font-roboto">
+      <h2 className="text-base md:text-base font-semibold text-gray-500 uppercase">
         {data?.id}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="w-full flex items-center justify-between space-x-2">
-          <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {(
               data?.fname +
               " " +
@@ -70,7 +70,7 @@ function AccountCardItem({ data }: Props) {
           className="p-1 h-12 w-12 border rounded-md bg-white object-contain"
         />
       </div>
-      <div className="space-y-1.5 font-roboto">
+      <div className="space-y-1.5">
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span
@@ -131,7 +131,7 @@ function AccountCardItem({ data }: Props) {
             >
               Level
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {Math.ceil(data?.semesterNum / 2) * 100}
             </span>
           </div>
@@ -167,12 +167,12 @@ function AccountCardItem({ data }: Props) {
               className={`${
                 !data?.completeStatus
                   ? "bg-primary-dark/60"
-                  : "bg-primary-accent/60"
+                  : "bg-secondary-accent"
               } py-0.5 px-2 rounded flex items-center space-x-1.5 text-sm text-white font-semibold`}
             >
               LEVEL
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {Math.ceil(data?.semesterNum / 2) * 100 || "COMPLETED"}
             </span>
           </div>

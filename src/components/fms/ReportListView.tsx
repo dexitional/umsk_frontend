@@ -6,7 +6,6 @@ import {
   HiOutlineCurrencyDollar,
   HiOutlineExclamationTriangle,
   HiOutlineCheckBadge,
-  HiOutlineTicket,
 } from "react-icons/hi2";
 import ReportCard from "./ReportCard";
 import ReportDateFilter from "./ReportDateFIlter";
@@ -17,7 +16,6 @@ type Props = {
   majors: any;
   sessions: any;
   services: any;
-  asessions: any;
 };
 
 const YEAR_OPTIONS = [1, 2, 3, 4].map((r) => ({ label: `Year ${r}`, value: r }));
@@ -26,7 +24,7 @@ const MODE_OPTIONS = ["M", "E", "W"].map((r) => ({
   value: r,
 }));
 
-function ReportListView({ programs, majors, sessions, services, asessions }: Props) {
+function ReportListView({ programs, majors, sessions, services }: Props) {
   const navigation = useNavigation();
   const submittingType = navigation.state !== "idle" ? navigation.formData?.get("type")?.toString() : null;
 
@@ -34,7 +32,6 @@ function ReportListView({ programs, majors, sessions, services, asessions }: Pro
   const majorOptions = majors?.map((r: any) => ({ label: `${r.shortName} - ${r.program.shortName}`, value: r.id }));
   const sessionOptions = sessions?.map((r: any) => ({ label: `${r.title} - ${r.tag}`, value: r.id }));
   const serviceOptions = services?.map((r: any) => ({ label: r.title, value: r.id }));
-  const asessionOptions = asessions?.map((r: any) => ({ label: r.title, value: r.id }));
 
   const REPORTS = [
     {
@@ -73,7 +70,7 @@ function ReportListView({ programs, majors, sessions, services, asessions }: Pro
       title: "Charges",
       description: "Charges applied in a date range",
       Icon: HiOutlineCurrencyDollar,
-      gradient: "from-amber-500 to-orange-600",
+      gradient: "from-amber-500 to-secondary-accent-600",
       glow: "hover:shadow-amber-500/20",
       fields: (
         <>
@@ -112,17 +109,6 @@ function ReportListView({ programs, majors, sessions, services, asessions }: Pro
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
           <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
-      ),
-    },
-    {
-      type: "voucher",
-      title: "Vouchers",
-      description: "Vouchers sold for an admission session",
-      Icon: HiOutlineTicket,
-      gradient: "from-emerald-500 to-green-600",
-      glow: "hover:shadow-emerald-500/20",
-      fields: (
-        <ReportDropdown label="ADMISSION SESSION" name="asession" options={asessionOptions} />
       ),
     },
   ];

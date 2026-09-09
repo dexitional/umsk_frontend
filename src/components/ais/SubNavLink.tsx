@@ -12,7 +12,7 @@ function SubNavLink({ url, title }: Props) {
       to={url}
       className={({ isActive, isPending }) =>
         isActive
-          ? `px-4 py-1 min-w-48 shadow-md rounded-md bg-primary-accent font-bold text-white`
+          ? `px-4 py-1 min-w-48 shadow-md rounded-md bg-secondary-accent font-bold text-white`
           : `px-4 py-1 min-w-48 border border-primary/10 rounded-md bg-primary/10`
       }
       children={({ isActive }) => {

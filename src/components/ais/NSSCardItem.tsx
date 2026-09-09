@@ -4,7 +4,7 @@ import { FaEnvelope, FaPhone, FaTrash } from "react-icons/fa";
 import { FaCreditCard, FaFilePdf, FaFolder } from "react-icons/fa6";
 import { MdEditDocument, MdLocationOn } from "react-icons/md";
 import { Form, Link } from "react-router-dom";
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 
 type Props = {
   data: any;
@@ -12,13 +12,13 @@ type Props = {
 
 function NSSCardItem({ data }: Props) {
   return (
-    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-lg font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-lg font-semibold text-gray-500 uppercase">
         {data?.nss_no}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <div className="text-sm md:text-sm text-blue-950/70 font-medium font-roboto capitalize">
+          <div className="text-sm md:text-sm text-blue-950/70 font-medium capitalize">
             {(
               data.fname +
               " " +
@@ -34,7 +34,7 @@ function NSSCardItem({ data }: Props) {
           className="p-1 h-12 w-12 border rounded-md bg-white object-contain"
         />
       </div>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         <div className="flex items-center space-x-4">
           <FaPhone className="rotate-90 h-4 w-5 text-blue-950/70" />
           <span className="text-sm text-gray-500">{data?.mobile}</span>
@@ -86,7 +86,7 @@ function NSSCardItem({ data }: Props) {
             >
               Service Start Period
             </span>
-            <span className="font-semibold font-roboto text-base text-blue-950/60">
+            <span className="font-semibold text-base text-blue-950/60">
               {data?.start_date && moment(data?.start_date).format("YYYY")}
             </span>
           </div>
@@ -132,7 +132,7 @@ function NSSCardItem({ data }: Props) {
             >
               Service Start Period
             </span>
-            <span className="font-semibold font-roboto text-base text-blue-950/60">
+            <span className="font-semibold text-base text-blue-950/60">
               {data?.start_date && moment(data?.start_date).format("YYYY")}
             </span>
           </div>

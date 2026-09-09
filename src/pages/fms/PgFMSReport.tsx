@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 import { HiOutlineDocumentChartBar } from "react-icons/hi2";
 import ReportListView from "../../components/fms/ReportListView";
 import Service from "../../utils/aisService";
-import AmsService from "../../utils/amsService";
 import FmsService from "../../utils/fmsService";
 import { jsonToExcel } from "../../utils/util";
 
@@ -20,16 +19,15 @@ export async function action({ request, params }) {
 
 export async function loader({ params }) {
   const sessions = await Service.fetchSessionList();
-  const asessions = await AmsService.fetchSessionList();
   const services = await FmsService.fetchServiceList();
   const programs = await Service.fetchProgramList();
   const majors = await Service.fetchMajorList();
 
-  return { programs, sessions, majors, asessions, services };
+  return { programs, sessions, majors, services };
 }
 
 function PgFMSReport({}: Props) {
-  const { programs, sessions, majors, asessions, services }: any =
+  const { programs, sessions, majors, services }: any =
     useLoaderData();
 
   return (
@@ -54,7 +52,6 @@ function PgFMSReport({}: Props) {
         programs={programs}
         majors={majors}
         sessions={sessions}
-        asessions={asessions}
         services={services}
       />
     </div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Adinkra2 from "../assets/img/adinkra-bullet.png";
-// import Adinkra from '../assets/img/logo/aucc/logo.png'
+// import Adinkra from '../assets/img/logo/akatsico/logo.png'
 import Adinkra from "../assets/img/adinkra-bullet.png";
-import Logo from "../assets/img/logo_sso.png";
+import Logo from "../assets/img/logo.webp";
 // @ts-ignore
 import { FaArrowLeft, FaLock } from "react-icons/fa";
 import { FcLock } from "react-icons/fc";
@@ -180,7 +180,7 @@ function Login() {
                 {/* <GoogleLogin
                            onSuccess={authenticateGoogle}
                             onError={() => errorGoogle}
-                            hosted_domain={'aucb.edu.gh'}
+                            hosted_domain={'akatsico.edu.gh'}
                             auto_select={true}
                             ux_mode="redirect"
                             // ux_mode="popup"
@@ -201,7 +201,7 @@ function Login() {
                   onClick={async () => await setLoginform("staff")}
                   className={`${
                     loginform ? "hidden" : "flex"
-                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-primary-accent/90 font-bold tracking-wider`}
+                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-secondary-accent/90 font-bold tracking-wider`}
                 >
                   <FcLock className="h-6 w-6" />
                   <span className="text-sm md:text-base">
@@ -212,7 +212,7 @@ function Login() {
                   onClick={async () => await setLoginform("student")}
                   className={`${
                     loginform ? "hidden" : "flex"
-                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-primary-accent/90 font-bold tracking-wider`}
+                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-secondary-accent/90 font-bold tracking-wider`}
                 >
                   <ImProfile className="h-6 w-6 text-primary-dark" />
                   <span className="text-sm md:text-base">
@@ -284,7 +284,7 @@ function Login() {
                   disabled={loading}
                   type="submit"
                   className={`py-2.5 px-4 md:px-10 w-full flex items-center justify-center space-x-4 shadow rounded ${
-                    loading ? "bg-primary-accent/10" : "bg-primary-accent/90"
+                    loading ? "bg-secondary-accent/10" : "bg-secondary-accent/90"
                   } font-bold tracking-wider`}
                 >
                   {loading ? (
@@ -366,7 +366,7 @@ function Login() {
                   disabled={loading}
                   type="submit"
                   className={`py-2.5 px-4 md:px-10 w-full flex items-center justify-center space-x-4 shadow rounded ${
-                    loading ? "bg-primary-accent/10" : "bg-primary-accent/90"
+                    loading ? "bg-secondary-accent/10" : "bg-secondary-accent/90"
                   } font-bold tracking-wider`}
                 >
                   {loading ? (
@@ -407,7 +407,7 @@ function Login() {
           </div>
           <div className="h-14 w-full flex items-center justify-center">
             <p className="text-white text-xs font-medium">
-              Copyright &copy; {new Date().getFullYear()} AUCB
+              Copyright &copy; {new Date().getFullYear()} AKATSICO
             </p>
           </div>
         </section>

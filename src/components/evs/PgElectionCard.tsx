@@ -1,7 +1,7 @@
 import moment from "moment";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useUserStore } from "../../utils/authService";
 const { REACT_APP_API_URL } = import.meta.env;
 

@@ -89,10 +89,6 @@ const FMSRoute:any =  {
          lazy: () => import('../pages/fms/PgFMSStudentFinance').then(m => ({ Component: m.default, loader: m.loader })),
       },
       {
-         path:'accounts/:accountId/retire',
-         lazy: () => import('../pages/ams/PgAMSVouchers').then(m => ({ action: m.action })),
-      },
-      {
          path:'accounts/:accountId/fine',
          lazy: () => import('../pages/fms/PgFMSStudentFinance').then(m => ({ action: m.action })),
       },
@@ -146,12 +142,6 @@ const FMSRoute:any =  {
       //    action: amsMatriculantDestroy,
       // },
 
-      /* Voucher Payments/Sales Module */
-      {
-         path:'vsales',
-         lazy: () => import('../pages/fms/PgFMSVouchers').then(m => ({ Component: m.default, loader: m.loader })),
-      },
-
       /* Service Costs Module */
       {
          path:'services',
@@ -168,26 +158,7 @@ const FMSRoute:any =  {
       {
          path:'services/:serviceId/edit',
          lazy: () => import('../pages/fms/PgFMSScostForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-      },
-
-      /* Voucher Costs Module */
-      {
-         path:'vcosts',
-         lazy: () => import('../pages/fms/PgFMSVcosts').then(m => ({ Component: m.default, loader: m.loader })),
-      },
-      {
-         path:'vcosts/create',
-         lazy: () => import('../pages/fms/PgFMSVcostForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-      },
-      {
-         path:'vcosts/:costId/edit',
-         lazy: () => import('../pages/fms/PgFMSVcostForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-      },
-      {
-         path:'vcosts/:costId/destroy',
-         lazy: () => import('../pages/fms/PgFMSVcosts').then(m => ({ action: m.action })),
       }
-
 
    ]
 }

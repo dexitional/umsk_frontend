@@ -98,9 +98,9 @@ function AISGraduateStudentCard({ title,data, index }: Props) {
           </span>
           <span className="col-span-2 font-bold self-center">{row.student?.indexno}</span>
           <span className="col-span-3 font-bold self-center">{row.student?.program?.shortName}</span>
-          <span className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
-          <span className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'}`}>{row?.class?.toUpperCase()}</span>
-          <div className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'} flex flex-col gap-2`}>
+          <span className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
+          <span className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'}`}>{row?.class?.toUpperCase()}</span>
+          <div className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'} flex flex-col gap-2`}>
             <button onClick={() => excludeStudent(row.indexno)} className="px-1 py-0.5 border border-primary-dark text-primary-dark/60 rounded">Exclude</button>
             {/* <button className="px-1 py-0.5 border border-primary-dark text-primary-dark/60 rounded">Exclude</button> */}
           </div>

@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import moment from "moment";
 
 type Props = {
   data: any;
+  title?: string;
 };
 
-function PgEvaluationReceipt({ data }: Props) {
+function PgEvaluationReceipt({ data, title }: Props) {
   const printRef = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -20,7 +21,7 @@ function PgEvaluationReceipt({ data }: Props) {
     >
       <button
         onClick={handlePrint}
-        className="w-full md:w-fit md:absolute md:-top-[1rem] md:-left-10 print:hidden px-6 py-1 flex md:flex-none items-center justify-center space-x-2 rounded bg-primary-accent text-white font-bold uppercase"
+        className="w-full md:w-fit md:absolute md:-top-[1rem] md:-left-10 print:hidden px-6 py-1 flex md:flex-none items-center justify-center space-x-2 rounded bg-secondary-accent text-white font-bold uppercase"
       >
         <span>Print</span>{" "}
         <span className="flex md:hidden">Evaluation Receipt</span>
@@ -29,7 +30,7 @@ function PgEvaluationReceipt({ data }: Props) {
       <main className="px-16 py-10 border hidden print:block md:block w-full print:text-[0.79rem] print:font-poppins">
         <div className="mt-0 mb-8 space-y-6">
           <h1 className="text-center text-gray-800 underline text-lg print:text-base font-[san-serif] font-semibold uppercase">
-             <h2 className="text-2xl">AFRICAN UNIVERSITY COLLEGE</h2> <h3 className="text-lg">OF BUSINESS AND COMMUNICATION</h3>
+             <h2 className="text-2xl">AKATSI COLLEGE</h2> <h3 className="text-lg">OF EDUCATION</h3>
           </h1>
          </div>
         {/* { ReactHtml(loadPlacerData(data?.template,dm)) } */}
@@ -50,7 +51,7 @@ function PgEvaluationReceipt({ data }: Props) {
               <table className="ptable">
                 <tr>
                   <td colSpan={3}>
-                    <h3 className="theading"> COURSE EVALUATION RECEIPT</h3>
+                    <h3 className="theading"> {title || "COURSE EVALUATION RECEIPT"}</h3>
                   </td>
                   <td>&nbsp;</td>
                 </tr>

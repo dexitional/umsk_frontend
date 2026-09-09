@@ -65,7 +65,7 @@ function PrintTranscript({}: Props) {
     <div className="w-full flex flex-col justify-center items-center bg-white print:m-0 print:scale-[85%]">
       <div className="my-10 mx-auto px-16 py-10 w-full rounded border shadow-sm shadow-slate-300 print:px-6 print:py-0 print:m-0 print:w-full print:shadow-none print:border-0 print:scale-100">
         <PrintHeader />
-        <h3 className="md:-mt-2 md:mb-2 print:mt-2 print:indent-0 md:indent-6 text-center text-base md:text-xl font-noto font-bold md:text-primary-accent underline underline-offset-4 ">
+        <h3 className="md:-mt-2 md:mb-2 print:mt-2 print:indent-0 md:indent-6 text-center text-base md:text-xl font-noto font-bold md:text-secondary-accent underline underline-offset-4 ">
           STATEMENT OF RESULT
         </h3>
         <div className="my-0 print:px-2 print:py-2 w-full md:max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row space-x-6">
@@ -178,8 +178,8 @@ function PrintTranscript({}: Props) {
                 {/*                     
                         <div className="w-full px-6 pb-4 flex text-xs print:text-[0.65rem] text-primary/70 font-roboto font-semibold uppercase tracking-widest">
                             <div className="w-44 print:hidden">&nbsp;</div>
-                            <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{totalCredit}</span></span></div>
-                            <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
+                            <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{totalCredit}</span></span></div>
+                            <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
                         </div> 
                         */}
               </div>

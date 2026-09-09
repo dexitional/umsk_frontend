@@ -32,10 +32,8 @@ function FMSRoleNav({ user }: Props) {
            { fmsRoles?.find((r:any) => ['account::admin','account::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Student Accounts" url="accounts" Icon={GrDashboard}></Menu.Item>)} 
            { fmsRoles?.find((r:any) => ['debtor::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Student Debtors" url="debtors" Icon={GrDashboard}></Menu.Item>)} 
            { fmsRoles?.find((r:any) => ['payment::admin','payment::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Fees Payments" url="payments" Icon={GrDashboard}></Menu.Item>)} 
-           { fmsRoles?.find((r:any) => ['transaction::admin','transaction::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Other Payments" url="transacts" Icon={GrDashboard}></Menu.Item>)} 
-           { fmsRoles?.find((r:any) => ['vsale::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Voucher Sales" url="vsales" Icon={GrDashboard}></Menu.Item>)} 
-           { fmsRoles?.find((r:any) => ['vprice::admin','vprice::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Voucher Prices" url="vcosts" Icon={GrDashboard}></Menu.Item>)} 
-           { fmsRoles?.find((r:any) => ['scost::admin','scost::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Service Costs" url="services" Icon={GrDashboard}></Menu.Item>)} 
+           { fmsRoles?.find((r:any) => ['transaction::admin','transaction::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Other Payments" url="transacts" Icon={GrDashboard}></Menu.Item>)}
+           { fmsRoles?.find((r:any) => ['scost::admin','scost::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Service Costs" url="services" Icon={GrDashboard}></Menu.Item>)}
           </div>
         </Menu.Items>
     </Menu>

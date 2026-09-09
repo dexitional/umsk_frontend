@@ -117,13 +117,13 @@ function PrintRegisterSlip({}: Props) {
               <div className="md:flex-1 print:flex-1  flex items-center justify-between">
                 <span>
                   Total Credits:&nbsp;&nbsp;&nbsp;
-                  <span className="text-primary-accent">{totalCredit}</span>
+                  <span className="text-secondary-accent">{totalCredit}</span>
                 </span>
               </div>
               <div className="md:flex-1 print:flex-1  flex items-center justify-between">
                 <span>
                   Date of Registration:&nbsp;&nbsp;&nbsp;
-                  <span className="text-primary-accent">
+                  <span className="text-secondary-accent">
                     {moment().format("MMM DD, YYYY") || "Not Set"}
                   </span>
                 </span>

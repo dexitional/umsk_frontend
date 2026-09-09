@@ -15,7 +15,7 @@ function AISChangeCard({ title,data,canManage }: Props) {
       <span className="px-3 py-0.5 rounded border border-primary/50">{title}</span>
       <div className="flex items-center space-x-2">
         {canManage ? (
-          <button className="px-3 py-1 rounded bg-primary-accent/90 text-xs text-white font-bold flex items-center">ADD REQUEST</button>
+          <button className="px-3 py-1 rounded bg-secondary-accent/90 text-xs text-white font-bold flex items-center">ADD REQUEST</button>
         ) : null}
         <span className="px-3 py-1 rounded bg-primary/70 text-xs text-white font-bold flex items-center">{data?.length} REQUESTS</span>
       </div>
@@ -53,7 +53,7 @@ function AISChangeCard({ title,data,canManage }: Props) {
             </div>
           ))}
           {/* Totals */}
-          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

@@ -7,7 +7,7 @@ import { BiLoaderCircle } from "react-icons/bi";
 import { PiSignatureBold } from "react-icons/pi";
 import { TbEdit } from "react-icons/tb";
 import { Link, redirect, useLoaderData, useNavigation } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import LetterTemplate from "../../components/ais/LetterTemplate";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
@@ -96,7 +96,7 @@ function PgAISLetter({}: Props) {
                 </span>
               </div>
             </div>
-            <code className="py-4 px-6 w-fit bg-primary-accent/5 text-gray-400 md:text-gray-500 text-xs md:text-sm font-roboto">
+            <code className="py-4 px-6 w-fit bg-secondary-accent/5 text-gray-400 md:text-gray-500 text-xs md:text-sm font-roboto">
               {ReactHtml(data?.signatory || "")}
             </code>
           </div>

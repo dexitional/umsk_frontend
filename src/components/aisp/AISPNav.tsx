@@ -23,7 +23,7 @@ function AISPNav({ user }: Props) {
         <AISPNavItem title="Course Registration" url="registration" Icon={TbChecklist} />
         <AISPNavItem title="Academic Results" url="results" Icon={BiSpreadsheet} />
         <AISPNavItem title="Service Requests" url="services" Icon={MdOutlineAddTask} />
-        <AISPNavItem title="Course Evaluation" url="evaluation" Icon={MdOutlineAddTask} />
+        <AISPNavItem title="Evaluations" url="evaluation" Icon={MdOutlineAddTask} />
         <AISPNavItem title="Elections Portal" url="/evs/dash" Icon={FaVoteYea} />
         {/* <AISPNavItem title="MLK Circulars" url="notices" Icon={MdOutlineAddTask} /> */}
         {/* <NSSNavItem title="Discipline Cases" url="disciplinary" Icon={GoBriefcase} /> */}

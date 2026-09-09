@@ -4,7 +4,7 @@ import SubPageTitle from "../../components/ais/SubPageTitle";
 import { HiAcademicCap } from "react-icons/hi2";
 import { TbEdit } from "react-icons/tb";
 import { Link, Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
@@ -112,7 +112,7 @@ function PgAISSheet({}: Props) {
             </div>
             <div className="w-full flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 text-zinc-400 text-lg">
               <div className="flex items-center space-x-2 font-semibold">
-                <span className="px-3 py-0.5 text-xs md:text-sm font-bold tracking-wider capitalize bg-primary-accent/80 rounded-md text-white">
+                <span className="px-3 py-0.5 text-xs md:text-sm font-bold tracking-wider capitalize bg-secondary-accent/80 rounded-md text-white">
                   {data?.finalized
                     ? "CLOSED"
                     : data?.certified

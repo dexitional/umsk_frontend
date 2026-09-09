@@ -16,8 +16,8 @@ function NoticeListItem({ data }: Props) {
       <div className="md:col-span-4 flex flex-col space-y-1.5">
         <ListHeading title="Title" />
         <div className="flex items-center space-x-3 min-w-0">
-          <div className="h-8 w-8 shrink-0 rounded-lg bg-primary-accent/10 flex items-center justify-center">
-            <TbMessage2Check className="h-4 w-4 text-primary-accent" />
+          <div className="h-8 w-8 shrink-0 rounded-lg bg-secondary-accent/10 flex items-center justify-center">
+            <TbMessage2Check className="h-4 w-4 text-secondary-accent" />
           </div>
           <span className="text-sm font-medium text-primary truncate">{data?.subject}</span>
         </div>
@@ -36,9 +36,9 @@ function NoticeListItem({ data }: Props) {
         <ListHeading title="Action" />
         <Link
           to={`${data?.id}`}
-          className="h-8 w-8 rounded-lg bg-primary-accent/10 flex items-center justify-center hover:bg-primary-accent/20 transition-colors"
+          className="h-8 w-8 rounded-lg bg-secondary-accent/10 flex items-center justify-center hover:bg-secondary-accent/20 transition-colors"
         >
-          <FaEnvelopeOpenText className="h-4 w-4 text-primary-accent" />
+          <FaEnvelopeOpenText className="h-4 w-4 text-secondary-accent" />
         </Link>
       </div>
     </div>

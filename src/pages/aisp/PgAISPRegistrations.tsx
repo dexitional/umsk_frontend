@@ -25,6 +25,10 @@ export async function loader() {
 
 function PgAISPRegistrations({}: Props) {
   const { data, slip, student, fees }: any = useLoaderData();
+  // No default session matched the student's stream (e.g. registration
+  // hasn't been configured for this semester yet) — fall back to an empty
+  // label instead of letting `undefined` leak into the page title.
+  const sessionLabel = data?.session ? `${data.session.toUpperCase()} ` : "";
   const runDefault = () => {
     // Update Compulsory & Locked Courses
     const cdata = data?.courses
@@ -40,12 +44,12 @@ function PgAISPRegistrations({}: Props) {
       <AISPPageHeader title="Course Registration" subtitle={data?.session?.toUpperCase()} />
       {!slip?.length ? (
         <RegistrationListView
-          title={`${data?.session?.toUpperCase()} REGISTRATION PROCEDURE`}
+          title={`${sessionLabel}REGISTRATION PROCEDURE`}
           data={data}
         />
       ) : (
         <RegistrationSlipView
-          title={`${data?.session?.toUpperCase()} REGISTRATION SLIP`}
+          title={`${sessionLabel}REGISTRATION SLIP`}
           data={slip}
         />
       )}

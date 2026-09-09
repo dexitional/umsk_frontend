@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo2 from '../../assets/img/ctvet.png';
-import Logo from '../../assets/img/logo/aucc/logo.png';
+import Logo from '../../assets/img/logo.webp';
 
 type Props = {}
 

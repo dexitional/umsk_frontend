@@ -47,7 +47,7 @@ function PgRegister() {
             <button
               onClick={() => sendPinsMutation.mutate()}
               disabled={sendPinsMutation.isPending}
-              className="p-1 px-2 rounded text-sm font-bold bg-primary-accent tracking-wider disabled:opacity-50"
+              className="p-1 px-2 rounded text-sm font-bold bg-secondary-accent tracking-wider disabled:opacity-50"
             >
               {sendPinsMutation.isPending ? "SENDING..." : "SEND PINS"}
             </button>
@@ -56,7 +56,7 @@ function PgRegister() {
             <button
               onClick={() => sendReminderMutation.mutate()}
               disabled={sendReminderMutation.isPending}
-              className="p-1 px-2 rounded text-sm font-bold bg-primary-accent tracking-wider disabled:opacity-50"
+              className="p-1 px-2 rounded text-sm font-bold bg-secondary-accent tracking-wider disabled:opacity-50"
             >
               {sendReminderMutation.isPending ? "PUSHING REMINDERS..." : "PUSH REMINDERS"}
             </button>

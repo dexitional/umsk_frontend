@@ -33,7 +33,7 @@ function AISResitCaptureCard({ title, data }: Props) {
               if (confirm("Do you want to cancel?")) return false;
               e.preventDefault();
             }}
-            className="px-3 py-1 rounded border border-primary-accent/70 text-xs text-primary-accent/70 font-bold flex items-center"
+            className="px-3 py-1 rounded border border-secondary-accent text-xs text-secondary-accent font-bold flex items-center"
           >
             CANCEL
           </Link>

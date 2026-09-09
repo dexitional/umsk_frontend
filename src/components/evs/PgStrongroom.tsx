@@ -71,7 +71,7 @@ function PgStrongroom() {
           <span>STRONGROOM MONITOR</span>
           {/* <span className="animate-pulse">TURNOUT: {data?.turnout || 0}</span> */}
           <div className="flex items-center space-x-2">
-            <span className="p-1 px-2 rounded text-sm font-bold bg-primary-accent tracking-wider disabled:opacity-50">TURNOUT</span>
+            <span className="p-1 px-2 rounded text-sm font-bold bg-secondary-accent tracking-wider disabled:opacity-50">TURNOUT</span>
             <span className={`p-0.5 px-2 rounded bg-purple-50 text-base text-primary font-extrabold tracking-wider ${isLoading && 'animate-pulse backdrop:blur-md'}`}>{isLoading ? '--' : (liveData?.turnout || '++')}</span>
           </div>
         </h1>

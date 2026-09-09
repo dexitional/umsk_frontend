@@ -155,8 +155,8 @@ function PrintTranscriptMlk({}: Props) {
             {/*                     
                     <div className="w-full px-6 pb-4 flex text-xs print:text-[0.65rem] text-primary/70 font-roboto font-semibold uppercase tracking-widest">
                         <div className="w-44 print:hidden">&nbsp;</div>
-                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{totalCredit}</span></span></div>
-                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
+                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{totalCredit}</span></span></div>
+                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
                     </div> 
                     */}
           </div>

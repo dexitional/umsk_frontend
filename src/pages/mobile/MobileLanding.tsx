@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // @ts-ignore
 import Adinkra2 from "../../assets/img/adinkra-bullet.png";
 // @ts-ignore
-import Logo from "../../assets/img/logo_sso.png";
+import Logo from "../../assets/img/logo.webp";
 // @ts-ignore
 import { FaDownload, FaApple, FaAndroid } from "react-icons/fa";
 // @ts-ignore
@@ -121,7 +121,7 @@ function MobileLanding() {
 
           {/* Footer */}
           <div className="h-14 w-full flex items-center justify-center">
-            <p className="text-white text-xs font-medium">Copyright &copy; {new Date().getFullYear()} AUCB</p>
+            <p className="text-white text-xs font-medium">Copyright &copy; {new Date().getFullYear()} AKATSICO</p>
           </div>
         </section>
       </main>

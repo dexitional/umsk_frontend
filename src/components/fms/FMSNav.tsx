@@ -19,9 +19,7 @@ function FMSNav({ user }: Props) {
         { fmsRoles?.find((r:any) => ['debtor::clerk'].includes(r?.role)) && (<FMSNavItem title="Student Debtors" url="debtors" Icon={GrDashboard} />) } 
         { fmsRoles?.find((r:any) => ['payment::admin','payment::clerk'].includes(r?.role)) && (<FMSNavItem title="Fees Payments" url="payments" Icon={GrDashboard} />) } 
         { fmsRoles?.find((r:any) => ['transaction::admin','transaction::clerk'].includes(r?.role)) && (<FMSNavItem title="Other Payments" url="transacts" Icon={GrDashboard} />) }
-        { fmsRoles?.find((r:any) => ['vsale::clerk'].includes(r?.role)) && (<FMSNavItem title="Voucher Sales" url="vsales" Icon={GrDashboard} />) } 
-        { fmsRoles?.find((r:any) => ['vprice::admin','vprice::clerk'].includes(r?.role)) && (<FMSNavItem title="Voucher Prices" url="vcosts" Icon={GrDashboard} />) } 
-        { fmsRoles?.find((r:any) => ['scost::admin','scost::clerk'].includes(r?.role)) && (<FMSNavItem title="Service Costs" url="services" Icon={GrDashboard} />) } 
+        { fmsRoles?.find((r:any) => ['scost::admin','scost::clerk'].includes(r?.role)) && (<FMSNavItem title="Service Costs" url="services" Icon={GrDashboard} />) }
     </div>
   )
 }

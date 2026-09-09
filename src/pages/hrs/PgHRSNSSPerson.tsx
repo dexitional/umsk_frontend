@@ -20,7 +20,7 @@ import {
 import { RiCommunityLine } from "react-icons/ri";
 import { TbEdit, TbHomeCheck } from "react-icons/tb";
 import { Link, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import AISPBioCard from "../../components/aisp/AISPBioCard";
 import Service from "../../utils/hrsService";
 

@@ -1,14 +1,14 @@
 import moment from 'moment'
 import React from 'react'
-import Logo from '../../assets/img/logo/aucc/logo.png'
+import Logo from '../../assets/img/logo.webp';
 
 type Props = {}
 
-function PrintHeaderAucc({}: Props) {
+function PrintHeaderAkatsico({}: Props) {
   return (
-    <div className="hidden print:flex md:flex flex-col print:border-b-4 print:border-primary-accent">
-        <span className="m-0 p-0 text-[3.5rem] print:text-[2.9rem] text-primary-dark font-roboto font-semibold tracking-widest md:leading-[4rem] text-center">AFRICAN UNIVERSITY </span>
-        <span className="m-0 print:-mt-3 p-0 text-[2.1rem] print:text-[1.5rem] text-primary-accent font-bold font-roboto tracking-wider text-center leading-0">OF COMMUNICATIONS AND BUSINESS</span><br/><br/>
+    <div className="hidden print:flex md:flex flex-col print:border-b-4 print:border-secondary-accent">
+        <span className="m-0 p-0 text-[3.5rem] print:text-[2.9rem] text-primary-dark font-roboto font-semibold tracking-widest md:leading-[4rem] text-center">AKATSI </span>
+        <span className="m-0 print:-mt-3 p-0 text-[2.1rem] print:text-[1.5rem] text-secondary-accent font-bold font-roboto tracking-wider text-center leading-0">COLLEGE OF EDUCATION</span><br/><br/>
         <div className="my-6 mx-auto print:-mt-10 print:mb-3 w-full max-w-4xl flex justify-between">
             <div className="w-fit space-y-2  print:space-y-2 print:text-[0.65rem]">
                 <div className="flex space-x-5 text-sm print:text-[0.65rem]">
@@ -29,8 +29,8 @@ function PrintHeaderAucc({}: Props) {
                         <p>WEBSITE:</p>
                     </div>
                     <div className="font-medium">
-                        <p>info@aucb.edu.gh</p>
-                        <p>www.aucb.edu.gh</p>
+                        <p>info@akatsico.edu.gh</p>
+                        <p>www.akatsico.edu.gh</p>
                     </div>
                 </div>
             </div>
@@ -50,4 +50,4 @@ function PrintHeaderAucc({}: Props) {
   )
 }
 
-export default PrintHeaderAucc
+export default PrintHeaderAkatsico

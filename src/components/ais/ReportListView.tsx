@@ -129,8 +129,8 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
       title: "Resitting Students",
       description: "Students registered for a resit session",
       Icon: HiOutlineArrowPath,
-      gradient: "from-orange-500 to-amber-600",
-      glow: "hover:shadow-orange-500/20",
+      gradient: "from-secondary-accent-500 to-amber-600",
+      glow: "hover:shadow-secondary-accent-500/20",
       fields: (
         <>
           <ReportDropdown label="ACADEMIC SESSION" name="session" options={sessionOptions} />

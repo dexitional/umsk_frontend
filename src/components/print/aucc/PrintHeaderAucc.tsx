@@ -1,14 +1,14 @@
 import moment from 'moment'
 import React from 'react'
-import Logo from '../../assets/img/logo/aucc/logo.png'
+import Logo from '../../../assets/img/logo.webp';
 
 type Props = {}
 
-function PrintHeaderAucc({}: Props) {
+function PrintHeaderAkatsico({}: Props) {
   return (
     <div className="hidden print:flex md:flex flex-col">
-                <span className="m-0 p-0 text-[3rem] print:text-[2.5rem] text-primary-dark font-serif font-semibold tracking-wider md:leading-[4rem] text-center">AFRICAN UNIVERSITY </span>
-                <span className="m-0 print:-mt-3 p-0 text-[1.75rem] print:text-[1.5rem] text-primary-accent font-bold font-serif tracking-wider text-center leading-0">COLLEGE OF COMMUNICATIONS</span>
+                <span className="m-0 p-0 text-[3rem] print:text-[2.5rem] text-primary-dark font-serif font-semibold tracking-wider md:leading-[4rem] text-center">AKATSI </span>
+                <span className="m-0 print:-mt-3 p-0 text-[1.75rem] print:text-[1.5rem] text-secondary-accent font-bold font-serif tracking-wider text-center leading-0">COLLEGE OF EDUCATION</span>
                 <div className="my-8 mx-auto print:my-4 w-full max-w-4xl flex flex-row justify-center">
                     <div className="flex-1 space-y-4  print:space-y-2 print:text-xs">
                         <div className="flex space-x-14 text-sm print:text-xs">
@@ -29,8 +29,8 @@ function PrintHeaderAucc({}: Props) {
                                 <p>WEBSITE:</p>
                             </div>
                             <div className="font-medium">
-                                <p>info@aucb.edu.gh</p>
-                                <p>www.aucb.edu.gh</p>
+                                <p>info@akatsico.edu.gh</p>
+                                <p>www.akatsico.edu.gh</p>
                             </div>
                         </div>
                     </div>
@@ -53,4 +53,4 @@ function PrintHeaderAucc({}: Props) {
   )
 }
 
-export default PrintHeaderAucc
+export default PrintHeaderAkatsico

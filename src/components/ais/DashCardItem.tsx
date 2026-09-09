@@ -18,7 +18,7 @@ function DashCardItem({ theme, title, total, active, added }: Props) {
      dark: { bgColor:'bg-zinc-700', iconBgColor: 'bg-zinc-300/30', iconBorderColor: 'border-zinc-800/10'},
   }
   return (
-    <div className={`py-6 px-6 min-h-fit ${themes[theme].iconBgColor} ${themes[theme].iconBorderColor} border rounded-3xl space-y-4`}>
+    <div className={`py-6 px-6 min-h-fit ${themes[theme].iconBgColor} ${themes[theme].iconBorderColor} border rounded-3xl space-y-4 font-roboto`}>
         <div className="flex justify-between">
             <div className="pr-16 flex-1 flex space-x-3">
                 <div className={`p-3 h-10 w-10 rounded-xl ${themes[theme].bgColor} text-white flex items-center justify-center`}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Adinkra2 from "../assets/img/adinkra-bullet.png";
-// import Adinkra from '../assets/img/logo/aucc/logo.png'
+// import Adinkra from '../assets/img/logo/akatsico/logo.png'
 import Adinkra from "../assets/img/adinkra-bullet.png";
 import Logo from "../assets/img/logo.webp";
 // @ts-ignore
@@ -150,13 +150,13 @@ function Login() {
         </section>
         <section className="m-2 my-1 md:my-10 md:mx-4 md:w-[28rem] rounded-b-xl md:rounded-xl border-[3px] border-primary-dark/20 backdrop-blur-lg bg-primary bg-[url('./assets/img/eagle.png')] bg-no-repeat bg-bottom flex flex-col justify-between overflow-y-scroll scrollbar-hide">
           <div className="p-6 flex-1 flex flex-col items-center">
-            <h1 className="md:hidden my-4 text-3xl md:text-4xl font-semibold font-mono text-primary-accent/50 tracking-widest">AKATSICO</h1>
-            <h1 className="hidden md:flex my-4 text-3xl md:text-4xl font-mono text-white">Unified Portal</h1>
-            {/* <img
+            <h1 className="md:hidden my-4 text-3xl md:text-4xl font-semibold font-mono text-secondary-accent/50 tracking-widest">AKATSICO</h1>
+            <h1 className="hidden md:flex my-4 text-3xl md:text-4xl font-mono text-white">UMS PORTAL</h1>
+            <img
               src={Adinkra}
               alt=""
               className="mt-20 p-2 h-22 md:h-24 rounded-md border-2 border-dashed opacity-40 shadow-lg -rotate-45 "
-            /> */}
+            />
             <div className="my-6 md:my-14 w-full space-y-8">
               <div
                 className={`${
@@ -180,7 +180,7 @@ function Login() {
                 {/* <GoogleLogin
                            onSuccess={authenticateGoogle}
                             onError={() => errorGoogle}
-                            hosted_domain={'aucb.edu.gh'}
+                            hosted_domain={'akatsico.edu.gh'}
                             auto_select={true}
                             ux_mode="redirect"
                             // ux_mode="popup"
@@ -203,7 +203,7 @@ function Login() {
                   onClick={async () => await setLoginform("staff")}
                   className={`${
                     loginform ? "hidden" : "flex"
-                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-primary-accent/90 font-bold tracking-wider`}
+                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-white font-bold tracking-wider`}
                 >
                   <FcLock className="h-6 w-6" />
                   <span className="text-sm md:text-base">
@@ -214,10 +214,10 @@ function Login() {
                   onClick={async () => await setLoginform("student")}
                   className={`${
                     loginform ? "hidden" : "flex"
-                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-primary-accent/90 font-bold tracking-wider`}
+                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-secondary/50 font-bold tracking-wider`}
                 >
-                  <ImProfile className="h-6 w-6 text-primary-dark" />
-                  <span className="text-sm md:text-base">
+                  <ImProfile className="h-6 w-6 text-white/80" />
+                  <span className="text-sm md:text-base text-white/80">
                     Sign In with Student Access
                   </span>
                 </button>
@@ -232,7 +232,7 @@ function Login() {
                 } mx-auto py-4 px-3 md:p-4 md:w-[90%] rounded-xl border-[3px] border-primary-dark/30 bg-primary flex-col space-y-4 text-white text-lg`}
               >
                 <div className="shadow bg-white/10 rounded-md flex items-center justify-between overflow-hidden">
-                  <h1 className="px-4 py-1 text-lg text-amber-100 font-semibold tracking-widest">
+                  <h1 className="px-4 py-1 text-lg text-secondary-accent font-semibold tracking-widest">
                     {loginform == "student"
                       ? "STUDENT LOGIN"
                       : loginform == "voucher"
@@ -286,7 +286,7 @@ function Login() {
                   disabled={loading}
                   type="submit"
                   className={`py-2.5 px-4 md:px-10 w-full flex items-center justify-center space-x-4 shadow rounded ${
-                    loading ? "bg-primary-accent/10" : "bg-primary-accent/90"
+                    loading ? "bg-secondary-accent/10" : "bg-secondary-accent/90"
                   } font-bold tracking-wider`}
                 >
                   {loading ? (
@@ -368,7 +368,7 @@ function Login() {
                   disabled={loading}
                   type="submit"
                   className={`py-2.5 px-4 md:px-10 w-full flex items-center justify-center space-x-4 shadow rounded ${
-                    loading ? "bg-primary-accent/10" : "bg-primary-accent/90"
+                    loading ? "bg-secondary-accent/10" : "bg-secondary-accent/90"
                   } font-bold tracking-wider`}
                 >
                   {loading ? (

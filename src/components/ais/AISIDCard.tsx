@@ -6,7 +6,7 @@ import { HiUserAdd } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import Adinkra from "../../assets/img/adinkra-bullet.png";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Back from "../../assets/img/id-back.jpg";
 import { useUserStore } from "../../utils/authService";
 const { REACT_APP_API_URL } = import.meta.env;
@@ -41,8 +41,8 @@ function AISIDCard({ data }: Props) {
           data?.lname,
         subject: "Student ID Card",
         keywords: "Student ID, UMS",
-        author: "AUCB",
-        creator: "AUCB",
+        author: "AKATSICO",
+        creator: "AKATSICO",
       });
       //pdf.save("test.pdf");
       window.open(URL.createObjectURL(pdf.output("blob")));
@@ -58,7 +58,7 @@ function AISIDCard({ data }: Props) {
       <section className="px-8 py-6 md:w-3/5 print-w-full flex items-center">
         <div
           ref={pdfRef}
-          className="w-[85mm] h-[54mm] border print:border-0 border-b-4 print:border-b-4 border-b-primary-accent md:scale-125 bg-white"
+          className="w-[85mm] h-[54mm] border print:border-0 border-b-4 print:border-b-4 border-b-secondary-accent md:scale-125 bg-white"
         >
           <div>
             <div className="px-2 py-1 flex items-center">
@@ -66,14 +66,14 @@ function AISIDCard({ data }: Props) {
               <div className="flex-1 flex flex-col space-y-1 items-center font-roboto">
                 <div className="-space-y-1">
                   <h1 className="m-0 font-black text-sm font-arial text-center leading-4">
-                    AFRICAN UNIVERSITY OF <br />
-                    COMMUNICATIONS AND BUSINESS
+                    AKATSI <br />
+                    COLLEGE OF EDUCATION
                   </h1>
                 </div>
               </div>
             </div>
-            <div className="mb-10 w-full border-primary-accent flex">
-              <div className="p-2 w-1/3 h-[8.2rem] bg-primary-accent">
+            <div className="mb-10 w-full border-secondary-accent flex">
+              <div className="p-2 w-1/3 h-[8.2rem] bg-secondary-accent">
                 <div className="w-21 h-24 flex justify-center items-center bg-white overflow-hidden rounded">
                   <img
                     crossOrigin="anonymous"
@@ -160,16 +160,16 @@ function AISIDCard({ data }: Props) {
       </section>
       <section className="flex-1 flex flex-col space-y-2">
         {/* Print Account */}
-        {/* <button onClick={printCard} className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-primary-accent/5 border border-primary-accent/20 shadow">
-            <HiUserAdd className="text-primary-accent/60 h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-primary-accent/20 rounded-full" />
-            <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">Print ID Card - PDF</span>
+        {/* <button onClick={printCard} className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow">
+            <HiUserAdd className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+            <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">Print ID Card - PDF</span>
           </button> */}
         <button
           onClick={handlePrint}
-          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-primary-accent/5 border border-primary-accent/20 shadow"
+          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow"
         >
-          <HiUserAdd className="text-primary-accent/60 h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-primary-accent/20 rounded-full" />
-          <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">
+          <HiUserAdd className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+          <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
             Print ID Card - HTML
           </span>
         </button>

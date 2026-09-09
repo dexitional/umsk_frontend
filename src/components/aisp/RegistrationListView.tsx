@@ -61,7 +61,7 @@ function RegistrationListView({ title, data }: Props) {
             Restart Selection
           </button>
         ) : (
-          <div className="w-fit px-3 py-1.5 rounded-full bg-primary-accent/10 text-primary-accent text-xs font-semibold">
+          <div className="w-fit px-3 py-1.5 rounded-full bg-secondary-accent/10 text-secondary-accent text-xs font-semibold">
             Please choose your courses and submit
           </div>
         )}
@@ -92,7 +92,7 @@ function RegistrationListView({ title, data }: Props) {
               {courses?.length ? (
                 <button
                   onClick={submit}
-                  className="px-5 py-2 w-full md:w-auto bg-primary-accent rounded-lg text-white font-semibold text-xs tracking-wider uppercase hover:bg-primary-accent/90 transition-colors"
+                  className="px-5 py-2 w-full md:w-auto bg-secondary-accent rounded-lg text-white font-semibold text-xs tracking-wider uppercase hover:bg-secondary-accent/90 transition-colors"
                 >
                   Submit Registration
                 </button>
@@ -101,7 +101,7 @@ function RegistrationListView({ title, data }: Props) {
             <div className="md:col-span-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
               <span>
                 Chosen Credits:&nbsp;
-                <span className="text-primary-accent">
+                <span className="text-secondary-accent">
                   {chosenCredit}
                 </span>
               </span>
@@ -109,7 +109,7 @@ function RegistrationListView({ title, data }: Props) {
             <div className="md:col-span-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
               <span>
                 Maximum Credits:&nbsp;
-                <span className="text-primary-accent">Not Set</span>
+                <span className="text-secondary-accent">Not Set</span>
               </span>
             </div>
           </div>

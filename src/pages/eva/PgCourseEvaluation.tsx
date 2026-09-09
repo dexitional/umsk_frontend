@@ -2,27 +2,35 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import PageTitle from "../../components/las/PageTitle";
 import { useUserStore } from "../../utils/authService";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import PgEvaluationReceipt from "./PgEvaluationReceipt";
 const { REACT_APP_API_URL } = import.meta.env;
 
 
-export async function loader() {
+// Every evaluation form (course/sts/ims/any future one) is tied to the
+// student's registered courses and an assessor (staff) for that course —
+// `formKey` (from the route, defaults to 'course') just changes which
+// question set / course-evaluation-window applies; the flow itself
+// (pick a course, pick an assessor, answer the form's questions) is shared.
+export async function loader({ params }) {
   const user = useUserStore.getState().user;
+  const formKey = params?.formKey || "course";
   const authHeaders = { "x-access-token": localStorage.getItem("@Auth:token") || "" };
   try {
-    const [formsRes, staffRes, questionsRes, optionsRes] =
+    const [formsRes, staffRes, questionsRes, optionsRes, guidesRes] =
       await Promise.all([
-        fetch(`${REACT_APP_API_URL}/eva/data/${encodeURIComponent(user?.user?.tag)}`, { headers: authHeaders }),
+        fetch(`${REACT_APP_API_URL}/eva/data/${encodeURIComponent(user?.user?.tag)}?form=${encodeURIComponent(formKey)}`, { headers: authHeaders }),
         fetch(`${REACT_APP_API_URL}/eva/staff`, { headers: authHeaders }),
-        fetch(`${REACT_APP_API_URL}/eva/questions`, { headers: authHeaders }),
+        fetch(`${REACT_APP_API_URL}/eva/questions?form=${encodeURIComponent(formKey)}`, { headers: authHeaders }),
         fetch(`${REACT_APP_API_URL}/eva/options`, { headers: authHeaders }),
+        fetch(`${REACT_APP_API_URL}/eva/guides?form=${encodeURIComponent(formKey)}`, { headers: authHeaders }),
       ]);
-    
-    let staff, questions, options, courses, selectedCourses:any = [], courseEvaluations = {};
+
+    let staff, questions, options, guides, courses, selectedCourses:any = [], courseEvaluations = {};
     if (staffRes.ok) staff = await staffRes.json();
     if (questionsRes.ok) questions = await questionsRes.json();
     if (optionsRes.ok) options = await optionsRes.json();
+    if (guidesRes.ok) guides = await guidesRes.json();
     if (formsRes.ok)  courses = await formsRes.json();
 
     courses?.data?.map((course: any) => {
@@ -37,8 +45,8 @@ export async function loader() {
     });
 
     console.log(courses)
-    return { staff, questions, options, courses, selectedCourses, courseEvaluations }
-   
+    return { formKey, staff, questions, options, guides, courses, selectedCourses, courseEvaluations }
+
   } catch (error) {
     console.error("Error fetching data:", error);
     toast.error("Failed to load data");
@@ -48,7 +56,8 @@ export async function loader() {
 
 function PgCourseEvaluation() {
 
-  const { staff, questions, options, courses, selectedCourses, courseEvaluations: ce }: any = useLoaderData();
+  const { formKey, staff, questions, options, guides, courses, selectedCourses, courseEvaluations: ce }: any = useLoaderData();
+  const navigate = useNavigate();
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -194,6 +203,7 @@ function PgCourseEvaluation() {
             "x-access-token": localStorage.getItem("@Auth:token") || "",
           },
           body: JSON.stringify({
+            form: formKey,
             courseId: evaluation.courseId,
             staffNo: evaluation.staffNo,
             indexno: formData.indexno,
@@ -208,24 +218,15 @@ function PgCourseEvaluation() {
 
       if (failedCount === 0) {
         toast.success(
-          `All ${selectedCourses.length} course evaluations submitted successfully!`
+          `${formLabel} evaluation completed — all ${selectedCourses.length} course(s) submitted!`
         );
-
-        // Mark all courses as completed
-        selectedCourses.forEach((course) => {
-          markCourseAsCompleted(course.id);
-        });
-        // Reset form
-        setFormData({
-          courseId: "",
-          staffNo: "",
-          indexno: "",
-          sessionId: "",
-          responses: {},
-        });
-        setCourseEvaluations({}); 
-        setCompletedCourses(new Set());
-        setCurrentCourseIndex(0);
+        // Every registered course for this form has now been submitted, so
+        // this is the final completion — send the student back to the
+        // evaluation list, where this form now shows as completed with a
+        // link to print/view the receipt (this page itself would also show
+        // the receipt if revisited directly, since courses.status flips to
+        // 'completed' once the loader re-fetches).
+        navigate("/aisp/evaluation");
       } else {
         toast.error(
           `${failedCount} evaluation(s) failed to submit. Please try again.`
@@ -237,8 +238,10 @@ function PgCourseEvaluation() {
     }
   };
 
+  const formLabel = formKey === "course" ? "Course" : formKey?.toUpperCase();
+
   // Return  Evaluation Printout
-  if(courses.status == 'completed') 
+  if(courses.status == 'completed')
     return (
       <div className="p-4 md:p-6 space-y-4 md:space-y-2">
          <PageTitle
@@ -248,7 +251,7 @@ function PgCourseEvaluation() {
             setView={() => null}
             view={""}
           />
-         <PgEvaluationReceipt data={courses?.data}/>
+         <PgEvaluationReceipt data={courses?.data} title={`${formLabel} EVALUATION RECEIPT`}/>
      </div>
 )
   // Return an explanatory message instead of a blank page whenever there's
@@ -281,12 +284,23 @@ function PgCourseEvaluation() {
   return (
     <div className="md:pl-10 p-4 md:p-6 space-y-4 md:space-y-10">
       <PageTitle
-        title="Student Course Evaluation"
+        title={formKey === "course" ? "Student Course Evaluation" : `${formLabel} Evaluation`}
         createtext=""
         createlink=""
         setView={() => null}
         view={""}
       />
+
+      {guides?.length > 0 && (
+        <div className="space-y-3">
+          {guides.map((g: any) => (
+            <div key={g.id} className="p-4 border rounded-xl bg-primary/5 space-y-1">
+              {g.title && <h3 className="text-sm font-semibold text-primary">{g.title}</h3>}
+              <p className="text-xs md:text-sm text-slate-500 whitespace-pre-wrap">{g.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Course Selection */}
@@ -303,7 +317,7 @@ function PgCourseEvaluation() {
                     key={course.id}
                     className={`flex items-center justify-between p-3 border rounded-md  text-xs md:text-sm ${
                       currentCourseIndex === index
-                        ? "font-semibold text-primary-accent border-primary-accent bg-primary-accent/10"
+                        ? "font-semibold text-secondary-accent border-secondary-accent bg-secondary-accent/10"
                         : "text-gray-500 border-gray-300"
                     }`}
                   >
@@ -370,7 +384,7 @@ function PgCourseEvaluation() {
 
             <div className="grid gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Leturer or Course Administrator</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tutor or Course Administrator</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -451,7 +465,7 @@ function PgCourseEvaluation() {
                               value={option.option}
                               checked={formData.responses[question.id.toString()] === option.option}
                               onChange={() => handleRadioChange(question.id, option.option)}
-                              className="w-4 h-4 text-primary-accent focus:ring-primary-accent"
+                              className="w-4 h-4 text-secondary-accent focus:ring-secondary-accent"
                             />
                             <span className="text-sm text-gray-700">
                               {option.option}

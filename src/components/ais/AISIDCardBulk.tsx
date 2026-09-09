@@ -6,7 +6,7 @@ import { HiUserAdd } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import Adinkra from "../../assets/img/adinkra-bullet.png";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Back from "../../assets/img/id-back.jpg";
 import { useUserStore } from "../../utils/authService";
 const { REACT_APP_API_URL } = import.meta.env;
@@ -34,20 +34,20 @@ function AISIDCardBulk({ data }: Props) {
           { data?.filter(r => r.indexno).map((row:any, i: number) => (
             <>
               {/* Front Cover */}
-              <div className={`w-[85mm] h-[54mm] border ${i != 0 && 'break-before-page'} print:border-0 border-b-4 print:border-b-4 border-b-primary-accent md:scale-125 bg-white`}>
+              <div className={`w-[85mm] h-[54mm] border ${i != 0 && 'break-before-page'} print:border-0 border-b-4 print:border-b-4 border-b-secondary-accent md:scale-125 bg-white`}>
                 <div className="px-2 py-1 flex items-center">
                   <img src={Logo} className="w-[50px] h-[50px]" />
                   <div className="flex-1 flex flex-col space-y-1 items-center font-roboto">
                     <div className="-space-y-1">
                       <h1 className="m-0 font-black flex flex-col font-noto text-center leading-[0.1rem]">
-                        <span className="font-black text-lg tracking-wider">AFRICAN UNIVERSITY</span>
-                        <span className="font-semibold text-[0.7rem]">OF COMMUNICATIONS AND BUSINESS</span>
+                        <span className="font-black text-lg tracking-wider">AKATSI</span>
+                        <span className="font-semibold text-[0.7rem]">COLLEGE OF EDUCATION</span>
                       </h1>
                     </div>
                   </div>
                 </div>
-                <div className="mb-10 w-full border-primary-accent flex">
-                  <div className="p-2 w-1/3 h-[8.2rem] bg-primary-accent rounded-md">
+                <div className="mb-10 w-full border-secondary-accent flex">
+                  <div className="p-2 w-1/3 h-[8.2rem] bg-secondary-accent rounded-md">
                     <div className="w-21 h-24 flex justify-center items-center bg-white overflow-hidden rounded-t">
                       <img
                         crossOrigin="anonymous"

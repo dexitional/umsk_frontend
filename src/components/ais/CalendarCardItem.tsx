@@ -17,14 +17,14 @@ function CalendarCardItem({ data }: Props) {
   const canDeleteCalendar = useHasRole("ais", ["calendar::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-100/50 hover:bg-slate-100 space-y-3 md:group">
-      <h2 className="text-base md:text-base font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-100/50 hover:bg-slate-100 space-y-3 md:group font-roboto">
+      <h2 className="text-base md:text-base font-semibold text-gray-500 uppercase">
         {" "}
         {data?.title?.toUpperCase()}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="w-full flex items-center justify-between space-x-2">
-          <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {data?.year} -{" "}
             {data?.semester == "SEM1" ? "SEMESTER 1" : "SEMESTER 2"}
           </div>
@@ -35,7 +35,7 @@ function CalendarCardItem({ data }: Props) {
           )}
         </div>
       </div>
-      <div className="space-y-2 font-roboto">
+      <div className="space-y-2">
         <div className="flex items-center space-x-4">
           <span
             className={`px-3 py-0.5 bg-white  rounded shadow-[0px_0px_2px_#aaa_inset] text-xs text-gray-500/80`}
@@ -150,7 +150,7 @@ function CalendarCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button

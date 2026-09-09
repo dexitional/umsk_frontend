@@ -2,7 +2,7 @@ import React from "react";
 import { useLoaderData } from "react-router-dom";
 import Service from "../../../utils/aisService";
 import { useUserStore } from "../../../utils/authService";
-import PrintHeaderAucc from "./PrintHeaderAucc";
+import PrintHeaderAkatsico from "./PrintHeaderAucc";
 const { REACT_APP_API_URL } = import.meta.env;
 
 type Props = {};
@@ -15,7 +15,7 @@ export async function loader({ params }) {
   return { data, user };
 }
 
-function PrintTranscriptAucc({}: Props) {
+function PrintTranscriptAkatsico({}: Props) {
   const { data, user }: any = useLoaderData();
   console.log(data);
   const totalCredit = data?.reduce(
@@ -26,7 +26,7 @@ function PrintTranscriptAucc({}: Props) {
   return (
     <div className="w-full flex flex-col justify-center items-center bg-white print:m-0 print:scale-[85%]">
       <div className="my-20 mx-auto px-16 py-20 w-full rounded border shadow-sm shadow-slate-300 print:px-6 print:py-8 print:m-0 print:w-full print:max-w-screen print:shadow-none print:border-0 print:scale-100">
-        <PrintHeaderAucc />
+        <PrintHeaderAkatsico />
         <div className="my-4 print:px-2 print:py-2 w-full md:max-w-4xl mx-auto flex flex-col md:flex-row print:flex-row space-x-6">
           {/* <div className="print:leading-4 space-y-1 print:space-y-0 text-sm print:text-[0.6rem] font-medium font-roboto uppercase">
                   <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Full Name</span> <span className="uppercase text-primary/90 font-poppins">{data[0]?.student?.fname?.toLowerCase()} {data[0]?.student?.mname?.toLowerCase()} {data[0]?.student?.lname?.toLowerCase()}</span></div>
@@ -155,8 +155,8 @@ function PrintTranscriptAucc({}: Props) {
             {/*                     
                     <div className="w-full px-6 pb-4 flex text-xs print:text-[0.65rem] text-primary/70 font-roboto font-semibold uppercase tracking-widest">
                         <div className="w-44 print:hidden">&nbsp;</div>
-                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{totalCredit}</span></span></div>
-                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-primary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
+                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Total Credits:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{totalCredit}</span></span></div>
+                        <div className="md:flex-1 print:flex-1  flex items-center justify-between"><span>Date of Registration:&nbsp;&nbsp;&nbsp;<span className="text-secondary-accent">{moment().format("MMM DD, YYYY") || 'Not Set'}</span></span></div>
                     </div> 
                     */}
           </div>
@@ -166,4 +166,4 @@ function PrintTranscriptAucc({}: Props) {
   );
 }
 
-export default PrintTranscriptAucc;
+export default PrintTranscriptAkatsico;

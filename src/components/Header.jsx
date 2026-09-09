@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdCancel, MdLogout, MdSpaceDashboard } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../assets/img/logo_sso.png';
+import Logo from '../assets/img/logo.webp';
 import { useUserStore } from '../utils/authService';
 const { REACT_APP_API_URL } = import.meta.env;
 

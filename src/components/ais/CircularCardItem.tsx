@@ -16,12 +16,12 @@ function CircularCardItem({ data }: Props) {
   const canManageCircular = useHasRole("ais", ["circular::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-sm font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-sm font-semibold text-gray-500 uppercase">
         {" "}
         {data?.title?.toUpperCase()}
       </h2>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         <div className="flex items-center space-x-4">
           <IoPeople className="h-4 w-5 text-primary/70" />
           <span className="px-2 py-0 bg-green-50 rounded border text-sm text-gray-500 capitalize">
@@ -72,7 +72,7 @@ function CircularCardItem({ data }: Props) {
                   return false;
                 }}
               >
-                <fieldset className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-primary-accent/60">
+                <fieldset className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-secondary-accent">
                   <FaTrash className="h-3 w-4 text-pink-100" />
                   <button
                     type="submit"

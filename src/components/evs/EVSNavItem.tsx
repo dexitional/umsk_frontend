@@ -15,7 +15,7 @@ function EVSNavItem({ title, url = "/", Icon }: Props) {
       to={url}
       className={({ isActive, isPending }) =>
         isActive
-          ? `bg-primary-accent/30 text-primary block py-2 px-3.5 w-full rounded focus:ring-0 focus:outline-none font-bold text-sm text-left font-noto`
+          ? `bg-secondary-accent/30 text-primary block py-2 px-3.5 w-full rounded focus:ring-0 focus:outline-none font-bold text-sm text-left font-noto`
           : `bg-primary/80 text-white block py-2 px-3.5 w-full rounded focus:ring-0 focus:outline-none font-bold text-sm text-left font-noto`
       }
       children={({ isActive }) => {

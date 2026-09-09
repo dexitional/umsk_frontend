@@ -60,7 +60,7 @@ function AISBacklogRecordCard({ title,data }: Props) {
              </div>
           ))}
           {/* Totals */}
-          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

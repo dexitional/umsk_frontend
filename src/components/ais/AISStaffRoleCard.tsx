@@ -46,7 +46,7 @@ function AISStaffRoleCard({ data }: Props) {
             </span>
             <span className="col-span-3 uppercase">{row.roleDesc || "—"}</span>
             {/* <span className="uppercase">
-                 <Link to="" className="px-3 py-0.5 w-fit rounded bg-primary-accent/70 text-[0.65rem] text-white font-bold flex items-center">REMOVE</Link>
+                 <Link to="" className="px-3 py-0.5 w-fit rounded bg-secondary-accent text-[0.65rem] text-white font-bold flex items-center">REMOVE</Link>
               </span> */}
             {canManageRoles ? (
               <Form
@@ -59,7 +59,7 @@ function AISStaffRoleCard({ data }: Props) {
               >
                 <label
                   htmlFor="btn"
-                  className="px-3 py-0.5 w-fit rounded flex items-center space-x-1.5 bg-primary-accent/80 text-[0.65rem]"
+                  className="px-3 py-0.5 w-fit rounded flex items-center space-x-1.5 bg-secondary-accent/80 text-[0.65rem]"
                 >
                   <FaTrash className="my-0.5 h-3 w-4 text-amber-100" />
                   <button
@@ -75,7 +75,7 @@ function AISStaffRoleCard({ data }: Props) {
           </div>
         ))}
         {/* Totals */}
-        {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+        {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

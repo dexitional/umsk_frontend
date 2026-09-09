@@ -3,7 +3,6 @@ import React from "react";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { GiVote } from "react-icons/gi";
 import { HiAcademicCap } from "react-icons/hi2";
-import { PiStudentFill } from "react-icons/pi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { SiCashapp } from "react-icons/si";
 import { useNavigation } from "react-router-dom";
@@ -18,12 +17,11 @@ function Home() {
   const { user, logout } = useUserStore((state) => state);
 
   const navigation = useNavigation();
-  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs", "ams"].includes(r));
+  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs"].includes(r));
 
   console.log("user", user);
 
   const hasAis = user?.roles?.find((r) => r?.app?.toLowerCase() == "ais");
-  const hasAms = user?.roles?.find((r) => r?.app?.toLowerCase() == "ams");
   const hasFms = user?.roles?.find((r) => r?.app?.toLowerCase() == "fms");
 
   const hasEvs = user?.roles?.find((r) => r?.app?.toLowerCase() == "evs");
@@ -37,7 +35,6 @@ function Home() {
 
   const isStudent = user?.user?.group_id == "01";
   const isStaff = user?.user?.group_id == "02";
-  const isApplicant = user?.user?.group_id == "03";
   const isSupport = user?.user?.group_id == "04";
 
   
@@ -70,13 +67,6 @@ function Home() {
             )}
 
             {/* <ServiceCard title="Staff Portal System" Icon={FaUsersViewfinder} link="#" /> */}
-            { isApplicant && (
-              <ServiceCard
-                title="Admission Portal System"
-                Icon={FaUsersViewfinder}
-                link=""
-              />
-            )}
             {/* { [4,2].includes(user?.user?.group_id) && <ServiceCard title="Single-Sign-On (SSO)" Icon={MdOutlineSupportAgent} link="" /> } */}
             <ServiceCard title="UMS Operation Guide" Icon={MdIntegrationInstructions} link="/guide" />
             {/* <ServiceCard title="Setup SSO on Account" Icon={GiLockedDoor} link="" />
@@ -131,17 +121,6 @@ function Home() {
                       ]} 
                   />
                   } */}
-
-              { hasAms && (
-                <AppCard
-                  title="Admission Management System &reg;"
-                  desc="Manage new admission applications and new enrolments."
-                  Icon={PiStudentFill}
-                  links={[{ title: "Goto Application", url: "/ams/dash" }]}
-                  tag="ams"
-                  page={loadModule}
-                />
-              )}
 
               { hasAis && (
                 <AppCard

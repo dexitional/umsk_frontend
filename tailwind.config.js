@@ -10,15 +10,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        // primary: {
-        //   DEFAULT: '#008e46',
-        //   dark: '#045B16',
-        //   accent: '#e67f37'
-        // },
-         primary: {
-          DEFAULT: '#343434',
-          dark: '#AD5913',
-          accent: '#E77B1D'
+        // Secondary navy sampled from the AKATSICO crest (shield outline/
+        // banner text). Primary is Tailwind's blue-900/blue-950.
+        primary: {
+          DEFAULT: '#1e3a8a',
+          dark: '#172554',
+        },
+        secondary: {
+          DEFAULT: '#0a1358',
+          accent: {
+            DEFAULT: '#aacce1',
+            50: '#f4f8fb',
+            100: '#e5eff6',
+            200: '#c6ddeb',
+            300: '#a1c6de',
+            400: '#7bb0d0',
+            500: '#5599c3',
+            600: '#3c80aa',
+            700: '#29688e',
+            800: '#20516f',
+            900: '#173a4f',
+          },
         },
       },
       keyframes: {
@@ -38,12 +50,14 @@ export default {
     },
     fontFamily: {
       'serif': [...defaultTheme.fontFamily.serif],
-      'sans': [...defaultTheme.fontFamily.sans],
+      'sans': ["'Roboto'", ...defaultTheme.fontFamily.sans],
       'poppins': ["'Poppins'", 'sans-serif'],
       'roboto': ["'Roboto'", 'sans-serif'],
       'noto': ["'Noto Sans'", 'sans-serif'],
       'quicksand': ["'Quicksand'", 'sans-serif'],
       'arial-narrow': ["'Arial Narrow'", 'Arial', 'sans-serif'],
+      // Matches the profile-card design reference's typography.
+      'inter': ["'Inter'", ...defaultTheme.fontFamily.sans],
     },
   },
   plugins: [

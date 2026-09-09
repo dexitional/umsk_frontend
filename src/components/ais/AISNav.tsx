@@ -29,6 +29,7 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) && (<AISNavItem title="Progression Log" url="progression" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) && (<AISNavItem title="Registration Log" url="registrations" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) && (<AISNavItem title="Evaluation Log" url="evaluations" Icon={GrDashboard} />) }
+        { aisRoles?.find((r:any) => ['evaluation::admin'].includes(r?.role)) && (<AISNavItem title="Evaluation Manager" url="evaluation-forms" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['sheet::admin','sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) && (<AISNavItem title="Assessment Sheet" url="sheets" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['mysheet::assessor'].includes(r?.role)) && (<AISNavItem title="Assessor Sheet" url="mysheets" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['resit::admin','resit::assessor'].includes(r?.role)) && (<AISNavItem title="My Resits" url="my-resits" Icon={GrDashboard} />) }
@@ -36,7 +37,6 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['resit::admin','resit::clerk','resit::assessor'].includes(r?.role)) && (<AISNavItem title="Resit Module" url="resits" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) && (<AISNavItem title="Graduation Session" url="graduate-sessions" Icon={GrDashboard} />) } {/* Graduation Session */}
         { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) && (<AISNavItem title="Graduation Module" url="graduates" Icon={GrDashboard} />) } {/* Graduation */}
-        { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) && (<AISNavItem title="Graduation Logs" url="graduate-logs" Icon={GrDashboard} />) } {/* Graduation */}
         
         { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="Backlog Module" url="backlogs" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['transwift::admin','transwift::clerk'].includes(r?.role)) && (<AISNavItem title="Transwift Module" url="transwifts" Icon={GrDashboard} />) } 

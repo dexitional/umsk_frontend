@@ -7,7 +7,7 @@ import { CgCalendarDates } from "react-icons/cg";
 import { FaFilePdf } from "react-icons/fa6";
 import { HiMiniAcademicCap } from "react-icons/hi2";
 import { LuFileSpreadsheet } from "react-icons/lu";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useHasRole } from "../../utils/roles";
 const { REACT_APP_API_URL } = import.meta.env;
 
@@ -19,13 +19,13 @@ function EvaluationCardItem({ data }: Props) {
   const canDeleteEvaluation = useHasRole("ais", ["logs::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-lg font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-lg font-semibold text-gray-500 uppercase">
         {data?.student?.id}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {(
               data?.student?.fname +
               " " +
@@ -44,7 +44,7 @@ function EvaluationCardItem({ data }: Props) {
           className="p-1 h-12 w-12 border rounded-md bg-white object-contain"
         />
       </div>
-      <div className="space-y-2 font-roboto">
+      <div className="space-y-2">
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span
@@ -96,7 +96,7 @@ function EvaluationCardItem({ data }: Props) {
             >
               Year
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {Math.ceil(data?.student?.semesterNum / 2)}
             </span>
           </div>
@@ -123,7 +123,7 @@ function EvaluationCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button
@@ -141,12 +141,12 @@ function EvaluationCardItem({ data }: Props) {
               className={`${
                 !data?.completeStatus
                   ? "bg-primary-dark/60"
-                  : "bg-primary-accent/60"
+                  : "bg-secondary-accent"
               } py-0.5 px-2 rounded flex items-center space-x-1.5 text-sm text-white font-semibold`}
             >
               YEAR
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {Math.ceil(data?.student?.semesterNum / 2)}
             </span>
           </div>

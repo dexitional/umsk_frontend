@@ -31,7 +31,7 @@ function ReportCard({ index, type, title, description, Icon, gradient, glow, isS
   return (
     <div
       style={{ animationDelay: `${index * 90}ms` }}
-      className={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm transition-all duration-300 animate-fade-in-up hover:-translate-y-1 hover:shadow-xl ${glow} hover:border-primary-accent/30`}
+      className={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm transition-all duration-300 animate-fade-in-up hover:-translate-y-1 hover:shadow-xl ${glow} hover:border-secondary-accent/30`}
     >
       {/* decorative glow blob */}
       <div className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br ${gradient} opacity-10 blur-2xl transition-transform duration-500 group-hover:scale-125 group-hover:opacity-20`} />

@@ -4,7 +4,7 @@ import { FcViewDetails } from "react-icons/fc";
 import { MdEditDocument } from "react-icons/md";
 // @ts-ignore
 import { Form, Link } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useHasRole } from "../../utils/roles";
 import ListHeading from "./ListHeading";
 const { REACT_APP_API_URL } = import.meta.env;

@@ -61,11 +61,11 @@ function AISSheetScoreCard({ title,data }: Props) {
               <span className="font-medium text-sm self-center">{row.classScore}</span>
               <span className="font-medium text-sm self-center">{row.examScore}</span>
               <span className="font-bold text-sm self-center">{row.totalScore}</span>
-              <span className="font-bold text-sm self-center text-primary-accent">{row.grade}</span>
+              <span className="font-bold text-sm self-center text-secondary-accent">{row.grade}</span>
             </div>
           ))}
           {/* Totals */}
-          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/80">
+          {/* <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ cgpa && cgpa[index] || 0 }</span>
             <span>GPA:&nbsp;&nbsp;&nbsp;{gpa?.toFixed(1)}</span>

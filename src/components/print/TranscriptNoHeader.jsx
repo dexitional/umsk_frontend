@@ -1,14 +1,14 @@
 import moment from 'moment'
 import React from 'react'
-import Logo from '../../assets/img/logo/aucc/logo.png'
+import Logo from '../../assets/img/logo.webp';
 
 function TranscriptNoHeader({ user,fgpa }) {
   return (
   <header className="flex flex-col space-y-10">
       <section className="block print:hidden">
         <div className="space-y-1 print:-space-y-2">
-          <h1 className="m-0 p-0 text-[3.5rem] print:text-[2.7rem] text-primary-dark font-roboto font-semibold tracking-widest md:leading-[4rem] text-center">AFRICAN UNIVERSITY </h1>
-          <h2 className="m-0 print:-mt-3 p-0 text-[2.1rem] print:text-[1.65rem] text-primary-accent font-bold font-roboto tracking-wider text-center leading-0">OF COMMUNICATIONS AND BUSINESS</h2>
+          <h1 className="m-0 p-0 text-[3.5rem] print:text-[2.7rem] text-primary-dark font-roboto font-semibold tracking-widest md:leading-[4rem] text-center">AKATSI </h1>
+          <h2 className="m-0 print:-mt-3 p-0 text-[2.1rem] print:text-[1.65rem] text-secondary-accent font-bold font-roboto tracking-wider text-center leading-0">COLLEGE OF EDUCATION</h2>
         </div>
         <div className="my-6 mx-auto w-[90%] print:mt-6 print:mb-6 max-w-4xl flex flex-row justify-center">
             <div className="flex-1 space-y-4  print:space-y-2 print:text-xs">
@@ -30,8 +30,8 @@ function TranscriptNoHeader({ user,fgpa }) {
                         <p>WEBSITE:</p>
                     </div>
                     <div className="font-medium">
-                        <p>info@aucb.edu.gh</p>
-                        <p>www.aucb.edu.gh</p>
+                        <p>info@akatsico.edu.gh</p>
+                        <p>www.akatsico.edu.gh</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ function TranscriptNoHeader({ user,fgpa }) {
                 </div> */}
             </div>
         </div>
-        <h1 className="text-primary-accent text-2xl print:text-xl text-center font-semibold print:font-bold underline underline-offset-8 tracking-widest">OFFICIAL TRANSCRIPT</h1>
+        <h1 className="text-secondary-accent text-2xl print:text-xl text-center font-semibold print:font-bold underline underline-offset-8 tracking-widest">OFFICIAL TRANSCRIPT</h1>
       
       </section>
       <div className="hidden print:block h-40 w-full"></div>

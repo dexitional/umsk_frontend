@@ -21,7 +21,7 @@ function DashStatCard({ icon, iconBg, label, value, male, female }: Props) {
         </div>
         {(male != null || female != null) && (
           <div className="flex items-center space-x-1.5">
-            <span className="px-2 py-0.5 rounded-full bg-primary-accent/10 text-primary-accent text-[0.65rem] font-semibold">
+            <span className="px-2 py-0.5 rounded-full bg-secondary-accent/10 text-secondary-accent text-[0.65rem] font-semibold">
               M&nbsp;{male ?? 0}
             </span>
             <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary/80 text-[0.65rem] font-semibold">

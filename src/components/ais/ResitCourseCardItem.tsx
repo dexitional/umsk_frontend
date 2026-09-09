@@ -9,13 +9,13 @@ type Props = {
 
 function ResitCourseCardItem({ data }: Props) {
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-base font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-base font-semibold text-gray-500 uppercase">
         {data?.courseTitle?.toUpperCase()}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {data?.courseId}
           </div>
           {data?.creditHour ? (
@@ -25,7 +25,7 @@ function ResitCourseCardItem({ data }: Props) {
           ) : null}
         </div>
       </div>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span className="px-2 py-0 bg-green-50 rounded border text-sm text-gray-500">

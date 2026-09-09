@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useRef } from "react";
 import { HiUserAdd } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useUserStore } from "../../utils/authService";
 const { REACT_APP_API_URL } = import.meta.env;
 
@@ -60,7 +60,7 @@ function AISIDCardMLK({ data }: Props) {
                 <h2 className="m-0 text-primary text-[0.7rem] font-semibold font-roboto tracking-widest">
                   HEALTH TRAINING SCHOOL
                 </h2>
-                <h2 className="m-0 text-primary-accent text-[0.55rem] font-medium tracking-widest">
+                <h2 className="m-0 text-secondary-accent text-[0.55rem] font-medium tracking-widest">
                   ( KINTAMPO )
                 </h2>
               </div>
@@ -163,10 +163,10 @@ function AISIDCardMLK({ data }: Props) {
         {/* Print Account */}
         <button
           onClick={printCard}
-          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-primary-accent/5 border border-primary-accent/20 shadow"
+          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow"
         >
-          <HiUserAdd className="text-primary-accent/60 h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-primary-accent/20 rounded-full" />
-          <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">
+          <HiUserAdd className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+          <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
             Print ID Card
           </span>
         </button>

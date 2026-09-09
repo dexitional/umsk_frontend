@@ -42,7 +42,7 @@ function PgVoting() {
         particleCount: 180,
         spread: 90,
         origin: { y: 0.6 },
-        colors: ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d', '#ff36ff']
+        colors: ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#5599c3', '#ff36ff']
       });
       // Short delay before navigating to let user see the confetti
       setTimeout(() => navigate("/evs/dash"), 2000);

@@ -31,7 +31,7 @@ function RegistrationSlipView({ title, data }: Props) {
         <div className="flex items-center gap-2">
           <Link
             to="/print/registration"
-            className="px-4 py-2 rounded-lg bg-primary-accent text-white text-xs font-semibold flex items-center gap-2 hover:bg-primary-accent/90 transition-colors"
+            className="px-4 py-2 rounded-lg bg-secondary-accent text-white text-xs font-semibold flex items-center gap-2 hover:bg-secondary-accent/90 transition-colors"
           >
             <IoPrint className="h-4 w-4" />
             <span>Print Slip</span>
@@ -68,13 +68,13 @@ function RegistrationSlipView({ title, data }: Props) {
           <div className="md:col-span-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
             <span>
               Total Credits:&nbsp;
-              <span className="text-primary-accent">{totalCredit}</span>
+              <span className="text-secondary-accent">{totalCredit}</span>
             </span>
           </div>
           <div className="md:col-span-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
             <span>
               Date of Registration:&nbsp;
-              <span className="text-primary-accent">
+              <span className="text-secondary-accent">
                 {moment().format("MMM DD, YYYY") || "Not Set"}
               </span>
             </span>

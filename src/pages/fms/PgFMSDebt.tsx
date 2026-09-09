@@ -5,7 +5,7 @@ import { MdNumbers } from "react-icons/md";
 import { RiCommunityFill } from "react-icons/ri";
 import { TbEdit } from "react-icons/tb";
 import { Link, Outlet, redirect, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/fms/SubNavLink";
 import Service from "../../utils/aisService";
 const { REACT_APP_API_URL } = import.meta.env;

@@ -6,7 +6,7 @@ import { FaNewspaper } from "react-icons/fa6";
 import { RiCommunityFill } from "react-icons/ri";
 import { TbEdit } from "react-icons/tb";
 import { Link, Outlet, redirect, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import Service from "../../utils/aisService";
 

@@ -19,7 +19,7 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
 
@@ -179,19 +179,19 @@ function PgAISCalendar({}: Props) {
                   className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
                     data?.default
                       ? "bg-green-500/5 border-green-500/20 cursor-not-allowed"
-                      : "bg-primary-accent/5 border-primary-accent/20"
+                      : "bg-secondary-accent/5 border-secondary-accent/20"
                   } border shadow`}
                 >
                   <PiNumberCircleOneBold
                     className={`${
                       data?.default
                         ? "text-green-900/60 border-green-900/20"
-                        : "text-primary-accent/60 border-primary-accent/20"
+                        : "text-secondary-accent border-secondary-accent/20"
                     } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
                   />
                   <span
                     className={`font-semibold text-sm md:text-base ${
-                      data?.default ? "text-green-950/50" : "text-primary-accent/70"
+                      data?.default ? "text-green-950/50" : "text-secondary-accent"
                     } font-noto`}
                   >
                     {data?.default ? "Session Activated" : "Activate Session"}
@@ -204,21 +204,21 @@ function PgAISCalendar({}: Props) {
                   className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
                     data?.progressStudent
                       ? "bg-green-500/5 border-green-500/20 cursor-not-allowed"
-                      : "bg-primary-accent/5 border-primary-accent/20"
+                      : "bg-secondary-accent/5 border-secondary-accent/20"
                   } border shadow`}
                 >
                   <PiNumberCircleTwoBold
                     className={`${
                       data?.progressStudent
                         ? "text-green-900/60 border-green-900/20"
-                        : "text-primary-accent/60 border-primary-accent/20"
+                        : "text-secondary-accent border-secondary-accent/20"
                     } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
                   />
                   <span
                     className={`font-semibold text-sm md:text-base ${
                       data?.progressStudent
                         ? "text-green-950/50"
-                        : "text-primary-accent/70"
+                        : "text-secondary-accent"
                     } font-noto`}
                   >
                     {data?.progressStudent
@@ -232,21 +232,21 @@ function PgAISCalendar({}: Props) {
                   className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
                     data?.stageSheet
                       ? "bg-green-500/5 border-green-500/30 cursor-not-allowed"
-                      : "bg-primary-accent/5 border-primary-accent/20"
+                      : "bg-secondary-accent/5 border-secondary-accent/20"
                   } border shadow`}
                 >
                   <PiNumberCircleThreeBold
                     className={`${
                       data?.stageSheet
                         ? "text-green-900/60 border-green-900/20"
-                        : "text-primary-accent/60 border-primary-accent/20"
+                        : "text-secondary-accent border-secondary-accent/20"
                     } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
                   />
                   <span
                     className={`font-semibold text-sm md:text-base ${
                       data?.stageSheet
                         ? "text-green-950/50"
-                        : "text-primary-accent/70"
+                        : "text-secondary-accent"
                     } font-noto`}
                   >
                     {data?.stageSheet
@@ -261,21 +261,21 @@ function PgAISCalendar({}: Props) {
                   className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
                     data?.assignLateSheet
                       ? "bg-amber-500/5 border-amber-500/20 cursor-not-allowed"
-                      : "bg-primary-accent/5 border-primary-accent/20"
+                      : "bg-secondary-accent/5 border-secondary-accent/20"
                   } border shadow`}
                 >
                   <CiWarning
                     className={`${
                       data?.assignLateSheet
                         ? "text-amber-900/60 border-amber-600/30"
-                        : "text-primary-accent/60 border-primary-accent/20"
+                        : "text-secondary-accent border-secondary-accent/20"
                     } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
                   />
                   <span
                     className={`font-semibold text-sm md:text-base ${
                       data?.assignLateSheet
                         ? "text-amber-900/50"
-                        : "text-primary-accent/70"
+                        : "text-secondary-accent"
                     } font-noto`}
                   >
                     {data?.assignLateSheet
@@ -287,14 +287,14 @@ function PgAISCalendar({}: Props) {
                 {/* Registration Reminder */}
                 <button
                   onClick={!sendingReg ? remindRegistration : undefined}
-                  className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-primary-accent/5 border-primary-accent/20 border shadow"
+                  className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border-secondary-accent/20 border shadow"
                 >
                   {sendingReg ? (
-                    <BiLoaderCircle className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-primary-accent/60 border-primary-accent/20 animate-spin" />
+                    <BiLoaderCircle className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-secondary-accent border-secondary-accent/20 animate-spin" />
                   ) : (
-                    <MdOutlineNotificationsActive className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-primary-accent/60 border-primary-accent/20" />
+                    <MdOutlineNotificationsActive className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-secondary-accent border-secondary-accent/20" />
                   )}
-                  <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">
+                  <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
                     {sendingReg ? "Sending..." : "Registration Reminder"}
                   </span>
                 </button>
@@ -302,14 +302,14 @@ function PgAISCalendar({}: Props) {
                 {/* Resit Reminder */}
                 <button
                   onClick={!sendingResit ? remindResit : undefined}
-                  className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-primary-accent/5 border-primary-accent/20 border shadow"
+                  className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border-secondary-accent/20 border shadow"
                 >
                   {sendingResit ? (
-                    <BiLoaderCircle className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-primary-accent/60 border-primary-accent/20 animate-spin" />
+                    <BiLoaderCircle className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-secondary-accent border-secondary-accent/20 animate-spin" />
                   ) : (
-                    <MdOutlineNotificationsActive className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-primary-accent/60 border-primary-accent/20" />
+                    <MdOutlineNotificationsActive className="h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full text-secondary-accent border-secondary-accent/20" />
                   )}
-                  <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">
+                  <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
                     {sendingResit ? "Sending..." : "Resit Reminder"}
                   </span>
                 </button>
@@ -465,7 +465,7 @@ function PgAISCalendar({}: Props) {
             </div>
 
             <div className="p-2 md:py-4 md:px-6 flex-1 flex flex-col space-y-3 md:space-y-3 md:space-x-10 border rounded-md md:rounded-xl bg-white">
-              <h1 className="py-0.5 px-2 md:px-3 w-fit text-xs md:text-sm font-semibold rounded-md bg-primary-accent/80 text-white tracking-widest uppercase -skew-x-6">
+              <h1 className="py-0.5 px-2 md:px-3 w-fit text-xs md:text-sm font-semibold rounded-md bg-secondary-accent/80 text-white tracking-widest uppercase -skew-x-6">
                 ACTIVATIONS & FLAGS
               </h1>
               <div className="space-y-2">

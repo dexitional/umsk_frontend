@@ -113,7 +113,6 @@ function PgAISCircularForm({}: Props) {
                   <option value="STUDENT">STUDENT</option>
                   <option value="UNDERGRAD">UNDERGRAD</option>
                   <option value="POSTGRAD">POSTGRAD</option>
-                  <option value="APPLICANT">APPLICANT</option>
                   <option value="FRESHER">FRESHER</option>
                   <option value="FINALIST">FINALIST</option>
                   <option value="STAFF">STAFF</option>

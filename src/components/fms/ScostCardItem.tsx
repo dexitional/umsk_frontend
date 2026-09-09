@@ -16,17 +16,17 @@ type Props = {
 function ScostCardItem({ data }: Props) {
   const canManageScost = useHasRole("fms", ["scost::admin"]);
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-2 md:group">
-      <h2 className="text-sm md:text-sm font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-2 md:group font-roboto">
+      <h2 className="text-sm md:text-sm font-semibold text-gray-500 uppercase">
         {data?.title}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="w-full flex items-center justify-between space-x-2">
-          {/* <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">{data?.program?.shortName?.toUpperCase()}</div> */}
+          {/* <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">{data?.program?.shortName?.toUpperCase()}</div> */}
           {/* <div className="py-0.5 px-1 text-[0.65rem] rounded bg-primary/60 text-white font-bold">{data?.transtype?.visibility }</div> */}
         </div>
       </div>
-      <div className="space-y-1.5 font-roboto">
+      <div className="space-y-1.5">
         <div className="flex items-center space-x-4">
           <FaDollarSign className="shrink-0 h-4 w-4 text-primary/70" />
           <span
@@ -73,7 +73,7 @@ function ScostCardItem({ data }: Props) {
             >
               AMOUNT
             </span>
-            <span className="font-bold font-roboto text-base text-primary/80">
+            <span className="font-bold text-base text-primary/80">
               {" "}
               GHC {data?.amountInGhc}
             </span>
@@ -97,7 +97,7 @@ function ScostCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button
@@ -115,7 +115,7 @@ function ScostCardItem({ data }: Props) {
             >
               AMOUNT
             </span>
-            <span className="font-bold font-roboto text-base text-primary/60">
+            <span className="font-bold text-base text-primary/60">
               GH₵ {data?.amountInGhc}
             </span>
           </div>

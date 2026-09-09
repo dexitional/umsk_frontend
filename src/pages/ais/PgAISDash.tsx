@@ -18,11 +18,11 @@ import Service from "../../utils/aisService";
 type Props = {};
 
 const COLORS = {
-  active: "#E77B1D",
-  defer: "#AD5913",
+  active: "#5599c3",
+  defer: "#29688e",
   complete: "rgba(52,52,52,0.8)",
   graduate: "#4A5578",
-  male: "#E77B1D",
+  male: "#5599c3",
   female: "rgba(52,52,52,0.8)",
 };
 
@@ -96,8 +96,8 @@ function PgAISDash({}: Props) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div className="dash-fade-up" style={{ animationDelay: "0ms" }}>
           <DashStatCard
-            icon={<FaUsers className="h-5 w-5 text-primary-accent" />}
-            iconBg="bg-primary-accent/10"
+            icon={<FaUsers className="h-5 w-5 text-secondary-accent" />}
+            iconBg="bg-secondary-accent/10"
             label="Active Students"
             value={totalActive}
             male={student.active?.m}
@@ -164,7 +164,7 @@ function PgAISDash({}: Props) {
             </h2>
             <Link
               to="/ais/calendars"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View Calendar
             </Link>
@@ -173,8 +173,8 @@ function PgAISDash({}: Props) {
             {academic.map((s: any, i: number) => (
               <div key={i} className="py-3 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary-accent/10 flex items-center justify-center shrink-0">
-                    <FaRegCalendarAlt className="h-3.5 w-3.5 text-primary-accent" />
+                  <div className="h-8 w-8 rounded-lg bg-secondary-accent/10 flex items-center justify-center shrink-0">
+                    <FaRegCalendarAlt className="h-3.5 w-3.5 text-secondary-accent" />
                   </div>
                   <span className="text-sm font-medium text-primary">{s.label}</span>
                 </div>
@@ -203,7 +203,7 @@ function PgAISDash({}: Props) {
                     Resit — {resit.label || "—"}
                   </span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-primary-accent/10 text-primary-accent text-[0.65rem] font-semibold">
+                <span className="px-2 py-0.5 rounded-full bg-secondary-accent/10 text-secondary-accent text-[0.65rem] font-semibold">
                   {resit.register} OF {resit.estimate} REGISTERED
                 </span>
               </div>
@@ -256,7 +256,7 @@ function PgAISDash({}: Props) {
             </h2>
             <Link
               to="/ais/departments"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View All
             </Link>
@@ -291,12 +291,12 @@ function PgAISDash({}: Props) {
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold font-poppins text-primary flex items-center space-x-2">
-              <FaBuilding className="h-4 w-4 text-primary-accent" />
+              <FaBuilding className="h-4 w-4 text-secondary-accent" />
               <span>Departments</span>
             </h2>
             <Link
               to="/ais/departments"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View All
             </Link>
@@ -336,12 +336,12 @@ function PgAISDash({}: Props) {
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold font-poppins text-primary flex items-center space-x-2">
-              <FaLayerGroup className="h-4 w-4 text-primary-accent" />
+              <FaLayerGroup className="h-4 w-4 text-secondary-accent" />
               <span>Programs</span>
             </h2>
             <Link
               to="/ais/programs"
-              className="text-xs font-semibold text-primary-accent hover:underline"
+              className="text-xs font-semibold text-secondary-accent hover:underline"
             >
               View All
             </Link>

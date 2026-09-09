@@ -4,7 +4,7 @@ import { MdEditDocument } from "react-icons/md";
 // @ts-ignore
 import { FaFolder } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import ListHeading from "./ListHeading";
 
 type Props = {

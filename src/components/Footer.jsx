@@ -9,7 +9,7 @@ function Footer() {
             <div>Privacy Policy</div>
             <div>Terms of Use</div>
             <div>Security</div>
-            <div>&copy; {new Date().getFullYear()} AUCB</div>
+            <div>&copy; {new Date().getFullYear()} AKATSICO</div>
         </div>
         </div>
     </footer>

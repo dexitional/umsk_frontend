@@ -91,7 +91,7 @@ function PgAISLetterForm({}: Props) {
       <div className="p-2 md:p-6 border bg-slate-50/50 rounded-xl space-y-6">
         <section className="flex md:space-x-6">
           <div className="flex-1 flex flex-col space-y-1 md:space-y-3">
-            <h1 className="text-lg md:text-2xl tracking-wide font-semibold text-primary-accent/80">
+            <h1 className="text-lg md:text-2xl tracking-wide font-semibold text-secondary-accent/80">
               {data?.id ? "Edit" : "Create"} Letter
             </h1>
             <div className="flex items-center space-x-2 text-zinc-400 text-base">
@@ -245,7 +245,7 @@ function PgAISLetterForm({}: Props) {
               <div className="flex items-center">
                 <button
                   disabled={loading === "submitting"}
-                  className="mr-4 py-1 px-4 w-4/5 rounded-md bg-primary-accent/80 text-white font-semibold disabled:opacity-50 disabled:animate-pulse"
+                  className="mr-4 py-1 px-4 w-4/5 rounded-md bg-secondary-accent/80 text-white font-semibold disabled:opacity-50 disabled:animate-pulse"
                   type="submit"
                 >
                   {loading === "submitting" ? (

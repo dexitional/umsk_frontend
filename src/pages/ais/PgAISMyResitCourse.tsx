@@ -1,7 +1,7 @@
 import React from "react";
 import SubPageTitle from "../../components/ais/SubPageTitle";
 import { Outlet, useNavigation, useParams } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import LoaderInner from "../../components/LoaderInner";
 import { useHasRole } from "../../utils/roles";

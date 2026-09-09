@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../utils/authService";
-import Logo from "../assets/img/logo.png";
+import Logo from "../assets/img/logo.webp";
 import "./Guide.css";
 
-type SectionId = "overview" | "ams" | "ais" | "fms" | "amsp" | "aisp" | "roles" | "faq";
+type SectionId = "overview" | "ais" | "fms" | "aisp" | "roles" | "faq";
 
 const TITLES: Record<SectionId, [string, string, string]> = {
   overview: ["Guide", "Overview", "What the Unified Portal is and how its parts fit together."],
-  ams: ["Admissions", "AMS — Admissions", "Vouchers, applicants, shortlisting, matriculation, and admission letters."],
   ais: ["Academics", "AIS — Academics", "Students, calendars, assessment, resits, and graduation."],
   fms: ["Finance", "FMS — Finance", "Bills, charges, payments, and financial reporting."],
-  amsp: ["Self-service", "Applicant Portal", "The application experience, from voucher to submitted form."],
   aisp: ["Self-service", "Student Portal", "The enrolled student's self-service home."],
   roles: ["Reference", "Roles & Duties", "Every permission tag in the system and what it grants."],
   faq: ["Reference", "FAQ", "Common questions, answered."],
@@ -26,7 +24,6 @@ type Props = {};
 // own home, not the staff dashboard they may not have access to.
 function homePath(user: any) {
   if (user?.user?.group_id == 1) return "/aisp/profile";
-  if (user?.user?.group_id == 3) return "/amsp/dash";
   return "/dash";
 }
 
@@ -38,7 +35,7 @@ function Guide({}: Props) {
     return (Object.keys(TITLES) as SectionId[]).includes(hash as SectionId) ? (hash as SectionId) : "overview";
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [roleFilter, setRoleFilter] = useState<"all" | "ams" | "ais" | "fms">("all");
+  const [roleFilter, setRoleFilter] = useState<"all" | "ais" | "fms">("all");
   const [faqQuery, setFaqQuery] = useState("");
 
   useEffect(() => {
@@ -57,7 +54,7 @@ function Guide({}: Props) {
   return (
     <div className="gd-page">
       <div className="gd-topbar">
-        <div className="gd-brand"><img src={Logo} alt="AUCB" className="gd-mark" /> AUCB Portal Guide</div>
+        <div className="gd-brand"><img src={Logo} alt="AKATSICO" className="gd-mark" /> AKATSICO Portal Guide</div>
         <div className="gd-topbar-actions">
           <Link to={backTo} className="gd-back-link">← Back to Portal</Link>
           <button className="gd-burger" aria-label="Open menu" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
@@ -68,9 +65,9 @@ function Guide({}: Props) {
         <nav className={`gd-sidebar ${sidebarOpen ? "gd-open" : ""}`}>
           <div className="gd-sidebar-head">
             <div className="gd-brand">
-              <img src={Logo} alt="AUCB" className="gd-mark" />
+              <img src={Logo} alt="AKATSICO" className="gd-mark" />
               <div>
-                <div className="gd-name">AUCB Unified Portal</div>
+                <div className="gd-name">AKATSICO Unified Portal</div>
                 <div className="gd-sub">Operational Guide</div>
               </div>
             </div>
@@ -83,14 +80,12 @@ function Guide({}: Props) {
 
           <div className="gd-navgroup">
             <div className="gd-navlabel">Modules</div>
-            <NavItem id="ams" active={active} onClick={go} label="Admissions (AMS)" />
             <NavItem id="ais" active={active} onClick={go} label="Academics (AIS)" />
             <NavItem id="fms" active={active} onClick={go} label="Finance (FMS)" />
           </div>
 
           <div className="gd-navgroup">
             <div className="gd-navlabel">Self-service</div>
-            <NavItem id="amsp" active={active} onClick={go} label="Applicant Portal" />
             <NavItem id="aisp" active={active} onClick={go} label="Student Portal" />
           </div>
 
@@ -100,7 +95,7 @@ function Guide({}: Props) {
             <NavItem id="faq" active={active} onClick={go} label="FAQ" />
           </div>
 
-          <div className="gd-sidebar-foot">AUCB &middot; Unified Portal (ehub) &middot; Internal reference</div>
+          <div className="gd-sidebar-foot">AKATSICO &middot; Unified Portal (ehub) &middot; Internal reference</div>
         </nav>
 
         <div className="gd-main">
@@ -115,33 +110,29 @@ function Guide({}: Props) {
           <div className="gd-content">
             {active === "overview" && (
               <section className="gd-page-section gd-active">
-                <p className="gd-lede">The Unified Portal is one login surface over three back-office systems — Admissions, Academics, and Finance — plus two self-service portals for applicants and students. This guide explains what each part does, who is allowed to do it, and how the pieces hand off to one another.</p>
+                <p className="gd-lede">The Unified Portal is one login surface over two back-office systems — Academics and Finance — plus a self-service portal for students. This guide explains what each part does, who is allowed to do it, and how the pieces hand off to one another.</p>
 
                 <div className="gd-stat-row">
-                  <div className="gd-stat"><div className="gd-n">3</div><div className="gd-l">Staff modules</div></div>
-                  <div className="gd-stat"><div className="gd-n">2</div><div className="gd-l">Self-service portals</div></div>
+                  <div className="gd-stat"><div className="gd-n">2</div><div className="gd-l">Staff modules</div></div>
+                  <div className="gd-stat"><div className="gd-n">1</div><div className="gd-l">Self-service portal</div></div>
                   <div className="gd-stat"><div className="gd-n">60+</div><div className="gd-l">Distinct permission tags</div></div>
                   <div className="gd-stat"><div className="gd-n">1</div><div className="gd-l">Login, all systems</div></div>
                 </div>
 
                 <div className="gd-block">
                   <h2>How a person moves through the system</h2>
-                  <div className="gd-block-dek">The same person can pass through all three back-office modules as their status changes — this is the spine the rest of the guide hangs off.</div>
+                  <div className="gd-block-dek">The same person can pass through both back-office modules as their status changes — this is the spine the rest of the guide hangs off.</div>
                   <div className="gd-flow">
-                    <div className="gd-node">Applicant applies (AMSP)</div><span className="gd-arrow">→</span>
-                    <div className="gd-node">Shortlisted (AMS)</div><span className="gd-arrow">→</span>
-                    <div className="gd-node">Admitted / Matriculated (AMS)</div><span className="gd-arrow">→</span>
                     <div className="gd-node">Active student (AIS)</div><span className="gd-arrow">→</span>
                     <div className="gd-node">Billed &amp; pays fees (FMS)</div><span className="gd-arrow">→</span>
                     <div className="gd-node">Graduates (AIS)</div>
                   </div>
-                  <p>Once admitted, the same person also gets a Student Portal (AISP) login, and their financial record lives in FMS from that point forward — the three staff modules are not silos, they are stages of one lifecycle.</p>
+                  <p>A student record is created directly in AIS (Students module), then also gets a Student Portal (AISP) login, and their financial record lives in FMS from that point forward — the staff modules are not silos, they are stages of one lifecycle.</p>
                 </div>
 
                 <div className="gd-block">
-                  <h2>The three modules, at a glance</h2>
+                  <h2>The two modules, at a glance</h2>
                   <div className="gd-module-grid">
-                    <div className="gd-module-chip"><div className="gd-mc-title">AMS — Admissions</div><div className="gd-mc-role">Vouchers, applicants, shortlisting, matriculation, admission letters</div></div>
                     <div className="gd-module-chip"><div className="gd-mc-title">AIS — Academics</div><div className="gd-mc-role">Students, courses, calendars, assessment, resits, graduation</div></div>
                     <div className="gd-module-chip"><div className="gd-mc-title">FMS — Finance</div><div className="gd-mc-role">Bills, charges, payments, receipts, debtors, financial reports</div></div>
                   </div>
@@ -149,111 +140,10 @@ function Guide({}: Props) {
 
                 <div className="gd-block">
                   <h2>Signing in</h2>
-                  <p>Every user — staff, applicant, or student — signs in from the same landing page using one of three options: <b>Sign In with Staff Credentials</b> (username + password, for AMS/AIS/FMS staff), <b>Apply with Admission Voucher</b> (serial + PIN, for applicants), or <b>Sign In with Student Access</b> (student ID + password, for enrolled students). What you land on afterwards depends entirely on the permission tags attached to your account — see <LinkTo id="roles" onClick={go}>Roles &amp; Duties</LinkTo>.</p>
+                  <p>Every user — staff or student — signs in from the same landing page using one of two options: <b>Sign In with Staff Credentials</b> (username + password, for AIS/FMS staff) or <b>Sign In with Student Access</b> (student ID + password, for enrolled students). What you land on afterwards depends entirely on the permission tags attached to your account — see <LinkTo id="roles" onClick={go}>Roles &amp; Duties</LinkTo>.</p>
                 </div>
 
                 <div className="gd-callout gd-callout-note"><span className="gd-ic">Note</span><div>This guide mirrors each module's own navigation menu, so the section order here matches what you'll actually see in the sidebar once you're signed in with the matching role.</div></div>
-              </section>
-            )}
-
-            {active === "ams" && (
-              <section className="gd-page-section gd-active">
-                <p className="gd-lede">Admissions runs the pipeline from a purchased voucher to a fully matriculated student: applicant intake, shortlisting, admission, and the letters and vouchers that go with it.</p>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Dashboard</div>
-                  <h2>Admissions overview</h2>
-                  <p>Landing page for every AMS user. Shows applicants / shortlisted / submitted / admitted counts for the active admission round, an admission funnel, voucher sales totals, applicants by gender and stage, and top programmes by applicant volume.</p>
-                  <Shot name="ams-dash" alt="AMS dashboard" caption="AMS Dashboard — admission funnel, voucher sales, top programmes." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Workflow</div>
-                  <h2>Applicant → Shortlist → Admission</h2>
-                  <div className="gd-block-dek">The core admissions pipeline, in order.</div>
-                  <ol className="gd-steps">
-                    <li><div className="gd-step-body"><b>Voucher sold.</b> A voucher is issued (Voucher Module) with a serial and PIN, which the applicant uses to log into the Applicant Portal and start their form.</div></li>
-                    <li><div className="gd-step-body"><b>Applicant completes the form.</b> Personal info, guardian, education, results, documents, and programme choice, tracked step-by-step in the Applicant Portal (see the <LinkTo id="amsp" onClick={go}>Applicant Portal</LinkTo> section). Staff can view progress from <b>Applicant Module</b> and open any applicant's record directly.</div></li>
-                    <li><div className="gd-step-body"><b>Shortlisting.</b> Once submitted, a <code>shortlist::admin</code>/<code>shortlist::clerk</code> user reviews the application from <b>Shortlist Module</b> and shortlists qualifying applicants.</div></li>
-                    <li><div className="gd-step-body"><b>Admission.</b> A <code>matriculant::clerk</code> user opens the shortlisted record and processes admission: choose programme, entry year, and session. This creates the student's account, institutional email, and billing record, and flips their status to Admitted — it cannot be undone from the screen, so the form asks for confirmation first.</div></li>
-                    <li><div className="gd-step-body"><b>Admission letter.</b> Once admitted, the applicant (now a matriculant) can print their personalised admission letter, pulled from the letter template tied to their category and programme.</div></li>
-                  </ol>
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Applicant Module &amp; Shortlist Module</div>
-                  <h2>Reviewing an applicant</h2>
-                  <p>Each applicant's record shows their full application form as a printable document — personal information, guardian details, education history, results, uploaded documents, and programme choices — exactly as the admissions committee would review it on paper.</p>
-                  <div className="gd-shot-row">
-                    <Shot name="ams-applicants" alt="AMS applicants list" caption="Applicant Module — searchable list, filterable by stage." />
-                    <Shot name="ams-applicant-detail" alt="AMS applicant detail" caption="An applicant's full submitted form, ready for review." />
-                  </div>
-                  <div className="gd-shot-row">
-                    <Shot name="ams-shortlists" alt="AMS shortlists list" caption="Shortlist Module — everyone shortlisted for the active round, admitted or not." />
-                    <Shot name="ams-shortlist-detail" alt="AMS shortlist detail" caption="A shortlisted applicant's form, with their in-progress status." />
-                  </div>
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Admitted Students</div>
-                  <h2>Matriculant records &amp; admission letters</h2>
-                  <p>Once admitted, a student's record shows their programme, level, and a live-rendered admission letter — the signature, signatory, and every placeholder (reference number, programme name, fees, session dates) are filled in from their actual record, not typed by hand.</p>
-                  <Shot name="ams-matriculant-detail" alt="AMS matriculant detail" caption="Admitted Students — a matriculant's record with rendered admission letter." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Letters Module</div>
-                  <h2>Letter templates</h2>
-                  <p>Admission letters are built from reusable templates (one per category/programme group), edited with a rich-text editor. Type any placeholder below directly into the template text — each one resolves automatically to the actual student/programme/session data when the letter is printed, so the same template works for every student it applies to.</p>
-                  <div className="gd-tablewrap">
-                    <table>
-                      <thead><tr><th>Placeholder</th><th className="gd-wrap">Resolves to</th></tr></thead>
-                      <tbody>
-                        <tr><td><code>::reference</code></td><td className="gd-wrap">The student's reference number (applicant serial / student ID).</td></tr>
-                        <tr><td><code>::program_name</code></td><td className="gd-wrap">Programme name, lower-cased for use mid-sentence (e.g. "bachelor of arts in communication studies").</td></tr>
-                        <tr><td><code>::program_name_big</code></td><td className="gd-wrap">Programme name exactly as stored, for headings (e.g. "BACHELOR OF ARTS IN COMMUNICATION STUDIES").</td></tr>
-                        <tr><td><code>::admission_title</code></td><td className="gd-wrap">The admission round's title (e.g. "2026 September Admissions").</td></tr>
-                        <tr><td><code>::cert_condition</code></td><td className="gd-wrap">The qualifying certificate condition for this applicant's entry type (e.g. "WASSCE Certificate").</td></tr>
-                        <tr><td><code>::start_level</code></td><td className="gd-wrap">The entry level (100 / 200 / 300), derived from the student's starting semester.</td></tr>
-                        <tr><td><code>::session_year</code></td><td className="gd-wrap">The academic session's year (e.g. "2026").</td></tr>
-                        <tr><td><code>::register_start</code></td><td className="gd-wrap">Course registration opening date.</td></tr>
-                        <tr><td><code>::register_end</code></td><td className="gd-wrap">Course registration closing date.</td></tr>
-                        <tr><td><code>::orient_start</code></td><td className="gd-wrap">Orientation date.</td></tr>
-                        <tr><td><code>::lecture_start</code></td><td className="gd-wrap">First day of lectures.</td></tr>
-                        <tr><td><code>::medical_start</code></td><td className="gd-wrap">Medical screening opening date.</td></tr>
-                        <tr><td><code>::medical_end</code></td><td className="gd-wrap">Medical screening closing date.</td></tr>
-                        <tr><td><code>::matriculate_start</code></td><td className="gd-wrap">Matriculation date.</td></tr>
-                        <tr><td><code>::payment_end</code></td><td className="gd-wrap">Fee payment deadline.</td></tr>
-                        <tr><td><code>::fee_amount</code></td><td className="gd-wrap">The programme's fee, spelled out in words with the figure alongside (e.g. "One Thousand Six Hundred Cedis ( GH¢1600 )").</td></tr>
-                        <tr><td><code>::discount_amount</code></td><td className="gd-wrap">The fee after the applicable discount is subtracted, same words-plus-figure format.</td></tr>
-                        <tr><td><code>::bank_account</code> / <code>::account_name</code></td><td className="gd-wrap">The bank account name/number fees should be paid into (same value, two aliases).</td></tr>
-                        <tr><td><code>::signature</code></td><td className="gd-wrap">The signatory's signature, inserted as an image.</td></tr>
-                        <tr><td><code>::signatory</code></td><td className="gd-wrap">The signatory's name and title block (e.g. "Pius Kwame Agyekum (Mr.), Director, Academic Affairs").</td></tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <Shot name="ams-letter-detail" alt="AMS letter template" caption="An admission letter template, with real signature and signatory." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Voucher Module</div>
-                  <h2>Admission vouchers</h2>
-                  <p>Vouchers are what applicants buy to unlock a serial + PIN and start an application. Staff can sell, recover (reassign), and reset vouchers here.</p>
-                  <Shot name="ams-vouchers" alt="AMS vouchers" caption="Voucher Module — sale status and recovery." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">System Reports</div>
-                  <h2>Admissions reporting</h2>
-                  <p>Modern, filterable report views for admissions data, with export — used for board reporting, marketing/agent performance, and reconciliation against voucher sales.</p>
-                  <Shot name="ams-reports" alt="AMS reports" caption="System Reports — admissions analytics." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Also in this module</div>
-                  <h2>Session Module &amp; Storage Tools</h2>
-                  <p><b>Session Module</b> manages admission rounds (e.g. "2026 September Admissions") — their application windows, prefixes, and which one is currently active. <b>Storage Tools</b> is an admin utility that migrates legacy applicant photo/document blobs out of the database and onto disk.</p>
-                </div>
               </section>
             )}
 
@@ -332,7 +222,7 @@ function Guide({}: Props) {
                 <div className="gd-block">
                   <div className="gd-eyebrow">Dashboard</div>
                   <h2>Collections overview</h2>
-                  <p>Today / this week / this month / this year collection totals, a revenue mix by payment type, and a month-by-month breakdown across every payment category — academic fees, vouchers, resits, graduation, transcripts, and more.</p>
+                  <p>Today / this week / this month / this year collection totals, a revenue mix by payment type, and a month-by-month breakdown across every payment category — academic fees, resits, graduation, transcripts, and more.</p>
                   <Shot name="fms-dash" alt="FMS dashboard" caption="FMS Dashboard — collections and revenue mix." />
                 </div>
 
@@ -370,43 +260,9 @@ function Guide({}: Props) {
                   <h2>Configuration &amp; reporting</h2>
                   <div className="gd-module-grid">
                     <div className="gd-module-chip"><div className="gd-mc-title">Student Charges</div><div className="gd-mc-role">Ad-hoc charges outside a mass bill — fees, fines, graduation, resit.</div></div>
-                    <div className="gd-module-chip"><div className="gd-mc-title">Voucher Sales</div><div className="gd-mc-role">Read-only log of admission voucher purchases.</div></div>
-                    <div className="gd-module-chip"><div className="gd-mc-title">Voucher Prices &amp; Service Costs</div><div className="gd-mc-role">Set the price of admission vouchers and priced services (e.g. transcript fee).</div></div>
+                    <div className="gd-module-chip"><div className="gd-mc-title">Service Costs</div><div className="gd-mc-role">Set the price of priced services (e.g. transcript fee).</div></div>
                     <div className="gd-module-chip"><div className="gd-mc-title">System Reports</div><div className="gd-mc-role">Filterable exports for periodic financial reporting and reconciliation.</div></div>
                   </div>
-                  <div className="gd-callout gd-callout-note"><span className="gd-ic">Naming note</span><div>The <b>Voucher Sales</b> menu item and the backend's <code>/vsales</code> endpoint refer to two different things internally (a legacy naming carry-over) — the actual voucher-sales data comes from a separate endpoint. Doesn't affect how the screen works, just a heads-up if you're ever cross-referencing with the API.</div></div>
-                </div>
-              </section>
-            )}
-
-            {active === "amsp" && (
-              <section className="gd-page-section gd-active">
-                <p className="gd-lede">Where an applicant fills out and submits their own application, from the serial and PIN on their voucher through to a printable submitted form.</p>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Signing in</div>
-                  <h2>Voucher login</h2>
-                  <p>An applicant signs in with <b>Apply with Admission Voucher</b> using the serial and PIN printed on their voucher. This lands them on the portal's welcome screen, which shows whether applications are currently open and the submission deadline.</p>
-                  <Shot name="amsp-dash" alt="AMSP welcome" caption="Applicant Portal — welcome screen with the application deadline." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Workflow</div>
-                  <h2>Completing an application</h2>
-                  <ol className="gd-steps">
-                    <li><div className="gd-step-body">Upload a photo, choose admission group and application type, then step through the form: <b>Personal Information</b>, <b>Guardian Information</b>, <b>Education History</b>, <b>Results</b>, <b>Supporting Documents</b>, <b>Programme Choice</b>, and — where applicable — <b>Employment</b> and <b>Referees</b>.</div></li>
-                    <li><div className="gd-step-body">Each step saves independently, so an applicant can leave and come back without losing progress.</div></li>
-                    <li><div className="gd-step-body">The <b>Review</b> step shows the entire form as it will be submitted, with an edit link back to any section.</div></li>
-                    <li><div className="gd-step-body">Clicking <b>Finalize Application to Complete</b> submits it for shortlisting — after this, editing is locked.</div></li>
-                  </ol>
-                  <Shot name="amsp-profile" alt="AMSP profile step" caption="Personal Information — the first step of the application." />
-                </div>
-
-                <div className="gd-block">
-                  <div className="gd-eyebrow">Review &amp; print</div>
-                  <h2>The submitted form</h2>
-                  <p>At any point, the applicant can print their form exactly as staff will see it during shortlisting — useful for checking everything was entered correctly before submitting.</p>
-                  <Shot name="amsp-review" alt="AMSP review" caption="Review — the full application, ready to finalize." />
                 </div>
               </section>
             )}
@@ -450,33 +306,9 @@ function Guide({}: Props) {
 
                 <div className="gd-role-filter">
                   <button className={roleFilter === "all" ? "gd-active" : ""} onClick={() => setRoleFilter("all")}>All modules</button>
-                  <button className={roleFilter === "ams" ? "gd-active" : ""} onClick={() => setRoleFilter("ams")}>Admissions (AMS)</button>
                   <button className={roleFilter === "ais" ? "gd-active" : ""} onClick={() => setRoleFilter("ais")}>Academics (AIS)</button>
                   <button className={roleFilter === "fms" ? "gd-active" : ""} onClick={() => setRoleFilter("fms")}>Finance (FMS)</button>
                 </div>
-
-                {(roleFilter === "all" || roleFilter === "ams") && (
-                  <div className="gd-block">
-                    <h2>Admissions (AMS) roles</h2>
-                    <div className="gd-tablewrap">
-                      <table>
-                        <thead><tr><th>Tag</th><th className="gd-wrap">Grants</th></tr></thead>
-                        <tbody>
-                          <tr><td><code>applicant::admin-ug</code> / <code>-pg</code></td><td className="gd-wrap">Full applicant management for that category: view, create, edit, and shortlist applicants.</td></tr>
-                          <tr><td><code>applicant::clerk-ug</code> / <code>-pg</code></td><td className="gd-wrap">View-only access to applicants in that category.</td></tr>
-                          <tr><td><code>shortlist::admin-ug</code> / <code>-pg</code></td><td className="gd-wrap">Full shortlist management: view, create, process (admit), reverse.</td></tr>
-                          <tr><td><code>shortlist::clerk-ug</code> / <code>-pg</code></td><td className="gd-wrap">View-only access to the shortlist.</td></tr>
-                          <tr><td><code>matriculant::clerk-ug</code> / <code>-pg</code></td><td className="gd-wrap">Process admissions and manage matriculant (admitted student) records for that category.</td></tr>
-                          <tr><td><code>session::admin</code></td><td className="gd-wrap">Manage admission sessions/rounds.</td></tr>
-                          <tr><td><code>voucher::admin</code></td><td className="gd-wrap">Full voucher management: create, sell, recover, reset.</td></tr>
-                          <tr><td><code>voucher::clerk</code></td><td className="gd-wrap">View and process voucher sales, no configuration access.</td></tr>
-                          <tr><td><code>aletter::admin</code></td><td className="gd-wrap">Create and edit admission letter templates.</td></tr>
-                          <tr><td><code>admreport::admin</code></td><td className="gd-wrap">Generate admissions system reports.</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
 
                 {(roleFilter === "all" || roleFilter === "ais") && (
                   <div className="gd-block">
@@ -541,9 +373,6 @@ function Guide({}: Props) {
                           <tr><td><code>payment::clerk</code></td><td className="gd-wrap">View-only fee payments.</td></tr>
                           <tr><td><code>transaction::admin</code></td><td className="gd-wrap">Record, edit, delete, and convert non-fee ("other") payments.</td></tr>
                           <tr><td><code>transaction::clerk</code></td><td className="gd-wrap">View-only other payments.</td></tr>
-                          <tr><td><code>vsale::clerk</code></td><td className="gd-wrap">View-only voucher sales.</td></tr>
-                          <tr><td><code>vprice::admin</code></td><td className="gd-wrap">Manage voucher prices.</td></tr>
-                          <tr><td><code>vprice::clerk</code></td><td className="gd-wrap">View-only voucher prices.</td></tr>
                           <tr><td><code>scost::admin</code></td><td className="gd-wrap">Manage service costs.</td></tr>
                           <tr><td><code>scost::clerk</code></td><td className="gd-wrap">View-only service costs.</td></tr>
                           <tr><td><code>finreport::admin</code></td><td className="gd-wrap">Generate financial system reports.</td></tr>
@@ -569,15 +398,8 @@ function Guide({}: Props) {
                 <FaqGroup title="Accounts & access" query={q} items={[
                   ["I signed in but see \"Access denied\" or an empty menu — why?", "Your account has no permission tags for that area yet. Each menu item and page only appears for the specific tag(s) listed in Roles & Duties — ask whoever holds hrm::admin to assign the ones you need."],
                   ["Does my username need to match exactly, including capitalisation?", "No — sign-in is case-insensitive, so MKOFI and mkofi both work. Stray leading/trailing spaces (easy to introduce when copy-pasting) are trimmed automatically too."],
-                  ["An applicant/student can't get past the login screen — what usually causes this?", "Almost always a wrong serial/PIN (applicants) or ID/password (students) pair, or a voucher/account that hasn't been issued yet. If credentials are confirmed correct and it still fails, it's worth checking that the account genuinely exists in that role's underlying table before assuming it's a permissions issue."],
+                  ["A student can't get past the login screen — what usually causes this?", "Almost always a wrong ID/password pair, or an account that hasn't been issued yet. If credentials are confirmed correct and it still fails, it's worth checking that the account genuinely exists in that role's underlying table before assuming it's a permissions issue."],
                   ["Can one person be both a staff member and a student?", "Yes — staff and student accounts are separate logins even for the same person (e.g. a graduate assistant who is also enrolled). Use the appropriate sign-in option for what you're trying to do."],
-                ]} />
-
-                <FaqGroup title="Admissions" query={q} items={[
-                  ["Why can't I admit a shortlisted applicant?", "The Admit form now shows a specific reason instead of a generic error — most commonly: the applicant hasn't completed Personal Information or Guardian Information, their phone number is missing, no fee bill has been configured for the chosen programme/year/session, or the applicant's admission round has no academic session linked to it (common for very old, no-longer-active admission rounds). The message tells you exactly which one it is."],
-                  ["I admitted someone by mistake — can I undo it?", "Not from the Admit screen — re-running admission on an already-admitted applicant is blocked specifically because it would reset their student account password. Undoing a real admission needs a direct data correction; treat the confirmation dialog on the Admit button as final."],
-                  ["An admission letter is showing a blank signature or signatory — how do I fix it?", "This was a known issue with letters carrying an old, differently-hosted file reference and has been fixed — the signature image and signatory text should now render correctly on every letter. If you still see it blank on a specific letter, that's worth flagging directly rather than assuming it's expected."],
-                  ["The \"View Document\" link on a printed application form doesn't open anything — is that expected?", "No, and this has also been fixed for documents uploaded through the current system. It can still happen for a small number of very old, pre-migration document records whose original files were never copied into this environment — those are effectively unrecoverable, not a live bug."],
                 ]} />
 
                 <FaqGroup title="Academics" query={q} items={[

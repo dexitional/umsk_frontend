@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import moment from "moment";
 import Service from "../../utils/aisService";
 import { useLoaderData } from "react-router";
@@ -33,7 +33,7 @@ function PrintEvaluation() {
       <main className="px-16 py-10 md:mx-auto border hidden print:block md:block print:w-full print:text-[0.79rem] print:font-poppins">
         <div className="mt-0 mb-8 space-y-6">
           <h1 className="text-center text-gray-800 underline text-lg print:text-base font-[san-serif] font-semibold uppercase">
-             <h2 className="text-3xl">AFRICAN UNIVERSITY</h2> <h3 className="text-lg">OF BUSINESS AND COMMUNICATION</h3>
+             <h2 className="text-3xl">AKATSI COLLEGE</h2> <h3 className="text-lg">OF EDUCATION</h3>
           </h1>
          </div>
         {/* { ReactHtml(loadPlacerData(data?.template,dm)) } */}

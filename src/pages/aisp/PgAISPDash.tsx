@@ -32,13 +32,13 @@ export async function loader({ params }) {
 }
 
 const QUICK_LINKS = [
-  { title: "My Profile", url: "/aisp/profile", Icon: FaAddressCard, tint: "bg-primary-accent/10", iconColor: "text-primary-accent" },
+  { title: "My Profile", url: "/aisp/profile", Icon: FaAddressCard, tint: "bg-secondary-accent/10", iconColor: "text-secondary-accent" },
   { title: "Fees & Charges", url: "/aisp/fees", Icon: BsReceipt, tint: "bg-primary-dark/10", iconColor: "text-primary-dark" },
   { title: "Course Registration", url: "/aisp/registration", Icon: TbChecklist, tint: "bg-primary/10", iconColor: "text-primary" },
-  { title: "Academic Results", url: "/aisp/results", Icon: BiSpreadsheet, tint: "bg-primary-accent/10", iconColor: "text-primary-accent" },
+  { title: "Academic Results", url: "/aisp/results", Icon: BiSpreadsheet, tint: "bg-secondary-accent/10", iconColor: "text-secondary-accent" },
   { title: "Service Requests", url: "/aisp/services", Icon: MdOutlineAddTask, tint: "bg-primary-dark/10", iconColor: "text-primary-dark" },
   { title: "Course Evaluation", url: "/aisp/evaluation", Icon: MdOutlineAddTask, tint: "bg-primary/10", iconColor: "text-primary" },
-  { title: "Elections Portal", url: "/evs/dash", Icon: FaVoteYea, tint: "bg-primary-accent/10", iconColor: "text-primary-accent" },
+  { title: "Elections Portal", url: "/evs/dash", Icon: FaVoteYea, tint: "bg-secondary-accent/10", iconColor: "text-secondary-accent" },
   { title: "Change Password", url: "/aisp/changepwd", Icon: PiLockKey, tint: "bg-slate-200", iconColor: "text-slate-500" },
 ];
 
@@ -109,7 +109,7 @@ function PgAISPDash({}: Props) {
   const notices = buildNotices(loaderData);
 
   return (
-    <div className="p-4 md:p-0 md:col-span-2 space-y-6 md:space-y-8">
+    <div className="p-4 md:p-0 md:col-span-2 space-y-6 md:space-y-8 font-inter">
       {/* Welcome header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
@@ -123,7 +123,7 @@ function PgAISPDash({}: Props) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1.5 rounded-full bg-primary-accent/10 text-primary-accent text-xs font-semibold">
+          <span className="px-3 py-1.5 rounded-full bg-secondary-accent/10 text-secondary-accent text-xs font-semibold">
             STUDENT NO: {user?.user?.tag}
           </span>
         </div>

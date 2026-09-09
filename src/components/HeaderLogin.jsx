@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../assets/img/logo_portalbr_.png';
+import Logo from '../assets/img/logo.webp';
 //import { useAuth } from '../utils/authService';
 import { MdLogout } from 'react-icons/md';
 import { Link, useNavigate } from "react-router-dom";

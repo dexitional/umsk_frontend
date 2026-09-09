@@ -16,7 +16,7 @@ function AISPNoticeCard({ id, title, content, date }: Props) {
       to={`/nss/notices/${id}`}
       className="p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors flex items-center space-x-4"
     >
-      <div className="h-10 w-10 shrink-0 rounded-lg bg-primary-accent/10 flex items-center justify-center">
+      <div className="h-10 w-10 shrink-0 rounded-lg bg-secondary-accent/10 flex items-center justify-center">
         <FcViewDetails className="h-5 w-5" />
       </div>
       <div className="flex-1 min-w-0 flex flex-col space-y-0.5">

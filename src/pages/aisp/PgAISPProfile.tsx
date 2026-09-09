@@ -34,7 +34,7 @@ function PgAISPProfile({}: Props) {
         </h1>
         <Link
           to={`/aisp/profile/${encodeURIComponent(user?.user?.tag)}/edit`}
-          className="px-4 py-2 rounded-lg bg-primary-accent text-white text-sm font-semibold hover:bg-primary-accent/90 transition-colors"
+          className="px-4 py-2 rounded-lg bg-secondary-accent text-white text-sm font-semibold hover:bg-secondary-accent/90 transition-colors"
         >
           Edit Profile
         </Link>
@@ -44,7 +44,7 @@ function PgAISPProfile({}: Props) {
       <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm flex flex-col md:flex-row items-center md:items-start gap-6">
         <img
           src={`${REACT_APP_API_URL}/auth/photos/?tag=${user?.user?.tag}`}
-          className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-primary-accent/10 object-cover shrink-0"
+          className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-secondary-accent/10 object-cover shrink-0"
         />
         <div className="flex-1 min-w-0 text-center md:text-left space-y-1">
           <h2 className="text-lg font-bold text-primary">{`${data?.fname} ${
@@ -54,7 +54,7 @@ function PgAISPProfile({}: Props) {
             {data?.program?.longName || "Not Set"}
           </p>
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
-            <span className="px-2.5 py-1 rounded-full bg-primary-accent/10 text-primary-accent text-xs font-semibold">
+            <span className="px-2.5 py-1 rounded-full bg-secondary-accent/10 text-secondary-accent text-xs font-semibold">
               ID: {`${data?.id}`}
             </span>
             <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">

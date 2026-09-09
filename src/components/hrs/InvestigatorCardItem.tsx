@@ -4,7 +4,7 @@ import { FcViewDetails } from "react-icons/fc";
 import { MdEditDocument, MdLocationOn } from "react-icons/md";
 import { Form, Link } from "react-router-dom";
 // @ts-ignore
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 
 type Props = {
   data: any;
@@ -12,9 +12,9 @@ type Props = {
 
 function InvestigatorCardItem({ data }: Props) {
   return (
-    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 group">
+    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 group font-roboto">
       <div className="flex justify-between space-x-2">
-        <h2 className="text-lg font-semibold font-noto text-gray-500 leading-6">
+        <h2 className="text-lg font-semibold text-gray-500 leading-6">
           {data?.title} {data?.fname} {data?.mname && data?.mname + " "}
           {data?.lname}
         </h2>

@@ -6,7 +6,7 @@ type Props = {
   color?: string;
 };
 
-function DashHBarChart({ rows, color = "#E77B1D" }: Props) {
+function DashHBarChart({ rows, color = "#5599c3" }: Props) {
   const max = Math.max(1, ...rows.map((r) => r.value || 0));
   const [grown, setGrown] = useState(false);
 

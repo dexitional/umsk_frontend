@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Logo from "../assets/img/logo.webp";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/evsService";
 import EVSNavItem from "./EVSNavItem";
 import { useUserStore } from "../../utils/authService";

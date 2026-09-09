@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useRef } from "react";
 import { useLoaderData, useLocation } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import Logo from '../../assets/img/logo.png'
+import Logo from '../../assets/img/logo.webp';
 import Service from "../../utils/aisService";
 
 type Props = {};
@@ -53,7 +53,7 @@ function PrintCertificates({}: Props) {
   return (
     <div ref={printRef} className="print:m-0 print:p-0 relative w-full flex flex-col justify-center items-center bg-white print:scale-[85%]">
       
-      <button onClick={handlePrint} className="w-full md:w-fit print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-primary-accent text-white font-bold uppercase">
+      <button onClick={handlePrint} className="w-full md:w-fit print:hidden px-6 py-1 flex md:flex-none items-center space-x-2 rounded bg-secondary-accent text-white font-bold uppercase">
         <span>Print</span> <span className="flex md:hidden">Broadsheet</span>
       </button>
       
@@ -73,8 +73,8 @@ function PrintCertificates({}: Props) {
                  <header className="flex flex-row items-center justify-center space-x-6">
                     <img src={Logo} alt="Institute Logo" className="h-20 print:h-24" />
                     <div>
-                        <h1 className="font-black text-5xl print:text-5xl tracking-[0.05rem]">AFRICAN UNIVERSITY</h1>
-                        <h3 className="font-bold font-serif text-2xl print:text-2xl tracking-[0.03em] text-primary-dark">OF COMMUNICATIONS AND BUSINESS</h3>
+                        <h1 className="font-black text-5xl print:text-5xl tracking-[0.05rem]">AKATSI</h1>
+                        <h3 className="font-bold font-serif text-2xl print:text-2xl tracking-[0.03em] text-primary-dark">COLLEGE OF EDUCATION</h3>
                     </div>
                  </header>
                  <main className="flex flex-col items-center space-y-10">

@@ -12,7 +12,7 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 import { useHasRole } from "../../utils/roles";

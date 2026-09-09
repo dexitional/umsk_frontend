@@ -7,7 +7,7 @@ import { FcAddRow, FcViewDetails } from "react-icons/fc";
 import { MdEditDocument, MdLocalActivity } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
-import Logo from "../../assets/img/logo/ucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 
 type Props = {};

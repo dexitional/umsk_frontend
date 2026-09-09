@@ -10,8 +10,8 @@ type Props = {
 
 function FunderCardItem({ data }: Props) {
   return (
-    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 group">
-      <h2 className="text-base md:text-lg font-semibold font-noto text-gray-500">
+    <div className="p-4 md:p-6 min-h-max border rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 group font-roboto">
+      <h2 className="text-base md:text-lg font-semibold text-gray-500">
         {data?.title}
       </h2>
       <div className="flex items-center space-x-3">

@@ -35,7 +35,7 @@ function AISFinanceCard({ data }: Props) {
           ))}
           {/* Totals */}
           { data.length ? (
-          <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-primary-accent/90">
+          <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/90">
             <span>&nbsp;</span>
             <span className="col-span-4 font-bold">NET { sum > 0 ? 'DEBT':'BALANCE'}:&nbsp;&nbsp;&nbsp;{data && data[0]?.currency} { Math.abs(sum) }</span>
             <span>&nbsp;</span>

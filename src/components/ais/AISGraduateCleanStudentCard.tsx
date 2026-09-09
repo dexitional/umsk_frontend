@@ -104,8 +104,8 @@ function AISGraduateCleanStudentCard({ title,data, index }: Props) {
           </span>
           <span className="col-span-2 font-bold self-center">{row.student?.indexno}</span>
           <span className="col-span-3 font-bold self-center">{row.student?.program?.shortName}</span>
-          <span className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
-          <span className={`${row.taken ? 'text-primary-accent/80  self-center':' self-center'} col-span-2`}>{row?.class?.toUpperCase()}</span>
+          <span className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'}`}>{row?.cgpa }</span>
+          <span className={`${row.taken ? 'text-secondary-accent/80  self-center':' self-center'} col-span-2`}>{row?.class?.toUpperCase()}</span>
         </div>
       ))}
       

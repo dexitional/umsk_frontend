@@ -35,7 +35,7 @@ function PrintLayout({ children }: Props) {
             <div className="mx-auto mt-6 w-full max-w-6xl print:hidden flex items-center space-x-3">
               <button
                 onClick={() => navigate(-1)}
-                className="px-4 py-1 rounded bg-primary-accent text-white font-bold flex items-center space-x-2"
+                className="px-4 py-1 rounded bg-secondary-accent text-white font-bold flex items-center space-x-2"
               >
                 <IoArrowBackCircle className="h-5 w-5 text-white" />
                 <span>Go Back</span>

@@ -17,9 +17,9 @@ function ErrorIllustration() {
 
       {/* decorative dots / plus marks */}
       <circle cx="34" cy="112" r="3.5" className="fill-primary/25" />
-      <circle cx="168" cy="108" r="3" className="fill-primary-accent/40" />
+      <circle cx="168" cy="108" r="3" className="fill-secondary-accent/40" />
       <circle cx="150" cy="34" r="3.5" className="fill-primary/20" />
-      <path d="M44 30h10M49 25v10" className="stroke-primary-accent/60" strokeWidth="2" strokeLinecap="round" />
+      <path d="M44 30h10M49 25v10" className="stroke-secondary-accent" strokeWidth="2" strokeLinecap="round" />
       <path d="M150 92h8M154 88v8" className="stroke-primary/30" strokeWidth="2" strokeLinecap="round" />
 
       {/* back panel */}
@@ -30,7 +30,7 @@ function ErrorIllustration() {
         height="76"
         rx="10"
         transform="rotate(8 91 90)"
-        className="fill-primary-accent/10 stroke-primary-dark"
+        className="fill-secondary-accent/10 stroke-primary-dark"
         strokeWidth="2.5"
       />
       <rect
@@ -49,7 +49,7 @@ function ErrorIllustration() {
         className="fill-white stroke-primary"
         strokeWidth="2.5"
       />
-      <rect x="46" y="68" width="60" height="11" rx="3" className="fill-primary-accent/70" />
+      <rect x="46" y="68" width="60" height="11" rx="3" className="fill-secondary-accent" />
       <rect x="46" y="98" width="30" height="6" rx="2" className="fill-primary/20" />
       <rect x="46" y="108" width="42" height="6" rx="2" className="fill-primary/20" />
 
@@ -66,7 +66,7 @@ function ErrorIllustration() {
       <g transform="translate(120 24)">
         <path
           d="M17.3 2.6a4 4 0 0 1 6.9 0l15.4 26.6a4 4 0 0 1-3.5 6H5.4a4 4 0 0 1-3.5-6L17.3 2.6Z"
-          className="fill-primary-accent stroke-primary-dark"
+          className="fill-secondary-accent stroke-primary-dark"
           strokeWidth="2"
         />
         <path d="M20.5 13v9" className="stroke-white" strokeWidth="2.4" strokeLinecap="round" />
@@ -125,7 +125,7 @@ function Error() {
         <p className="mt-2 text-primary/60 max-w-sm">{subtext}</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-8 px-8 py-3.5 rounded shadow bg-primary-accent/90 hover:bg-primary-accent font-bold tracking-wider text-white flex items-center space-x-2 transition-colors"
+          className="mt-8 px-8 py-3.5 rounded shadow bg-secondary-accent/90 hover:bg-secondary-accent font-bold tracking-wider text-white flex items-center space-x-2 transition-colors"
         >
           <span>Refresh the page</span>
           <span aria-hidden="true">&rarr;</span>

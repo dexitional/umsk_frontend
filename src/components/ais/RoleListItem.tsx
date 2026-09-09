@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { Form } from "react-router-dom";
 // @ts-ignore
 import moment from "moment";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useHasRole } from "../../utils/roles";
 import ListHeading from "./ListHeading";
 const { REACT_APP_API_URL } = import.meta.env;
@@ -37,7 +37,7 @@ function RoleListItem({ data }: Props) {
 
       <div className="flex flex-col space-y-2">
         <ListHeading title="Permission" />
-        <span className="w-fit px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-primary-accent/10 text-primary-accent border border-primary-accent/20">
+        <span className="w-fit px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-secondary-accent/10 text-secondary-accent border border-secondary-accent/20">
           {data?.role}
         </span>
       </div>
@@ -67,7 +67,7 @@ function RoleListItem({ data }: Props) {
           >
             <button
               type="submit"
-              className="p-2 rounded-full flex items-center space-x-1.5 bg-primary/5 hover:bg-primary-accent/10 border border-primary/10 text-primary-dark/50 hover:text-primary-accent transition-colors"
+              className="p-2 rounded-full flex items-center space-x-1.5 bg-primary/5 hover:bg-secondary-accent/10 border border-primary/10 text-primary-dark/50 hover:text-secondary-accent transition-colors"
               title="Remove role"
             >
               <FaTrash className="h-3.5 w-3.5" />

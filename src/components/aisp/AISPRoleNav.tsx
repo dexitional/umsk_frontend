@@ -28,7 +28,7 @@ function AISPRoleNav({ user }: Props) {
     <Menu as='div' className="relative">
         <div className="px-4 p-2 md:hidden flex items-center justify-between border-b border-slate-200 bg-white text-gray-400">
           <div className="flex items-center space-x-2">
-            <div className="h-7 w-7 shrink-0 rounded-lg bg-primary-accent flex items-center justify-center">
+            <div className="h-7 w-7 shrink-0 rounded-lg bg-secondary-accent flex items-center justify-center">
               <span className="font-poppins font-bold text-white text-[0.6rem]">SP</span>
             </div>
             <span className="text-sm tracking-wide font-bold text-primary">Student Portal</span>

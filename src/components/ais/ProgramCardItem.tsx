@@ -17,13 +17,13 @@ function ProgramCardItem({ data }: Props) {
   const canEditProgram = useHasRole("ais", ["program::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-lg font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-lg font-semibold text-gray-500 uppercase">
         {data?.shortName}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">
+          <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {data?.longName?.toUpperCase()}
           </div>
           <div className="py-0.5 px-2 text-sm rounded bg-primary/60 text-white font-bold">
@@ -31,7 +31,7 @@ function ProgramCardItem({ data }: Props) {
           </div>
         </div>
       </div>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span
@@ -79,7 +79,7 @@ function ProgramCardItem({ data }: Props) {
             >
               Level
             </span>
-            <span className="font-semibold font-roboto text-base text-primary/60">
+            <span className="font-semibold text-base text-primary/60">
               {Math.ceil(data?.semesterNum / 2) * 100}
             </span>
           </div>
@@ -109,7 +109,7 @@ function ProgramCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button
@@ -127,12 +127,12 @@ function ProgramCardItem({ data }: Props) {
               className={`${
                 !data?.completeStatus
                   ? "bg-primary-dark/60"
-                  : "bg-primary-accent/60"
+                  : "bg-secondary-accent"
               } py-0.5 px-2 rounded flex items-center space-x-1.5 text-sm text-white font-semibold`}
             >
               DURATION
             </span>
-            <span className="font-semibold font-roboto text-sm text-primary/60">
+            <span className="font-semibold text-sm text-primary/60">
               {Math.ceil(data?.semesterTotal / 2) + " YEARS" || ""}
             </span>
           </div>

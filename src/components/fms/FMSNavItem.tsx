@@ -23,7 +23,7 @@ function FMSNavItem({ title, url = "/", Icon, ...rest }: Props) {
         isActive
           ? `px-4 py-2 flex items-center space-x-2 bg-primary/90 rounded-lg`
           : isPending
-          ? `px-4 py-2 flex items-center space-x-2 bg-primary-accent/90 rounded-lg [&]:text-red-600`
+          ? `px-4 py-2 flex items-center space-x-2 bg-secondary-accent/90 rounded-lg [&]:text-red-600`
           : `px-4 py-2 flex items-center space-x-2 hover:bg-primary/90 hover:rounded-lg group`
       }
       children={({ isActive, isPending }) => {

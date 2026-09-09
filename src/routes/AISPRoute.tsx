@@ -54,8 +54,14 @@ const AISRoute:any =  {
          lazy: () => import('../pages/aisp/PgAISPRegistrations').then(m => ({ Component: m.default, loader: m.loader })),
       },
 
-      // Registrations
+      // Evaluations — every form (course/sts/ims/future ones) shares the
+      // same flow: pick a registered course, pick an assessor, answer that
+      // form's questions. PgCourseEvaluation.tsx handles all of them,
+      // parameterized by :formKey (defaults to 'course').
       {  path:'evaluation',
+         lazy: () => import('../pages/eva/PgEvaluationForms').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {  path:'evaluation/:formKey',
          lazy: () => import('../pages/eva/PgCourseEvaluation').then(m => ({ Component: m.default, loader: m.loader })),
       },
 

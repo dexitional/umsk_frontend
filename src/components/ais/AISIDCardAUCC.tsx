@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useRef } from "react";
 import { HiUserAdd } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import { useUserStore } from "../../utils/authService";
 const { REACT_APP_API_URL } = import.meta.env;
 
@@ -12,7 +12,7 @@ type Props = {
   data?: any;
 };
 
-function AISIDCardAUCC({ data }: Props) {
+function AISIDCardAKATSICO({ data }: Props) {
   const navigate = useNavigate();
   const pdfRef: any = useRef(null);
   const user = useUserStore((state) => state.user);
@@ -54,18 +54,18 @@ function AISIDCardAUCC({ data }: Props) {
               <img src={Logo} className="w-[60px] h-[60px]" />
               <div className="flex-1 flex flex-col -space-y-1 items-center font-roboto">
                 <h1 className="m-0 text-black text-xl font-bold font-roboto tracking-wider">
-                  AFRICAN UNIVERSITY
+                  AKATSI
                 </h1>
                 <h2 className="m-0 text-black text-[0.8rem] font-medium font-roboto tracking-widest">
-                  OF COMMUNICATIONS AND BUSINESS
+                  COLLEGE OF EDUCATION
                 </h2>
                 <h2 className="m-0 text-black text-[0.65rem] font-medium tracking-widest">
-                  ( AUCB )
+                  ( AKATSICO )
                 </h2>
               </div>
             </div>
-            <div className="mb-10 w-full border-b-4 border-[#b76118] flex">
-              <div className="p-1 w-1/3 h-[7.8rem] bg-[#b76118]">
+            <div className="mb-10 w-full border-b-4 border-secondary-accent-700 flex">
+              <div className="p-1 w-1/3 h-[7.8rem] bg-secondary-accent-700">
                 <div className="w-24 h-24 flex items-center bg-white overflow-hidden">
                   <img
                     crossOrigin="anonymous"
@@ -80,7 +80,7 @@ function AISIDCardAUCC({ data }: Props) {
               </div>
 
               <div className="w-full flex flex-col bg-white font-roboto">
-                <div className="w-full font-bold border-b-2 border-b-[#b76118] border-t-2 border-t-[#b76118] bg-[#333] text-[0.65rem] text-white flex items-center justify-center">
+                <div className="w-full font-bold border-b-2 border-b-secondary-accent-700 border-t-2 border-t-secondary-accent-700 bg-[#333] text-[0.65rem] text-white flex items-center justify-center">
                   <span className="bg-black px-2 py-0.5">
                     STAFF IDENTIFICATION CARD
                   </span>
@@ -101,19 +101,19 @@ function AISIDCardAUCC({ data }: Props) {
                   </div>
                   <div className="flex justify-between text-[0.55rem]">
                     <div className="m-2 font-semibold flex flex-col">
-                      <span className="font-semibold text-[#b76118] text-[0.5rem]">
+                      <span className="font-semibold text-secondary-accent-700 text-[0.5rem]">
                         INDEX NO{" "}
                       </span>
                       <span>{data && data?.indexno}</span>
                     </div>
                     <div className="m-2 font-semibold flex flex-col">
-                      <span className="font-semibold text-[#b76118] text-[0.5rem]">
+                      <span className="font-semibold text-secondary-accent-700 text-[0.5rem]">
                         STUDENT ID{" "}
                       </span>
                       <span>{data && data?.id}</span>
                     </div>
                     <div className="m-2 font-semibold flex flex-col">
-                      <span className="font-semibold text-[#b76118] text-[0.5rem]">
+                      <span className="font-semibold text-secondary-accent-700 text-[0.5rem]">
                         SEX
                       </span>
                       <span>{data && data?.gender}</span>
@@ -121,7 +121,7 @@ function AISIDCardAUCC({ data }: Props) {
                   </div>
                   <div className="mx-2 mt-2 flex justify-between">
                     <div className="flex flex-col -space-y-0.5">
-                      <p className="m-0 font-bold text-[0.5rem] text-[#b76118]">
+                      <p className="m-0 font-bold text-[0.5rem] text-secondary-accent-700">
                         DATE ISSUED
                       </p>
                       <p className="my-1 mx-0 font-bold text-[7px] text-[#333]">
@@ -131,7 +131,7 @@ function AISIDCardAUCC({ data }: Props) {
                       </p>
                     </div>
                     <div className="flex flex-col -space-y-0.5">
-                      <p className="m-0 font-bold text-[0.5rem] text-[#b76118]">
+                      <p className="m-0 font-bold text-[0.5rem] text-secondary-accent-700">
                         NATIONALITY
                       </p>
                       <p className="my-1 mx-0 font-bold text-[7px] text-[#333]">
@@ -139,7 +139,7 @@ function AISIDCardAUCC({ data }: Props) {
                       </p>
                     </div>
                     <div className="flex flex-col -space-y-0.5">
-                      <p className="m-0 font-bold text-[0.5rem] text-[#b76118]">
+                      <p className="m-0 font-bold text-[0.5rem] text-secondary-accent-700">
                         EXPIRES ON
                       </p>
                       <p className="my-1 mx-0 font-bold text-[7px] text-[#333]">
@@ -162,10 +162,10 @@ function AISIDCardAUCC({ data }: Props) {
         {/* Print Account */}
         <button
           onClick={printCard}
-          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-primary-accent/5 border border-primary-accent/20 shadow"
+          className="p-1.5 md:py-1 md:px-1 h-12 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow"
         >
-          <HiUserAdd className="text-primary-accent/60 h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-primary-accent/20 rounded-full" />
-          <span className="font-semibold text-sm md:text-base text-primary-accent/70 font-noto">
+          <HiUserAdd className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+          <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
             Print ID Card
           </span>
         </button>
@@ -174,4 +174,4 @@ function AISIDCardAUCC({ data }: Props) {
   );
 }
 
-export default AISIDCardAUCC;
+export default AISIDCardAKATSICO;

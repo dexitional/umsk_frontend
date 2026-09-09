@@ -22,7 +22,7 @@ function LASByFacultyList({}: Props) {
       <h1 className="p-2 md:px-6 md:py-3 bg-blue-950/50 text-white text-xs md:text-base font-medium flex flex-col md:flex-row items-center md:justify-between space-y-2 md:space-y-0 md:space-x-4">
         <div className="flex item-center space-x-4 uppercase tracking-widest">
           <MdHomeFilled className="hidden md:block h-5 w-5" />
-          <span>Filter Leturers By Faculty or School</span>
+          <span>Filter Tutors By Faculty or School</span>
         </div>
         <Link
           to={`/las/dash/colleges`}

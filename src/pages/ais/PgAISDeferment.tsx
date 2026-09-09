@@ -10,7 +10,7 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-import Logo from "../../assets/img/logo/aucc/logo.png";
+import Logo from "../../assets/img/logo.webp";
 import LetterTemplate from "../../components/ais/LetterTemplate";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
@@ -123,7 +123,7 @@ function PgAISDeferment({}: Props) {
                 {data?.student?.program?.longName || "Not assigned"}
               </div>
             </div>
-            <code className="py-1 px-3 md:py-2 md:px-6  w-fit bg-primary-accent/5 text-gray-500 md:text-gray-500 text-xs md:text-sm font-roboto">
+            <code className="py-1 px-3 md:py-2 md:px-6  w-fit bg-secondary-accent/5 text-gray-500 md:text-gray-500 text-xs md:text-sm font-roboto">
               {data?.session?.title}{" "}
               {data?.session?.tag == "SUB" ? ", JANUARY" : "MAIN"}
             </code>

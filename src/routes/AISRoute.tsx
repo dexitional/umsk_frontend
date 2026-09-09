@@ -235,6 +235,28 @@ const AISRoute:any =  {
          lazy: () => import('../pages/ais/PgAISCalendarForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
+      /* Evaluation Manager */
+      {
+         path:'evaluation-forms',
+         lazy: () => import('../pages/ais/PgAISEvaluationForms').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'evaluation-forms/create',
+         lazy: () => import('../pages/ais/PgAISEvaluationFormEdit').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+      {
+         path:'evaluation-forms/:formId',
+         lazy: () => import('../pages/ais/PgAISEvaluationForm').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'evaluation-forms/:formId/destroy',
+         lazy: () => import('../pages/ais/PgAISEvaluationForms').then(m => ({ action: m.action })),
+      },
+      {
+         path:'evaluation-forms/:formId/edit',
+         lazy: () => import('../pages/ais/PgAISEvaluationFormEdit').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+
       /* Scheme Module */
       {
          path:'schemes',
@@ -578,12 +600,6 @@ const AISRoute:any =  {
          lazy: () => import('../pages/ais/PgAISResitForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
-
-      /* Graduation Logs */
-      {
-         path:'graduate-logs',
-         lazy: () => import('../pages/ais/PgAISGraduateLogs').then(m => ({ Component: m.default, loader: m.loader })),
-      },
 
       /* Graduation Session Module */
       {

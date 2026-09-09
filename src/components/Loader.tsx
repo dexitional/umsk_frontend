@@ -14,7 +14,7 @@ function Loader({}: Props) {
     <div className="z-20 fixed top-0 left-0 h-screen w-full bg-primary/50 backdrop-blur-[1px] bg-opacity-5 flex items-start justify-center">
       {/* <div className="z-20 fixed top-0 left-0 h-screen w-full bg-white opacity-50 flex items-start justify-center"> */}
       {/* Default Spinner */}
-      {/* <BiLoaderCircle className="p-1 mt-[35vh] h-12 w-12 bg-white shadow shadow-primary-accent/40 rounded-full text-primary-accent/60 animate-spin" /> */}
+      {/* <BiLoaderCircle className="p-1 mt-[35vh] h-12 w-12 bg-white shadow shadow-secondary-accent/40 rounded-full text-secondary-accent animate-spin" /> */}
       {/* Custom Spinner */}
       <div className="absolute w-fit top-48 -translate-x-[1/2] left-1/2 flex items-center justify-center animate-spin bg-white  bg-opacity-90 backdrop-blur-sm rounded-full">
         <LuLoaderCircle className="h-20 w-20  text-primary-dark animate-pulse" />

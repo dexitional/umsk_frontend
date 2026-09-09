@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../assets/img/logo_sso.png";
+import Logo from "../assets/img/logo.webp";
 // @ts-ignore
 import { useNavigate } from "react-router-dom";
 // import { useAuth } from '../utils/authService';

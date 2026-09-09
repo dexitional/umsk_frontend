@@ -15,14 +15,14 @@ function GraduateSessionCardItem({ data }: Props) {
   const canEditGraduateSession = useHasRole("ais", ["graduation::admin"]);
 
   return (
-    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group">
-      <h2 className="text-base md:text-base font-semibold font-noto text-gray-500 uppercase">
+    <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
+      <h2 className="text-base md:text-base font-semibold text-gray-500 uppercase">
         {" "}
         {data?.title?.toUpperCase()}
       </h2>
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
-          {/* <div className="text-sm md:text-sm text-primary-dark/70 font-bold font-roboto capitalize">YEAR {data?.year} - {data?.semester}</div> */}
+          {/* <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">YEAR {data?.year} - {data?.semester}</div> */}
           {data?.default && (
             <div className="py-0.5 px-2 text-sm rounded bg-primary/60 text-white font-bold">
               DEFAULT
@@ -30,7 +30,7 @@ function GraduateSessionCardItem({ data }: Props) {
           )}
         </div>
       </div>
-      <div className="space-y-1 font-roboto">
+      <div className="space-y-1">
         {data.start && (
           <div className="flex items-center space-x-4">
             <IoIosTime className="h-4 w-5 text-primary/70" />
@@ -82,7 +82,7 @@ function GraduateSessionCardItem({ data }: Props) {
                   if (!confirm("Do you want to delete")) e.preventDefault();
                   return false;
                 }}
-                className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-primary-accent/60"
+                className="py-0.5 px-2 rounded flex items-center space-x-1.5 bg-secondary-accent"
               >
                 <FaTrash className="h-3 w-4 text-pink-100" />
                 <button type="submit" className="text-sm text-white font-semibold">
