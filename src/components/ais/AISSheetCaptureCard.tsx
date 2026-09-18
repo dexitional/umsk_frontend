@@ -126,7 +126,7 @@ function AISSheetCaptureCard({ title, data }: Props) {
         </div>
       </h1>
       <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
-        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-10 gap-x-2 tracking-wider">
+        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-10 gap-x-4 tracking-wider">
           <span>PHOTO</span>
           <span className="col-span-2">INDEX NUMBER</span>
           <span className="col-span-3">FULL NAME</span>
@@ -138,7 +138,7 @@ function AISSheetCaptureCard({ title, data }: Props) {
         {data
           //?.filter((r: any) => r.status == 0)
           ?.map((row: any, i: number) => (
-            <div className="px-3 py-2 border-b grid grid-cols-10 gap-x-2 font-medium text-xs text-primary/80">
+            <div className="px-3 py-2 border-b grid grid-cols-10 gap-x-4 font-medium text-xs text-primary/80">
               <img
                 crossOrigin="anonymous"
                 src={`${REACT_APP_API_URL}/auth/photos/?tag=${row?.student?.id}`}
