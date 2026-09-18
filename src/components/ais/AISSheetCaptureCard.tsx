@@ -131,7 +131,7 @@ function AISSheetCaptureCard({ title, data }: Props) {
           <span className="col-span-2">INDEX NUMBER</span>
           <span className="col-span-3">FULL NAME</span>
           <span>QUIZ</span>
-          <span>ASSIGNMENT</span>
+          <span className="text-center">ASSIGNMENT</span>
           <span>MIDSEM</span>
           <span>TOTAL</span>
         </div>
