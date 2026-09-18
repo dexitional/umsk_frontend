@@ -23,23 +23,35 @@ function AISSheetCaptureCard({ title, data }: Props) {
   const navigation = useNavigation();
   const loading = navigation?.state;
   const { sheetId } = useParams();
-  // TOTAL is derived from class+exam, which is otherwise only known from the
-  // loader's stale snapshot — track live overrides per row so it updates
-  // immediately on blur instead of waiting for the next full page load.
-  const [totals, setTotals] = useState<Record<number, number>>({});
+  // Exam scores aren't captured on this form (they'll come from a separate
+  // upload feature later) -- class score is now derived entirely from
+  // Quiz + Assignment + Midsem, and total is derived from class score plus
+  // whatever exam score already exists on the row (0/null until that
+  // feature lands). Track live overrides per row so both update immediately
+  // on blur instead of waiting for the next full page load.
+  const [classTotals, setClassTotals] = useState<Record<number, number>>({});
+
+  const getRowClassScore = (i: number, row: any) => {
+    return classTotals[i] ?? row.classScore;
+  };
 
   const getRowTotal = (i: number, row: any) => {
-    return totals[i] ?? row.examScore + row.classScore;
+    return getRowClassScore(i, row) + (row.examScore || 0);
   };
 
   const recomputeTotal = (i: number) => {
     if (!formElRef.current) return;
-    const classEl: any = formElRef.current.elements.namedItem(`${i}_class`);
-    const examEl: any = formElRef.current.elements.namedItem(`${i}_exam`);
-    const classVal = parseFloat(classEl?.value);
-    const examVal = parseFloat(examEl?.value);
-    const sum = (isNaN(classVal) ? 0 : classVal) + (isNaN(examVal) ? 0 : examVal);
-    setTotals((prev) => ({ ...prev, [i]: sum }));
+    const aEl: any = formElRef.current.elements.namedItem(`${i}_scorea`);
+    const bEl: any = formElRef.current.elements.namedItem(`${i}_scoreb`);
+    const cEl: any = formElRef.current.elements.namedItem(`${i}_scorec`);
+    const aVal = parseFloat(aEl?.value);
+    const bVal = parseFloat(bEl?.value);
+    const cVal = parseFloat(cEl?.value);
+    const sum =
+      (isNaN(aVal) ? 0 : aVal) +
+      (isNaN(bVal) ? 0 : bVal) +
+      (isNaN(cVal) ? 0 : cVal);
+    setClassTotals((prev) => ({ ...prev, [i]: sum }));
   };
 
   // Auto-commit on blur persists in the background — no toast, no page
@@ -59,7 +71,7 @@ function AISSheetCaptureCard({ title, data }: Props) {
     }
   };
 
-  // The class/exam inputs' min/max attributes are HTML5 constraint-validation
+  // The score inputs' min/max attributes are HTML5 constraint-validation
   // hints — the browser only enforces them on a real form submit. autoSave
   // bypasses that (it reads FormData directly, no submit event), so an
   // out-of-range value typed there would otherwise be committed as-is.
@@ -120,21 +132,20 @@ function AISSheetCaptureCard({ title, data }: Props) {
         </div>
       </h1>
       <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
-        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-12 tracking-wider">
+        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-11 tracking-wider">
           <span>PHOTO</span>
           <span className="col-span-2">INDEX NUMBER</span>
           <span className="col-span-3">FULL NAME</span>
-          <span>SCORE-A</span>
-          <span>SCORE-B</span>
-          <span>SCORE-C</span>
+          <span>QUIZ</span>
+          <span>ASSIGNMENT</span>
+          <span>MIDSEM</span>
           <span>CLASS-T</span>
-          <span>EXAMS-T</span>
           <span>TOTAL</span>
         </div>
         {data
           //?.filter((r: any) => r.status == 0)
           ?.map((row: any, i: number) => (
-            <div className="px-3 py-2 border-b grid grid-cols-12 font-medium text-xs text-primary/80">
+            <div className="px-3 py-2 border-b grid grid-cols-11 font-medium text-xs text-primary/80">
               <img
                 crossOrigin="anonymous"
                 src={`${REACT_APP_API_URL}/auth/photos/?tag=${row?.student?.id}`}
@@ -153,41 +164,42 @@ function AISSheetCaptureCard({ title, data }: Props) {
               </span>
               <input
                 name={`${i}_scorea`}
-                onBlur={autoSave}
+                type="number"
+                onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreA}
+                min={0}
+                max={20}
                 className="px-2 py-0.5 w-12 h-7 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <input
                 name={`${i}_scoreb`}
-                onBlur={autoSave}
+                type="number"
+                onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreB}
+                min={0}
+                max={20}
                 className="px-2 py-0.5 w-12 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <input
                 name={`${i}_scorec`}
-                onBlur={autoSave}
+                type="number"
+                onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreC}
+                min={0}
+                max={20}
                 className="px-2 py-0.5 w-12 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
-              <input
-                name={`${i}_class`}
-                type="number"
-                onBlur={(e) => clampScoreOnBlur(e, i)}
-                defaultValue={row.classScore}
-                max={row.scheme?.scoreRange?.class}
-                min={0}
-                maxLength={2}
-                className="px-2 py-0.5 w-14 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
-              />
+              <div className="flex items-center justify-center font-bold italic text-sm text-gray-500">
+                {getRowClassScore(i, row)}
+              </div>
+              {/* Exam score isn't captured here -- it'll come from a separate
+                  upload feature later (clone of the backlog upload, affecting
+                  only examScore). Kept as a hidden field so autosaving this
+                  form doesn't wipe out whatever exam score already exists. */}
               <input
                 name={`${i}_exam`}
-                type="number"
-                onBlur={(e) => clampScoreOnBlur(e, i)}
+                type="hidden"
                 defaultValue={row.examScore}
-                max={row.scheme.scoreRange.exam}
-                min={0}
-                maxLength={2}
-                className="px-2 py-0.5 w-14 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <div className="flex items-center justify-center font-bold italic text-sm text-gray-500">
                 {getRowTotal(i, row)}
