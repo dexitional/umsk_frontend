@@ -129,7 +129,7 @@ function AISSheetAccountCard({ data, isUser }: Props) {
       // Load & Iterate Data for Students
       if (rt && rt.length > 0) {
         for (var row of rt) {
-          let { indexno, classScore, examScore, totalScore, student } = row;
+          let { indexno, scoreA, scoreB, scoreC, classScore, student } = row;
           // `data` here is the sheet itself (course/session metadata), not a
           // student — it has no fname/mname/lname, so this always rendered
           // "undefined undefined". The actual student is on row.student.
@@ -140,9 +140,12 @@ function AISSheetAccountCard({ data, isUser }: Props) {
             name,
             // Explicit null (not 0/undefined/NaN) for unset scores so the
             // exported cell is blank rather than showing a stray value.
-            classScore: classScore ?? null,
-            examScore: examScore ?? null,
-            totalScore: totalScore ?? null,
+            // Matches the capture form: Quiz/Assignment/Midsem plus the
+            // resulting class total. Exam score isn't part of this workflow.
+            quiz: scoreA ?? null,
+            assignment: scoreB ?? null,
+            midsem: scoreC ?? null,
+            classTotal: classScore ?? null,
           });
         }
         jsonToExcel(
