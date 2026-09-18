@@ -8,6 +8,7 @@ type Props = {
 }
 
 function AISBacklogRecordCard({ title,data }: Props) {
+  const gridCols = data.type == 'ASSESSMENT' ? 'grid-cols-9' : data.type == 'EXAM_SCORE' ? 'grid-cols-7' : 'grid-cols-6';
   return (
     <div className="w-full space-y-3 rounded">
     <h1 className="text-sm font-bold font-roboto tracking-wider text-primary-dark/60 flex flex-col md:flex-row justify-between">
@@ -19,22 +20,23 @@ function AISBacklogRecordCard({ title,data }: Props) {
       </div>
     </h1>
     <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
-          <div className={`px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid ${ data.type == 'ASSESSMENT' ? 'grid-cols-9':'grid-cols-6'} tracking-wider`}>
+          <div className={`px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid ${gridCols} tracking-wider`}>
             <span className="col-span-2">INDEX NUMBER</span>
-            <span className="col-span-1">LEVEL</span> 
+            <span className="col-span-1">LEVEL</span>
             <span>SEMESTER</span>
-            
+
             <span>COURSE</span>
             { data.type == 'ASSESSMENT' ? <>
             <span>CLASS</span>
             <span>EXAMS</span>
             <span>TOTAL</span>
             </>: null }
-           
+            { data.type == 'EXAM_SCORE' ? <span>EXAM</span> : null }
+
             <span>RECORD TYPE</span>
           </div>
           { data?.meta?.map((row:any) => (
-            <div key={row?.id} className={`px-3 py-2 border-b grid ${ data.type == 'ASSESSMENT' ? 'grid-cols-9':'grid-cols-6'} font-medium text-xs text-primary/80`}>
+            <div key={row?.id} className={`px-3 py-2 border-b grid ${gridCols} font-medium text-xs text-primary/80`}>
                <span className="col-span-2 font-bold flex items-center space-x-2">
                 <img crossOrigin="anonymous" src={`${REACT_APP_API_URL}/auth/photos/?tag=${row?.student?.id}`} className="h-8 w-8 border rounded-md bg-white object-contain" />
                 <span
@@ -56,6 +58,7 @@ function AISBacklogRecordCard({ title,data }: Props) {
               <span className="col-span-1 font-bold self-center">{row.scoreExam}</span>
               <span className="col-span-1 font-bold self-center">{row.scoreTotal}</span>
               </>: null }
+              { data.type == 'EXAM_SCORE' ? <span className="col-span-1 font-bold self-center">{row.scoreExam}</span> : null }
               <span className="col-span-1 font-bold self-center">{row.scoreType == 'N'?'ASSESSMENT':'RESIT'}</span>
              </div>
           ))}

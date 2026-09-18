@@ -503,6 +503,17 @@ const AISRoute:any =  {
          lazy: () => import('../pages/ais/PgAISBacklogForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
+      /* Exam Score Manager -- narrower clone of Backlog above; batches it
+         creates are viewed/approved on the shared backlogs/:backlogId route. */
+      {
+         path:'examscores',
+         lazy: () => import('../pages/ais/PgAISExamScores').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'examscores/sample',
+         lazy: () => import('../pages/ais/PgAISExamScoreSample').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+
 
       /* Resit Session Module */
       {

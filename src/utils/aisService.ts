@@ -1351,10 +1351,43 @@ class Service {
           if(res.status == 200){
              toast.success("Sheet uploaded!")
              return res.data
-          } 
+          }
           else throw new(res.data.message)
-      
-      } catch (error) { 
+
+      } catch (error) {
+         return checkSession(error)
+      }
+    }
+
+    /* Exam Score Manager -- narrower clone of Backlog. List/detail/approve
+       reuse the backlog endpoints (fetchBacklogs filtered by type, plus
+       fetchBacklog/approveBacklog directly); only upload has its own route. */
+    async fetchExamScoreUploads(keyword,page,limit){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/backlogs?type=EXAM_SCORE&keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+              return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+     }
+
+    async uploadExamScore(data){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/examscores/upload`, data,{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          if(res.status == 200){
+             toast.success("Exam scores uploaded!")
+             return res.data
+          }
+          else throw new(res.data.message)
+
+      } catch (error) {
          return checkSession(error)
       }
     }
