@@ -206,25 +206,6 @@ function PgAISSheetForm({}: Props) {
             <div className="md:pl-6 space-y-4">
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Mode of Study
-                </span>
-                <select
-                  arial-label="studyMode"
-                  name="studyMode"
-                  defaultValue={data?.studyMode}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled value="">
-                    -- NONE --
-                  </option>
-                  <option value="M">MORNING</option>
-                  <option value="E">EVENING</option>
-                  <option value="W">WEEKEND</option>
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
                   Department In Charge
                 </span>
                 <select

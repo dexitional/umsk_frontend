@@ -3,7 +3,6 @@ import { FaFolder, FaTrash } from "react-icons/fa";
 import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdEditDocument } from "react-icons/md";
 import { Form, Link } from "react-router-dom";
-import { getStudyMode } from "../../utils/util";
 import { useHasRole } from "../../utils/roles";
 
 type Props = {
@@ -53,11 +52,6 @@ function SheetCardItem({ data }: Props) {
             {data.assignStaffId}){" "}
           </div>
         )}
-        {data.studyMode ? (
-          <div className="px-2 py-1 w-fit bg-amber-50/50 rounded border text-[0.65rem] font-semibold text-gray-500 tracking-wider upppercase">{`${getStudyMode(
-            data.studyMode
-          )?.toUpperCase()} SESSION`}</div>
-        ) : null}
         <div
           className={`px-2 py-1 w-fit ${
             data.finalized

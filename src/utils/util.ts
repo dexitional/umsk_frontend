@@ -59,7 +59,7 @@ export const jsonToExcel = (csvData, fileName) => {
 // followed by a grade-distribution table (grade -> student count), rather
 // than the flat per-student rows jsonToExcel produces.
 export const gradeSummaryToExcel = (
-  meta: { courseCode?: string; yearGroup?: string; program?: string; mode?: string },
+  meta: { courseCode?: string; yearGroup?: string; program?: string },
   gradeCounts: { grade: string; count: number }[],
   fileName: string
 ) => {
@@ -69,7 +69,6 @@ export const gradeSummaryToExcel = (
     ['Course Code', meta.courseCode || ''],
     ['Year Group', meta.yearGroup || ''],
     ['Program', meta.program || ''],
-    ['Mode', meta.mode || ''],
     [],
     ['GRADE', 'STUDENTS'],
     ...gradeCounts.map((g) => [g.grade, `${g.count} students`]),
@@ -128,14 +127,6 @@ export const monthList = [
   { id: 12, title: 'December' },
 ]
 
-export const getStudyMode = (tag) => {
-   switch(tag){
-      case 'M': return 'Morning'; break;
-      case 'E': return 'Evening'; break;
-      case 'W': return 'Weekend'; break;
-      default : 'Morning'; break;
-   }
-}
 
 export const getTargetGroup = (group_code) => {
   var yr = ''

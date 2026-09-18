@@ -8,7 +8,6 @@ import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
-import { getStudyMode } from "../../utils/util";
 import { BiLoaderCircle } from "react-icons/bi";
 import LoaderInner from "../../components/LoaderInner";
 import { useHasRole } from "../../utils/roles";
@@ -121,14 +120,6 @@ function PgAISSheet({}: Props) {
                     ? "SUBMITTED"
                     : "CAPTURE MODE"}
                 </span>
-                {data?.studyMode && (
-                  <>
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
-                    <span className="tracking-wider text-xs md:text-base uppercase">{`${getStudyMode(
-                      data?.studyMode
-                    )} Session`}</span>
-                  </>
-                )}
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
               </div>
               <div className="flex items-center space-x-2">

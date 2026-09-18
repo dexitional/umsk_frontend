@@ -15,7 +15,6 @@ import Logo from "../../assets/img/logo.webp";
 import SubNavLink from "../../components/ais/SubNavLink";
 import LoaderInner from "../../components/LoaderInner";
 import Service from "../../utils/aisService";
-import { getStudyMode } from "../../utils/util";
 import { useHasRole } from "../../utils/roles";
 
 type Props = {};
@@ -122,14 +121,6 @@ function PgAISMySheet({}: Props) {
                     ? "SUBMITTED"
                     : "CAPTURE MODE"}
                 </span>
-                {data?.studyMode && (
-                  <>
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
-                    <span className="tracking-wider text-xs md:text-base uppercase">{`${getStudyMode(
-                      data?.studyMode
-                    )} Session`}</span>
-                  </>
-                )}
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
               </div>
               <div className="flex items-center space-x-2">

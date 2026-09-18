@@ -4,7 +4,6 @@ import { FcViewDetails } from "react-icons/fc";
 import { MdEditDocument } from "react-icons/md";
 // @ts-ignore
 import { Form, Link } from "react-router-dom";
-import { getStudyMode } from "../../utils/util";
 import { useHasRole } from "../../utils/roles";
 import ListHeading from "./ListHeading";
 
@@ -24,14 +23,6 @@ function BacklogListItem({ data }: Props) {
             {data.program?.longName}
             <br />
             <b>L {Math.ceil(data?.semesterNum / 2) * 100}</b>
-            {data?.studyMode && (
-              <>
-                <br />
-                <b className="text-primary/70 uppercase">
-                  -- {getStudyMode(data?.studyMode)} SESSION
-                </b>
-              </>
-            )}
           </span>
         </div>
       </div>

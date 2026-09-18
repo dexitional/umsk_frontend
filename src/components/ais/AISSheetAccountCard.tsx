@@ -80,7 +80,6 @@ function AISSheetAccountCard({ data, isUser }: Props) {
           courseCode: data?.courseId,
           yearGroup: `LEVEL ${Math.ceil(data?.semesterNum / 2) * 100}`,
           program: data?.program?.longName,
-          mode: data?.studyMode,
         },
         gradeCounts,
         `MODERATION_${data?.courseId}_${data?.id}`

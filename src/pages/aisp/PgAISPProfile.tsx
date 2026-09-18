@@ -212,17 +212,6 @@ function PgAISPProfile({}: Props) {
             Icon={FaRegCalendar}
           />
           <AISPBioCard
-            label="Study Mode"
-            value={
-              data?.studyMode == "W"
-                ? "WEEKEND"
-                : data?.studyMode == "E"
-                ? "EVENING"
-                : "MORNING"
-            }
-            Icon={MdOutlineMarkEmailUnread}
-          />
-          <AISPBioCard
             label="Student Category"
             value={data?.entryGroup == "GH" ? "GHANAIAN" : "INTERNATIONAL"}
             Icon={MdOutlineFiberPin}

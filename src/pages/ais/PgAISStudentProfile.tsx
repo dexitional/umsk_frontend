@@ -128,11 +128,6 @@ function PgAISStudentProfile({}: Props) {
           Icon={MdOutlineMarkEmailUnread}
         />
         <AISPBioCard
-          label="Study Mode"
-          value={data?.studyMode == "W"? "WEEKEND": data?.studyMode == "E"? "EVENING": "MORNING"}
-          Icon={MdOutlineMarkEmailUnread}
-        />
-        <AISPBioCard
           label="Department"
           value={data?.program?.department?.title || "Not Set"}
           Icon={FaPhoneAlt}

@@ -474,25 +474,6 @@ function PgAISStudentForm({}: Props) {
               </label>
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Study Mode
-                </span>
-                <select
-                  arial-label="deferStatus"
-                  name="studyMode"
-                  defaultValue={data?.studyMode}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value="M">MORNING</option>
-                  <option value="W">WEEKEND</option>
-                  <option value="E">EVENING</option>
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
                   Program Year and Semester
                 </span>
                 <select
