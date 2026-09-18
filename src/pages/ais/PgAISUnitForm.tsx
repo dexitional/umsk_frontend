@@ -110,7 +110,7 @@ function PgAISUnitForm({}: Props) {
                   <option selected disabled>
                     -- Choose --
                   </option>
-                  <option value="1">FACULTY/SCHOOL/SECTION</option>
+                  <option value="1">FACULTY</option>
                   <option value="2">DEPARTMENT</option>
                   <option value="3">UNIT</option>
                 </select>
