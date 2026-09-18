@@ -29,7 +29,13 @@ function UnitCardItem({ data }: Props) {
         <div className="flex items-center space-x-2">
           <HiOutlineAcademicCap className="h-4 w-5 text-primary/70" />
           <span className="px-2 py-0.5 bg-green-50 rounded border text-xs text-gray-500">
-            <b>{data?.levelNum == 1 ? "FACULTY" : "DEPARTMENT"}</b>
+            <b>
+              {data?.levelNum == 1
+                ? "FACULTY"
+                : data?.levelNum == 2
+                ? "DEPARTMENT"
+                : "UNIT"}
+            </b>
           </span>
         </div>
         {data?.level1 && (

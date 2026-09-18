@@ -111,7 +111,8 @@ function PgAISUnitForm({}: Props) {
                     -- Choose --
                   </option>
                   <option value="1">FACULTY/SCHOOL/SECTION</option>
-                  <option value="2">DEPARTMENT/UNIT</option>
+                  <option value="2">DEPARTMENT</option>
+                  <option value="3">UNIT</option>
                 </select>
               </label>
               <label className="flex flex-col space-y-2">
@@ -150,7 +151,7 @@ function PgAISUnitForm({}: Props) {
             <div className="md:pl-6 space-y-4">
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Parent Faculty/School/Section
+                  Parent Faculty
                 </span>
                 <select
                   arial-label="level1Id"
@@ -163,6 +164,28 @@ function PgAISUnitForm({}: Props) {
                   </option>
                   {units
                     ?.filter((r) => r.levelNum == 1)
+                    ?.map((row: any) => (
+                      <option key={row.id} value={row.id}>
+                        {row.title?.toUpperCase()}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  Parent Department
+                </span>
+                <select
+                  arial-label="level2Id"
+                  name="level2Id"
+                  defaultValue={data?.level2Id}
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option value="" selected>
+                    -- NONE --
+                  </option>
+                  {units
+                    ?.filter((r) => r.levelNum == 2)
                     ?.map((row: any) => (
                       <option key={row.id} value={row.id}>
                         {row.title?.toUpperCase()}

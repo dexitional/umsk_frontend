@@ -20,7 +20,12 @@ function UnitListItem({ data }: Props) {
       <div className="capitalize flex flex-col space-y-2">
         <ListHeading title="Unit level" />
         <span className="px-2">
-          {data?.levelNum == 1 ? "FACULTY" : "DEPARTMENT"} ({data?.levelNum})
+          {data?.levelNum == 1
+            ? "FACULTY"
+            : data?.levelNum == 2
+            ? "DEPARTMENT"
+            : "UNIT"}{" "}
+          ({data?.levelNum})
         </span>
       </div>
       <div className="capitalize flex flex-col space-y-2">
