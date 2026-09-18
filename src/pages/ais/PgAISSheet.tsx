@@ -29,10 +29,11 @@ export async function loader({ params }) {
 function PgAISSheet({}: Props) {
   const { data }: any = useLoaderData();
   const { user } = useUserStore((state) => state);
-  const canEditSheet = useHasRole("ais", ["sheet::admin"]);
+  // sheet::admin has been relieved of assessment-sheet duties entirely --
+  // none of these gates include it.
+  const canEditSheet = useHasRole("ais", ["sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
   // Scores + Sheet Manager: every sheet/mysheet role gets these.
   const canViewScores = useHasRole("ais", [
-    "sheet::admin",
     "sheet::dean",
     "sheet::hod",
     "sheet::head",
@@ -40,15 +41,13 @@ function PgAISSheet({}: Props) {
     "sheet::ug-registry",
     "mysheet::assessor",
   ]);
-  // Capture: dean/hod don't get this — only admin, the registry roles, and the assessor.
+  // Capture: dean/hod don't get this — only the registry roles and the assessor.
   const canViewCapture = useHasRole("ais", [
-    "sheet::admin",
     "sheet::pg-registry",
     "sheet::ug-registry",
     "mysheet::assessor",
   ]);
   const canManageSheet = useHasRole("ais", [
-    "sheet::admin",
     "sheet::dean",
     "sheet::hod",
     "sheet::head",

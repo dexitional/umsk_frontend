@@ -186,7 +186,7 @@ function Guide({}: Props) {
                 <div className="gd-block">
                   <div className="gd-eyebrow">Assessment Sheet &amp; Assessor Sheet</div>
                   <h2>Scores and grading</h2>
-                  <p>Each course/semester gets an assessment sheet. Course lecturers (<code>mysheet::assessor</code>) enter scores on <b>Assessor Sheet</b>, submitted sheets are reviewed and published by registry/deans (<code>sheet::hod</code>, <code>sheet::dean</code>, <code>sheet::admin</code>) on <b>Assessment Sheet</b>. Publishing releases results to students; a separate reverse action lets a mistake be pulled back before publish.</p>
+                  <p>Each course/semester gets an assessment sheet. Course lecturers (<code>mysheet::assessor</code>) enter scores on <b>Assessor Sheet</b>, submitted sheets are reviewed and published by registry/heads/deans (<code>sheet::hod</code>, <code>sheet::dean</code>) on <b>Assessment Sheet</b>. Publishing releases results to students; a separate reverse action lets a mistake be pulled back before publish.</p>
                   <Shot name="ais-sheets" alt="AIS assessment sheets" caption="Assessment Sheet — the score-capture and publish workflow." />
                 </div>
 
@@ -322,9 +322,8 @@ function Guide({}: Props) {
                           <tr><td><code>student::registry</code></td><td className="gd-wrap">Edit student records; view finance.</td></tr>
                           <tr><td><code>student::finance</code></td><td className="gd-wrap">View a student's finance statement only.</td></tr>
                           <tr><td><code>student::clerk</code></td><td className="gd-wrap">View-only student access.</td></tr>
-                          <tr><td><code>sheet::admin</code></td><td className="gd-wrap">Full assessment sheet lifecycle: create, upload, publish, reverse.</td></tr>
                           <tr><td><code>sheet::dean</code></td><td className="gd-wrap">Publish assessment sheets.</td></tr>
-                          <tr><td><code>sheet::hod</code></td><td className="gd-wrap">Reverse and assign assessment sheets for their department.</td></tr>
+                          <tr><td><code>sheet::hod</code></td><td className="gd-wrap">Full assessment sheet lifecycle for their department: create, close, edit, moderate, publish, reverse, and assign.</td></tr>
                           <tr><td><code>sheet::pg-registry</code> / <code>ug-registry</code></td><td className="gd-wrap">Upload, reverse, and assign sheets for that category.</td></tr>
                           <tr><td><code>mysheet::assessor</code></td><td className="gd-wrap">Enter and submit scores for courses they teach (My Sheets).</td></tr>
                           <tr><td><code>resit::admin</code></td><td className="gd-wrap">Full resit session management: create sessions, close/publish, assign.</td></tr>
