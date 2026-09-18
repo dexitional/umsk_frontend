@@ -38,10 +38,6 @@ function SheetCardItem({ data }: Props) {
           </span>
         </div>
 
-        <div className="px-2 py-1 w-fit bg-amber-50 rounded border text-xs font-semibold text-gray-500 tracking-widest">
-          {data.session?.tag == "MAIN" ? "MAIN STREAM" : "JANUARY/SUB STREAM"}
-        </div>
-
         <div className="py-1 px-2 bg-green-50 rounded border text-[0.65rem] font-semibold text-gray-500 tracking-wider">
           {data.program?.longName}
         </div>

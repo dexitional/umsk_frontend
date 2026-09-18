@@ -25,9 +25,6 @@ function BillCardItem({ data }: Props) {
           <div className="text-sm md:text-sm text-primary-dark/70 font-bold capitalize">
             {data?.program?.shortName?.toUpperCase()}
           </div>
-          <div className="py-0.5 px-1 text-[0.65rem] rounded bg-primary/60 text-white font-bold">
-            {data?.session?.tag}
-          </div>
         </div>
       </div>
       <div className="space-y-1.5">

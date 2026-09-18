@@ -72,10 +72,6 @@ function PgFMSBill({}: Props) {
             </div>
             <div className="w-full flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 text-zinc-400 text-lg">
               <div className="flex items-center space-x-2">
-                <span className="px-3 py-0.5 text-xs md:text-xs font-semibold tracking-wider capitalize bg-primary/10 rounded text-primary/80">
-                  {data?.session?.tag}
-                </span>
-                <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
                 <span className="tracking-wider text-xs md:text-sm capitalize font-semibold">
                   {data.session?.title}
                 </span>

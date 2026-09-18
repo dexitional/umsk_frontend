@@ -29,13 +29,13 @@ function ResitCardItem({ data }: Props) {
         </div>
        <div className="flex items-center space-x-4">
             <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-red-500/70" />
-            <span className={`text-red-500/70 text-xs  font-bold capitalize`}>{data?.trailSession?.title} {data?.trailSession?.tag == 'SUB' ? ', JANUARY': 'MAIN'}</span>
+            <span className={`text-red-500/70 text-xs  font-bold capitalize`}>{data?.trailSession?.title}</span>
       </div>
       <hr/>
       {data.registerSession && 
       <div className="flex items-center space-x-4">
             <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-green-700/70" />
-            <span className={`text-green-700/70 text-xs  font-bold capitalize`}>{data?.registerSession?.title} {data?.registerSession?.tag == 'SUB' ? ', JANUARY': 'MAIN'}</span>
+            <span className={`text-green-700/70 text-xs  font-bold capitalize`}>{data?.registerSession?.title}</span>
       </div>
       }
       {data.session && 

@@ -122,16 +122,14 @@ function PgAISSheet({}: Props) {
                 </span>
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
               </div>
-              <div className="flex items-center space-x-2">
-                <HiAcademicCap className="md:h-5 md:w-5 text-primary/70" />
-                <span className="text-xs md:text-base tracking-wider font-medium uppercase">
-                  {data?.session?.cohort
-                    ? `COHORT ${data.session.cohort}`
-                    : data?.session?.tag?.toLowerCase() == "main"
-                    ? "MAIN STREAM"
-                    : "JANUARY/SUB STREAM"}
-                </span>
-              </div>
+              {data?.session?.cohort ? (
+                <div className="flex items-center space-x-2">
+                  <HiAcademicCap className="md:h-5 md:w-5 text-primary/70" />
+                  <span className="text-xs md:text-base tracking-wider font-medium uppercase">
+                    {`COHORT ${data.session.cohort}`}
+                  </span>
+                </div>
+              ) : null}
             </div>
 
             {data?.assignee && (

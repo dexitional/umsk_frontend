@@ -36,14 +36,6 @@ function CalendarCardItem({ data }: Props) {
         </div>
       </div>
       <div className="space-y-2">
-        <div className="flex items-center space-x-4">
-          <span
-            className={`px-3 py-0.5 bg-white  rounded shadow-[0px_0px_2px_#aaa_inset] text-xs text-gray-500/80`}
-          >
-            <b>{data?.tag == "MAIN" ? "MAIN CALENDAR" : "JANUARY CALENDAR"}</b>
-          </span>
-        </div>
-
         <div className="space-y-1">
           {/* Registration Period */}
           {data.registerStart && (

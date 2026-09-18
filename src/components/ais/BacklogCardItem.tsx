@@ -37,13 +37,6 @@ function BacklogCardItem({ data }: Props) {
             {data?.session?.title}
           </span>
         </div>
-        {data.session?.tag == "sub" && (
-          <div>
-            <span className="px-2 py-1 bg-green-50 rounded border text-xs font-medium text-gray-500 tracking-wider">
-              {data.session?.tag ? "MAIN STREAM" : "JANUARY/SUB STREAM"}
-            </span>
-          </div>
-        )}
       </div>
       <div className="flex flex-col space-y-1">
         <div className="px-3 py-2 opacity-80 md:opacity-100 md:hidden flex rounded-md border bg-blue-50/30 items-center md:justify-between space-x-2 md:group">

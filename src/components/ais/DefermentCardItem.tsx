@@ -66,8 +66,7 @@ function DefermentCardItem({ data }: Props) {
               data?.session?.title ? "text-gray-500" : "text-red-500"
             } text-xs  font-bold capitalize`}
           >
-            {data?.session?.title}{" "}
-            {data?.session?.tag == "SUB" ? ", JANUARY" : "MAIN"}
+            {data?.session?.title}
           </span>
         </div>
         <div className="flex items-center space-x-4">

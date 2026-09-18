@@ -30,7 +30,7 @@ function ReportListView({ programs, majors, sessions, services }: Props) {
 
   const programOptions = programs?.map((r: any) => ({ label: r.shortName, value: r.id }));
   const majorOptions = majors?.map((r: any) => ({ label: `${r.shortName} - ${r.program.shortName}`, value: r.id }));
-  const sessionOptions = sessions?.map((r: any) => ({ label: `${r.title} - ${r.tag}`, value: r.id }));
+  const sessionOptions = sessions?.map((r: any) => ({ label: r.title, value: r.id }));
   const serviceOptions = services?.map((r: any) => ({ label: r.title, value: r.id }));
 
   const REPORTS = [

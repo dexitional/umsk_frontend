@@ -27,7 +27,7 @@ function AISSheetScoreCard({ title,data }: Props) {
           };
           output.push(ds);
         }
-        fileName = 'SCORES - '+data[0].session?.title+' - '+data[0].session?.tag+' - '+data[0].course?.title+' - '+data[0].courseId+' - L'+(Math.ceil(data[0].semesterNum/2)*100);
+        fileName = 'SCORES - '+data[0].session?.title+' - '+data[0].course?.title+' - '+data[0].courseId+' - L'+(Math.ceil(data[0].semesterNum/2)*100);
         return jsonToExcel(output, fileName);
       }
   }

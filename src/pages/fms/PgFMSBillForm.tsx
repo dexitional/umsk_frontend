@@ -210,7 +210,7 @@ function PgFMSVcostForm({}: Props) {
                   {sessions &&
                     sessions?.map((row: any) => (
                       <option key={row?.id} value={row?.id}>
-                        {row?.title} ( { row?.tag == 'SUB' ? 'JANUARY':'SEPTEMBER'} )
+                        {row?.title}
                       </option>
                     ))}
                 </select>

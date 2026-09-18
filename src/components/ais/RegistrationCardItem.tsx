@@ -60,8 +60,7 @@ function ProgressionCardItem({ data }: Props) {
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span className={`text-gray-500 text-xs  font-bold capitalize`}>
-            {data?.session?.title}{" "}
-            {data?.session?.tag == "SUB" ? "- JAN" : "- MAIN"}
+            {data?.session?.title}
           </span>
         </div>
         <div className="flex items-center space-x-4">

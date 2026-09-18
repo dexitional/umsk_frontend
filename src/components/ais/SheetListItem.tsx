@@ -44,10 +44,6 @@ function SheetListItem({ data }: Props) {
         <ListHeading title="Session" />
         <span className="px-2 md:px-0 uppercase leading-5">
           {data?.session?.title}
-          <br />
-          <b>
-            {data?.session?.tag == "sub" ? "JANUARY/SUB STREAM" : "MAIN STREAM"}
-          </b>
         </span>
       </div>
       <div className="flex flex-col space-y-2">

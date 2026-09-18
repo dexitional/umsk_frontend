@@ -143,27 +143,9 @@ function PgAISCalendarForm({}: Props) {
               </label>
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Calendar Stream {data?.tag}
-                </span>
-                <select
-                  arial-label="tag"
-                  name="tag"
-                  defaultValue={data?.tag?.toUpperCase()}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value="MAIN">MAIN STREAM</option>
-                  <option value="SUB">SUB STREAM</option>
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
                   Cohort{" "}
                   <em>
-                    <sub>( Optional — PG sheets show "COHORT n" instead of the stream label when set )</sub>
+                    <sub>( Optional — PG sheets show "COHORT n" when set )</sub>
                   </em>
                 </span>
                 <input
@@ -176,10 +158,7 @@ function PgAISCalendarForm({}: Props) {
               </label>
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Admission Prefix{" "}
-                  <em>
-                    <sub>( Must be Set for January/Sub Sessions )</sub>
-                  </em>
+                  Admission Prefix
                 </span>
                 <input
                   arial-label="admissionPrefix"
