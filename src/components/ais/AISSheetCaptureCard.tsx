@@ -24,19 +24,13 @@ function AISSheetCaptureCard({ title, data }: Props) {
   const loading = navigation?.state;
   const { sheetId } = useParams();
   // Exam scores aren't captured on this form (they'll come from a separate
-  // upload feature later) -- class score is now derived entirely from
-  // Quiz + Assignment + Midsem, and total is derived from class score plus
-  // whatever exam score already exists on the row (0/null until that
-  // feature lands). Track live overrides per row so both update immediately
-  // on blur instead of waiting for the next full page load.
+  // upload feature later) -- class score is derived entirely from
+  // Quiz + Assignment + Midsem. Track live overrides per row so it updates
+  // immediately on blur instead of waiting for the next full page load.
   const [classTotals, setClassTotals] = useState<Record<number, number>>({});
 
   const getRowClassScore = (i: number, row: any) => {
     return classTotals[i] ?? row.classScore;
-  };
-
-  const getRowTotal = (i: number, row: any) => {
-    return getRowClassScore(i, row) + (row.examScore || 0);
   };
 
   const recomputeTotal = (i: number) => {
@@ -132,20 +126,19 @@ function AISSheetCaptureCard({ title, data }: Props) {
         </div>
       </h1>
       <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
-        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-11 tracking-wider">
+        <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-10 tracking-wider">
           <span>PHOTO</span>
           <span className="col-span-2">INDEX NUMBER</span>
           <span className="col-span-3">FULL NAME</span>
           <span>QUIZ</span>
           <span>ASSIGNMENT</span>
           <span>MIDSEM</span>
-          <span>CLASS-T</span>
           <span>TOTAL</span>
         </div>
         {data
           //?.filter((r: any) => r.status == 0)
           ?.map((row: any, i: number) => (
-            <div className="px-3 py-2 border-b grid grid-cols-11 font-medium text-xs text-primary/80">
+            <div className="px-3 py-2 border-b grid grid-cols-10 font-medium text-xs text-primary/80">
               <img
                 crossOrigin="anonymous"
                 src={`${REACT_APP_API_URL}/auth/photos/?tag=${row?.student?.id}`}
@@ -201,9 +194,6 @@ function AISSheetCaptureCard({ title, data }: Props) {
                 type="hidden"
                 defaultValue={row.examScore}
               />
-              <div className="flex items-center justify-center font-bold italic text-sm text-gray-500">
-                {getRowTotal(i, row)}
-              </div>
               <input
                 name={`${i}_idx`}
                 defaultValue={row.indexno}
