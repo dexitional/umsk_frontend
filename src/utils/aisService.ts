@@ -1359,16 +1359,43 @@ class Service {
       }
     }
 
-    /* Exam Score Manager -- narrower clone of Backlog. List/detail/approve
-       reuse the backlog endpoints (fetchBacklogs filtered by type, plus
-       fetchBacklog/approveBacklog directly); only upload has its own route. */
+    /* Exam Score Manager -- narrower clone of Backlog, backed by its own
+       activityExam model with dedicated list/detail/approve/upload routes. */
     async fetchExamScoreUploads(keyword,page,limit){
         try {
-            const res = await axios.get(`${REACT_APP_API_URL}/ais/backlogs?type=EXAM_SCORE&keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/examscores?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
             if(res.status == 200 || res.status == 202)
               return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+     }
+
+    async fetchExamScoreUpload(examId){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/examscores/${encodeURIComponent(examId)}`,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+               return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+     }
+
+    async approveExamScoreUpload(examId){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/ais/examscores/approve`, { examId } ,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+               return res.data
             else throw new(res.data.message)
 
         } catch (error) {

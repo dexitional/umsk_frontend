@@ -8,8 +8,7 @@ type Props = {
 };
 
 // Narrower clone of BacklogCardItem: no edit/delete (exam score batches are
-// upload-only), links to the shared /ais/backlogs/:id detail+approve page
-// since that page is already generic over activityBacklog.type.
+// upload-only), links to the dedicated /ais/examscores/:id detail+approve page.
 function ExamScoreCardItem({ data }: Props) {
   return (
     <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
@@ -37,7 +36,7 @@ function ExamScoreCardItem({ data }: Props) {
       <div className="flex flex-col space-y-1">
         <div className="px-3 py-2 opacity-80 md:opacity-100 flex rounded-md border bg-white items-center space-x-2 group">
           <Link
-            to={`/ais/backlogs/${encodeURIComponent(data?.id)}`}
+            to={`/ais/examscores/${encodeURIComponent(data?.id)}`}
             className="py-0.5 px-2 rounded flex md:hidden group-hover:flex items-center space-x-1.5 bg-primary/60"
           >
             <FaFolder className="h-4 w-4 text-amber-200" />

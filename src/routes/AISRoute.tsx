@@ -503,8 +503,8 @@ const AISRoute:any =  {
          lazy: () => import('../pages/ais/PgAISBacklogForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
-      /* Exam Score Manager -- narrower clone of Backlog above; batches it
-         creates are viewed/approved on the shared backlogs/:backlogId route. */
+      /* Exam Score Manager -- narrower clone of Backlog above, backed by its
+         own activityExam model with a dedicated detail+approve route. */
       {
          path:'examscores',
          lazy: () => import('../pages/ais/PgAISExamScores').then(m => ({ Component: m.default, loader: m.loader })),
@@ -512,6 +512,17 @@ const AISRoute:any =  {
       {
          path:'examscores/sample',
          lazy: () => import('../pages/ais/PgAISExamScoreSample').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+      {
+         path:'examscores/:examId',
+         lazy: () => import('../pages/ais/PgAISExamScore').then(m => ({ Component: m.default, loader: m.loader })),
+         children: [
+            {
+               path:'records',
+               lazy: () => import('../pages/ais/PgAISExamScoreRecord').then(m => ({ Component: m.default, loader: m.loader })),
+               index: true
+            }
+         ]
       },
 
 

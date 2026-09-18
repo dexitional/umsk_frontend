@@ -13,10 +13,9 @@ import { useHasRole } from "../../utils/roles";
 type Props = {};
 
 // Exam Score Manager: narrower clone of the Backlog module (PgAISBacklogs) --
-// upload-only (no manual create form), list is filtered to
-// activityBacklog.type == EXAM_SCORE, and the batches it creates are
-// reviewed/approved on the same shared /ais/backlogs/:id page as any other
-// backlog, since that page is already generic over type.
+// upload-only (no manual create form), backed by its own activityExam model,
+// and the batches it creates are reviewed/approved on a dedicated
+// /ais/examscores/:id page (PgAISExamScore).
 export async function loader({ request }) {
   const lm = useUserStore.getState().limit;
   const pglimit = lm?.examscores;
