@@ -69,11 +69,11 @@ function PgAISExamScores({}: Props) {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
             <button onClick={() => navigate(`/ais/examscores/sample`)} className="py-0.5 px-6 rounded bg-primary-dark/80 flex items-center justify-evenly">
               <FaFileExcel className="h-4 w-6 text-white" />
-              <span className="font-bold text-white">BUILD SAMPLE FILE</span>
+              <span className="font-bold text-white">BUILD SHEET</span>
             </button>
             <button onClick={importTrigger} className="py-0.5 px-6 rounded bg-primary-dark/80 flex items-center justify-evenly">
               <FaUpload className="h-4 w-6 text-white" />
-              <span className="font-bold text-white">UPLOAD EXAM SCORES</span>
+              <span className="font-bold text-white">UPLOAD SHEET</span>
             </button>
             <input
               type="file"
