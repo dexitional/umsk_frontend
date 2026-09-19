@@ -504,12 +504,28 @@ class Service {
             if(res.status == 200){
                toast.success("Record created!")
                return res.data
-            } 
+            }
             else throw new(res.data.message)
-        
-        } catch (error) { 
+
+        } catch (error) {
            return checkSession(error)
         }
+    }
+
+    async uploadStudent(rows){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/upload`, rows,{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          if(res.status == 200){
+             toast.success("Students uploaded!")
+             return res.data
+          }
+          else throw new(res.data.message)
+
+      } catch (error) {
+         return checkSession(error)
+      }
     }
 
     async updateStudent(studentId,data){

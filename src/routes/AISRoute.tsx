@@ -55,6 +55,10 @@ const AISRoute:any =  {
          lazy: () => import('../pages/ais/PgAISStudentForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
       {
+         path:'students/sample',
+         lazy: () => import('../pages/ais/PgAISStudentSample').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+      {
          path:'students/:studentId',
          lazy: () => import('../pages/ais/PgAISStudent').then(m => ({ Component: m.default, loader: m.loader })),
          children: [

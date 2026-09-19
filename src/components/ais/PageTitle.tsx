@@ -12,6 +12,7 @@ type Props = {
   setView: (arg: string) => void;
   view: string;
   pages?: any;
+  children?: React.ReactNode;
 };
 
 function PageTitle({
@@ -21,6 +22,7 @@ function PageTitle({
   setView,
   view,
   pages,
+  children,
 }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
@@ -181,6 +183,7 @@ function PageTitle({
             </span>
           </Link>
         ) : null}
+        {children}
       </div>
     </div>
   );
