@@ -88,23 +88,6 @@ function PgFMSPaymentForm({}: Props) {
               </label>
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Payment Currency
-                </span>
-                <select
-                  arial-label="currency"
-                  name="currency"
-                  defaultValue={data?.currency}
-                  className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value="GHC">GHC</option>
-                  <option value="USD">USD</option>
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
                   Payment Amount
                 </span>
                 <input

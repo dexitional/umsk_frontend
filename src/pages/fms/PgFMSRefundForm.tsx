@@ -84,25 +84,6 @@ function PgFMSRefundForm({}: Props) {
               </label>
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Refund Type
-                </span>
-                <select
-                  arial-label="type"
-                  name="type"
-                  defaultValue={data?.type}
-                  className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value="FEES">FEES</option>
-                  <option value="FINE">FINE</option>
-                  <option value="GRADUATION">GRADUATION</option>
-                  <option value="RESIT">RESIT</option>
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
                   Refund Narrative
                 </span>
                 <input
@@ -130,23 +111,6 @@ function PgFMSRefundForm({}: Props) {
                   required
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                 />
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Refund Currency
-                </span>
-                <select
-                  arial-label="currency"
-                  name="currency"
-                  defaultValue={data?.currency}
-                  className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value="GHC">GHC</option>
-                  <option value="USD">USD</option>
-                </select>
               </label>
 
               <label className="flex flex-col space-y-2">

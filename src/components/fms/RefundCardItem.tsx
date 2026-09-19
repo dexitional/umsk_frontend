@@ -47,11 +47,6 @@ function RefundCardItem({ data }: Props) {
         />
       </div>
       <div className="space-y-2">
-        <div className="mb-4 px-4 py-1 w-fit flex items-center space-x-4 rounded bg-primary-dark/10">
-          <span className={`text-gray-500 text-sm  font-bold capitalize`}>
-            {data?.type}
-          </span>
-        </div>
         <div className="flex items-center space-x-4">
           <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
           <span

@@ -18,7 +18,7 @@ type Props = {
 function RefundListItem({ data }: Props) {
   const canManageRefund = useHasRole("fms", ["refund::admin"]);
   return (
-    <div className="px-3 md:px-6 pb-4 grid md:grid-cols-7 gap-y-4 md:gap-y-0 md:gap-x-2 text-gray-500 border-b border-slate-200 hover:bg-slate-50/50 group">
+    <div className="px-3 md:px-6 pb-4 grid md:grid-cols-6 gap-y-4 md:gap-y-0 md:gap-x-2 text-gray-500 border-b border-slate-200 hover:bg-slate-50/50 group">
       <div className="md:col-span-2 flex md:flex-row flex-col md:justify-start md:items-center md:space-y-0 space-y-2">
         <ListHeading title="Student" />
         <div className="px-2 flex items-center space-x-3 md:space-x-4 justify-self-start">
@@ -36,10 +36,6 @@ function RefundListItem({ data }: Props) {
             ).toUpperCase()}
           </span>
         </div>
-      </div>
-      <div className="capitalize flex flex-col space-y-2 self-center">
-        <ListHeading title="Type" />
-        <span className="px-2">{data?.type}</span>
       </div>
       <div className="capitalize flex flex-col space-y-2 self-center">
         <ListHeading title="Narrative" />
