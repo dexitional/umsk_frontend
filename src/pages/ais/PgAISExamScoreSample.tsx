@@ -41,7 +41,7 @@ function PgAISExamScoreSample({}: Props) {
 
   return (
     <main className="md:pl-10 p-2 md:p-6 space-y-4 md:space-y-10">
-      <SubPageTitle title={`Create Exam Score Upload Sample`} page="Exam Score Manager" />
+      <SubPageTitle title={`Create Exam Score Upload Sample`} page="ExamScore Module" />
       <div className="p-2 md:p-6 border bg-slate-50/50 rounded-xl space-y-6">
         <section className="flex md:space-x-6">
           <div className="flex-1 flex flex-col space-y-1 md:space-y-3">

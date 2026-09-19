@@ -57,7 +57,7 @@ function PgAISExamScores({}: Props) {
   return (
     <div className="md:pl-10 p-4 md:p-6 space-y-4 md:space-y-10">
       <PageTitle
-        title="Exam Score Manager"
+        title="ExamScore Module"
         createtext={undefined}
         createlink={undefined}
         pages={totalPages}

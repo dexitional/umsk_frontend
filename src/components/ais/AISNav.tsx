@@ -39,7 +39,7 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['graduation::admin','graduation::clerk','graduation::registry'].includes(r?.role)) && (<AISNavItem title="Graduation Module" url="graduates" Icon={GrDashboard} />) } {/* Graduation */}
         
         { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="Backlog Module" url="backlogs" Icon={GrDashboard} />) }
-        { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="Exam Score Manager" url="examscores" Icon={GrDashboard} />) }
+        { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="ExamScore Module" url="examscores" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['transwift::admin','transwift::clerk'].includes(r?.role)) && (<AISNavItem title="Transwift Module" url="transwifts" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) && (<AISNavItem title="Service Letter" url="letters" Icon={GrDashboard} />) } 
         
