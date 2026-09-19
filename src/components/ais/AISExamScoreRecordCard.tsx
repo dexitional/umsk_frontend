@@ -7,8 +7,8 @@ type Props = {
 
 }
 
-// Narrower clone of AISBacklogRecordCard for the Exam Score Manager --
-// exam score batches only ever have one shape of row (INDEX, LEVEL,
+// Narrower clone of AISBacklogRecordCard for the ExamScore Module --
+// exam score batches only ever have one shape of row (INDEX, YEAR,
 // SEMESTER, COURSE, EXAM, RECORD TYPE), so no type-branching is needed.
 function AISExamScoreRecordCard({ title,data }: Props) {
   return (
@@ -22,7 +22,7 @@ function AISExamScoreRecordCard({ title,data }: Props) {
     <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
           <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-7 tracking-wider">
             <span className="col-span-2">INDEX NUMBER</span>
-            <span className="col-span-1">LEVEL</span>
+            <span className="col-span-1">YEAR</span>
             <span>SEMESTER</span>
             <span>COURSE</span>
             <span>EXAM</span>
@@ -40,7 +40,7 @@ function AISExamScoreRecordCard({ title,data }: Props) {
                 </span>
                </span>
               <span className="col-span-1 font-bold self-center">
-                L {Math.ceil(row.semesterNum/2)*100}
+                YR {Math.ceil(row.semesterNum/2)}
               </span>
               <span className="col-span-1 font-bold self-center">
                 {row.semesterNum%2 == 0 ? 'SEM 2':'SEM 1'}
