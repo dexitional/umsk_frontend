@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveCircle } from "react-icons/md";
+import toast from "react-hot-toast";
 import {
   Form,
   redirect,
+  useActionData,
   useLoaderData,
   useNavigate,
   useNavigation,
@@ -12,6 +14,9 @@ import Service from "../../utils/aisService";
 
 type Props = {};
 
+// Matches the backend's EXAM_SCORE_MAX in aisController.ts.
+const EXAM_SCORE_MAX = 40;
+
 // Edit-only form for a pending Exam Score batch (this module is upload-only,
 // there's no manual create form). Narrower clone of PgAISBacklogForm's
 // ASSESSMENT branch: indexno, courseId, semesterNum, scoreType, scoreExam --
@@ -20,11 +25,15 @@ export async function action({ request, params }) {
   const id = params?.examId;
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const resp = await Service.updateExamScoreUpload(id, data);
-  if (resp) {
-    return redirect(`/ais/examscores/${id}`);
+  try {
+    const resp = await Service.updateExamScoreUpload(id, data);
+    if (resp) {
+      return redirect(`/ais/examscores/${id}`);
+    }
+    return null;
+  } catch (error: any) {
+    return { error: error?.response?.data?.message || "Record not updated!" };
   }
-  return null;
 }
 
 export async function loader({ params }) {
@@ -37,8 +46,13 @@ export async function loader({ params }) {
 function PgAISExamScoreForm({}: Props) {
   const navigate = useNavigate();
   const { data, courses, sessions }: any = useLoaderData();
+  const actionData: any = useActionData();
   const [form, setForm] = useState(data);
   const [meta, setMeta] = useState(data.meta ?? [{ indexno: "" }]);
+
+  useEffect(() => {
+    if (actionData?.error) toast.error(actionData.error, { duration: 8000 });
+  }, [actionData]);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   const addMeta = () => setMeta([...meta, { indexno: "" }]);
@@ -199,9 +213,13 @@ function PgAISExamScoreForm({}: Props) {
                     </label>
                     <label className="flex flex-col space-y-2">
                       <span className="text-xs md:text-xs text-gray-400 font-bold">
-                        EXAM SCORE
+                        EXAM SCORE (MAX {EXAM_SCORE_MAX})
                       </span>
                       <input
+                        type="number"
+                        min={0}
+                        max={EXAM_SCORE_MAX}
+                        step="any"
                         arial-label={`${i + 1}_scoreExam`}
                         name={`${i + 1}_scoreExam`}
                         defaultValue={r?.scoreExam}

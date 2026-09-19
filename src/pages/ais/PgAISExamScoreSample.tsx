@@ -21,7 +21,7 @@ export async function action({ request }) {
   const formData = await request.formData();
   let data: any = Object.fromEntries(formData);
   data.indexno = "41329275";
-  data.examScore = " -- LEAVE BLANK IF NO SCORE / IC -- ";
+  data.examScore = " -- LEAVE BLANK IF NO SCORE / IC -- MAX 40 -- ";
 
   jsonToExcel([data], `EXAM_SCORES_${data.courseId}_YEAR${Math.ceil(data.semesterNum / 2)}`);
   return false;

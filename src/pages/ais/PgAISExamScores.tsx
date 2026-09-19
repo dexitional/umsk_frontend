@@ -13,6 +13,10 @@ import { useHasRole } from "../../utils/roles";
 
 type Props = {};
 
+// Matches the backend's EXAM_SCORE_MAX in aisController.ts -- checked here
+// too so a bad sheet is rejected immediately instead of round-tripping.
+const EXAM_SCORE_MAX = 40;
+
 // Exam Score Manager: narrower clone of the Backlog module (PgAISBacklogs) --
 // upload-only (no manual create form), backed by its own activityExam model,
 // and the batches it creates are reviewed/approved on a dedicated
@@ -57,11 +61,26 @@ function PgAISExamScores({}: Props) {
       return;
     }
     setUploading(true);
-    excelToJson(file, async (data) => {
-      await Service.uploadExamScore(data, tag);
-      setUploading(false);
-      closeUploadModal();
-      setTimeout(() => navigate(0), 2000);
+    excelToJson(file, async (data: any[]) => {
+      const overMax = data.filter((row: any) => row.examScore !== "" && row.examScore != null && parseFloat(row.examScore) > EXAM_SCORE_MAX);
+      if (overMax.length) {
+        const indexnos = [...new Set(overMax.map((row: any) => row.indexno))];
+        toast.error(
+          `Upload rejected: exam score exceeds the maximum of ${EXAM_SCORE_MAX} for ${overMax.length} of ${data.length} student record(s): ${indexnos.join(", ")}.`,
+          { duration: 8000 }
+        );
+        setUploading(false);
+        return;
+      }
+      try {
+        await Service.uploadExamScore(data, tag);
+        closeUploadModal();
+        setTimeout(() => navigate(0), 2000);
+      } catch (error: any) {
+        const message = error?.response?.data?.message || "Exam scores not uploaded!";
+        toast.error(message, { duration: 8000 });
+        setUploading(false);
+      }
     });
   };
 
