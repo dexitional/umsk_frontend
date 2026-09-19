@@ -366,6 +366,8 @@ function Guide({}: Props) {
                           <tr><td><code>bill::clerk</code></td><td className="gd-wrap">View-only: bills, activity, receivers.</td></tr>
                           <tr><td><code>charge::admin</code></td><td className="gd-wrap">Full charge management: create, edit, delete.</td></tr>
                           <tr><td><code>charge::clerk</code></td><td className="gd-wrap">View-only charges.</td></tr>
+                          <tr><td><code>refund::admin</code></td><td className="gd-wrap">Full refund management: create, edit, delete. Credits a student's account (opposite of a charge).</td></tr>
+                          <tr><td><code>refund::clerk</code></td><td className="gd-wrap">View-only refunds.</td></tr>
                           <tr><td><code>account::admin</code></td><td className="gd-wrap">View accounts, retire balances, charge late-registration fines.</td></tr>
                           <tr><td><code>account::clerk</code></td><td className="gd-wrap">View-only student accounts.</td></tr>
                           <tr><td><code>debtor::clerk</code></td><td className="gd-wrap">View-only debtors list.</td></tr>

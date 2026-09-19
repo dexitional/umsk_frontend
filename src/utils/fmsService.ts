@@ -195,10 +195,83 @@ class FmsService {
             if(res.status == 200){
                toast.success("Record deleted!")
                return res.data
-            } 
+            }
             else throw new(res.data.message)
-        
-        } catch (error) { 
+
+        } catch (error) {
+            return checkSession(error)
+        }
+    }
+
+
+    /* Refunds -- opposite of Charges: credits a student's account instead of debiting it. */
+
+    async fetchRefunds(keyword,page,limit){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/fms/refunds?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`)
+            if(res.status == 200 || res.status == 204)
+              return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+            return checkSession(error)
+        }
+    }
+
+    async fetchRefund(refundId){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/fms/refunds/${encodeURIComponent(refundId)}`)
+            if(res.status == 200 || res.status == 204)
+               return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+            return checkSession(error)
+        }
+    }
+
+    async postRefund(data){
+        try {
+            const res = await axios.post(`${REACT_APP_API_URL}/fms/refunds`, data,{
+               headers: { "Content-Type" : "application/json" }
+            })
+            if(res.status == 200){
+               toast.success("Record saved!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+            return checkSession(error)
+        }
+    }
+
+    async updateRefund(refundId,data){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/fms/refunds/${encodeURIComponent(refundId)}`, data,{
+               headers: { "Content-Type" : "application/json" }
+            })
+            if(res.status == 200){
+               toast.success("Record saved!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+            return checkSession(error)
+        }
+    }
+
+    async deleteRefund(refundId){
+        try {
+            const res = await axios.delete(`${REACT_APP_API_URL}/fms/refunds/${encodeURIComponent(refundId)}`)
+            if(res.status == 200){
+               toast.success("Record deleted!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
             return checkSession(error)
         }
     }

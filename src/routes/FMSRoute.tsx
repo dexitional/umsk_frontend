@@ -77,6 +77,25 @@ const FMSRoute:any =  {
          lazy: () => import('../pages/fms/PgFMSChargeForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
+      /* Student Refunds Module -- opposite effect of Charges (credits
+         instead of debits a student's account) */
+      {
+         path:'refunds',
+         lazy: () => import('../pages/fms/PgFMSRefunds').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'refunds/create',
+         lazy: () => import('../pages/fms/PgFMSRefundForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+      {
+         path:'refunds/:refundId/destroy',
+         lazy: () => import('../pages/fms/PgFMSRefunds').then(m => ({ action: m.action })),
+      },
+      {
+         path:'refunds/:refundId/edit',
+         lazy: () => import('../pages/fms/PgFMSRefundForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
+
       /* Student Accounts Module */
       {
          path:'accounts',
