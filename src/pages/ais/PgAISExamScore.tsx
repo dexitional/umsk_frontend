@@ -78,6 +78,14 @@ function PgAISExamScore({}: Props) {
                 </span>
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
               </div>
+              {data?.tag ? (
+                <div className="flex items-center space-x-2 font-semibold">
+                  <span className="px-3 py-0.5 text-xs md:text-sm font-bold tracking-wider bg-slate-200 rounded-md text-gray-600">
+                    {data.tag}
+                  </span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
+                </div>
+              ) : null}
               <div className="flex items-center space-x-2">
                 <HiAcademicCap className="md:h-5 md:w-5 text-primary/70" />
                 <span className="text-xs md:text-base tracking-wider font-medium uppercase">

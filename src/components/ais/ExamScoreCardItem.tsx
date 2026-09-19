@@ -15,6 +15,11 @@ function ExamScoreCardItem({ data }: Props) {
       <h2 className="text-sm md:text-sm font-semibold text-gray-500 uppercase">
         {data?.title}
       </h2>
+      {data?.tag ? (
+        <div className="w-fit py-0.5 px-2 rounded bg-slate-200 text-xs text-gray-600 font-semibold tracking-wide">
+          {data.tag}
+        </div>
+      ) : null}
       <div className="w-full flex items-center justify-between space-x-2">
         <div className="w-full flex items-center justify-between space-x-2">
           <div className="flex-1 text-sm md:text-sm text-primary-dark/70 font-bold capitalize">

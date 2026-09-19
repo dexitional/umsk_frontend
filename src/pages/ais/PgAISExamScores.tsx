@@ -1,3 +1,4 @@
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaFileExcel, FaUpload } from "react-icons/fa6";
@@ -34,24 +35,34 @@ function PgAISExamScores({}: Props) {
   }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation.state === "loading";
-  const importRef: any = useRef();
   const navigate = useNavigate();
   const canManageExamScores = useHasRole("ais", ["backlog::admin"]);
 
-  const importTrigger = async () => {
-    importRef.current.click();
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [tag, setTag] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const uploadFileRef: any = useRef();
+
+  const closeUploadModal = () => {
+    setShowUploadModal(false);
+    setTag("");
+    setUploading(false);
+    if (uploadFileRef.current) uploadFileRef.current.value = "";
   };
 
-  const importSheet = async (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type.match("application/vnd.openxmlformats-officedocument.*") || file.type.match("text/csv"))) {
-      excelToJson(file, async (data) => {
-        await Service.uploadExamScore(data);
-        setTimeout(() => navigate(0), 2000);
-      });
-    } else {
+  const submitUpload = async () => {
+    const file = uploadFileRef.current?.files?.[0];
+    if (!file || !(file.type.match("application/vnd.openxmlformats-officedocument.*") || file.type.match("text/csv"))) {
       toast.error(`PLEASE CHOOSE EXCEL ( .XLSX ) FILE ONLY !`);
+      return;
     }
+    setUploading(true);
+    excelToJson(file, async (data) => {
+      await Service.uploadExamScore(data, tag);
+      setUploading(false);
+      closeUploadModal();
+      setTimeout(() => navigate(0), 2000);
+    });
   };
 
   return (
@@ -71,20 +82,61 @@ function PgAISExamScores({}: Props) {
               <FaFileExcel className="h-4 w-6 text-white" />
               <span className="font-bold text-white">BUILD SHEET</span>
             </button>
-            <button onClick={importTrigger} className="py-0.5 px-6 rounded bg-primary-dark/80 flex items-center justify-evenly">
+            <button onClick={() => setShowUploadModal(true)} className="py-0.5 px-6 rounded bg-primary-dark/80 flex items-center justify-evenly">
               <FaUpload className="h-4 w-6 text-white" />
               <span className="font-bold text-white">UPLOAD SHEET</span>
             </button>
-            <input
-              type="file"
-              name="import"
-              ref={importRef}
-              onChange={importSheet}
-              style={{ display: "none" }}
-            />
           </div>
         </section>
       ) : null}
+
+      <Dialog open={showUploadModal} onClose={closeUploadModal} className="relative z-50">
+        <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="w-full max-w-md rounded-xl bg-white p-4 md:p-6 space-y-4 shadow-xl">
+            <DialogTitle className="text-sm md:text-base font-semibold text-primary/70 tracking-wide uppercase">
+              Upload Exam Score Sheet
+            </DialogTitle>
+            <label className="flex flex-col space-y-2">
+              <span className="text-sm text-gray-500 font-medium">Tag</span>
+              <input
+                type="text"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                placeholder="e.g. resit batch, late submissions..."
+                className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-primary-dark/5 text-sm text-gray-500 rounded-md"
+              />
+            </label>
+            <label className="flex flex-col space-y-2">
+              <span className="text-sm text-gray-500 font-medium">Sheet File</span>
+              <input
+                type="file"
+                ref={uploadFileRef}
+                accept=".xlsx,.xls,.csv"
+                className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-primary-dark/5 text-sm text-gray-500 rounded-md file:mr-3 file:py-1 file:px-3 file:border-0 file:rounded file:bg-primary/70 file:text-white file:text-xs file:font-bold"
+              />
+            </label>
+            <div className="flex items-center pt-2">
+              <button
+                disabled={uploading}
+                onClick={submitUpload}
+                className="mr-4 py-1.5 px-4 w-4/5 rounded-md bg-primary/70 text-white font-semibold disabled:opacity-50 disabled:animate-pulse"
+                type="button"
+              >
+                {uploading ? <span className="animate-pulse">UPLOADING ...</span> : "UPLOAD"}
+              </button>
+              <button
+                disabled={uploading}
+                onClick={closeUploadModal}
+                className="py-1.5 px-4 rounded-md bg-slate-50 border text-sm text-gray-600"
+                type="button"
+              >
+                CANCEL
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
       {!loading && (
         <div className="">
           {view == "card" && (

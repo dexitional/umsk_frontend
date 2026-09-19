@@ -1419,9 +1419,9 @@ class Service {
         }
      }
 
-    async uploadExamScore(data){
+    async uploadExamScore(rows,tag){
       try {
-          const res = await axios.post(`${REACT_APP_API_URL}/ais/examscores/upload`, data,{
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/examscores/upload`, { tag, rows },{
               headers: { "Content-Type" : "application/json", "x-access-token" : token }
            })
           if(res.status == 200){
