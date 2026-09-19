@@ -1389,6 +1389,22 @@ class Service {
         }
      }
 
+    async updateExamScoreUpload(examId,data){
+        try {
+            const res = await axios.patch(`${REACT_APP_API_URL}/ais/examscores/${encodeURIComponent(examId)}`, data,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Record updated!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+     }
+
     async approveExamScoreUpload(examId){
         try {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/examscores/approve`, { examId } ,{

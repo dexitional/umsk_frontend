@@ -524,6 +524,10 @@ const AISRoute:any =  {
             }
          ]
       },
+      {
+         path:'examscores/:examId/edit',
+         lazy: () => import('../pages/ais/PgAISExamScoreForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
+      },
 
 
       /* Resit Session Module */

@@ -3,7 +3,8 @@ import SubPageTitle from "../../components/ais/SubPageTitle";
 // @ts-ignore
 import toast from "react-hot-toast";
 import { HiAcademicCap } from "react-icons/hi2";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { TbEdit } from "react-icons/tb";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
@@ -49,6 +50,14 @@ function PgAISExamScore({}: Props) {
               className="h-12 w-12 md:h-20 md:w-20 object-contain"
             />
           </div>
+          {!data.status && canEditExamScores ? (
+            <Link
+              to={`edit`}
+              className="p-1 md:py-1.5 md:px-2 absolute right-0 top-0 bg-slate-50 border border-gray-200 rounded flex"
+            >
+              <TbEdit className="h-5 w-5 text-gray-300" />
+            </Link>
+          ) : null}
           <div className="flex-1 flex flex-col space-y-4 md:space-y-3">
             <div className="flex space-x-2">
               <div className="block md:hidden p-2 md:p-4 h-16 w-16 border rounded-xl shadow-lg bg-white">
