@@ -36,7 +36,7 @@ function PgAISSheets({}: Props) {
   const { data }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation.state === "loading";
-  const canCreateSheet = useHasRole("ais", ["sheet::hod"]);
+  const canCreateSheet = useHasRole("ais", ["sheet::admin"]);
 
   return (
     <div className="md:pl-10 p-4 md:p-6 space-y-4 md:space-y-10">

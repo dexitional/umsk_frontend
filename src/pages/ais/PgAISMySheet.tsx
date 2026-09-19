@@ -33,10 +33,9 @@ export async function loader({ params }) {
 
 function PgAISMySheet({}: Props) {
   const { data }: any = useLoaderData();
-  // sheet::admin has been relieved of assessment-sheet duties entirely --
-  // none of these gates include it.
-  const canEditSheet = useHasRole("ais", ["sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
+  const canEditSheet = useHasRole("ais", ["sheet::admin"]);
   const canViewScores = useHasRole("ais", [
+    "sheet::admin",
     "sheet::dean",
     "sheet::hod",
     "sheet::pg-registry",
@@ -44,11 +43,13 @@ function PgAISMySheet({}: Props) {
     "mysheet::assessor",
   ]);
   const canViewCapture = useHasRole("ais", [
+    "sheet::admin",
     "sheet::pg-registry",
     "sheet::ug-registry",
     "mysheet::assessor",
   ]);
   const canManageSheet = useHasRole("ais", [
+    "sheet::admin",
     "sheet::dean",
     "sheet::hod",
     "sheet::pg-registry",

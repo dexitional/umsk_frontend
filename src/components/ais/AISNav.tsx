@@ -30,7 +30,7 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) && (<AISNavItem title="Registration Log" url="registrations" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) && (<AISNavItem title="Evaluation Log" url="evaluations" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['evaluation::admin'].includes(r?.role)) && (<AISNavItem title="Evaluation Manager" url="evaluation-forms" Icon={GrDashboard} />) }
-        { aisRoles?.find((r:any) => ['sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) && (<AISNavItem title="Assessment Sheet" url="sheets" Icon={GrDashboard} />) }
+        { aisRoles?.find((r:any) => ['sheet::admin','sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) && (<AISNavItem title="Assessment Sheet" url="sheets" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['mysheet::assessor'].includes(r?.role)) && (<AISNavItem title="Assessor Sheet" url="mysheets" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['resit::admin','resit::assessor'].includes(r?.role)) && (<AISNavItem title="My Resits" url="my-resits" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['resit::admin','resit::clerk','resit::assessor'].includes(r?.role)) && (<AISNavItem title="Resit Session" url="resit-sessions" Icon={GrDashboard} />) }

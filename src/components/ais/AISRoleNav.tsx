@@ -44,7 +44,7 @@ function AISRoleNav({ user }: Props) {
             { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Registration Log" url="registrations" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['logs::admin','logs::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Evaluation Log" url="evaluations" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['evaluation::admin'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Evaluation Manager" url="evaluation-forms" Icon={GrDashboard}></Menu.Item>) }
-            { aisRoles?.find((r:any) => ['sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Assessment Sheet" url="sheets" Icon={GrDashboard}></Menu.Item>) }
+            { aisRoles?.find((r:any) => ['sheet::admin','sheet::dean','sheet::hod','sheet::head','sheet::pg-registry','sheet::ug-registry'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Assessment Sheet" url="sheets" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['mysheet::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Assessor Sheet" url="mysheets" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['resit::admin','resit::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="My Resits" url="my-resits" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['resit::admin','resit::clerk','resit::assessor'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Resit Session" url="resit-sessions" Icon={GrDashboard}></Menu.Item>) }

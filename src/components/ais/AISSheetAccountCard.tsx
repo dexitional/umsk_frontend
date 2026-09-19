@@ -19,23 +19,20 @@ function AISSheetAccountCard({ data, isUser }: Props) {
   const navigate = useNavigate();
   const importRef: any = useRef();
   const fileRef: any = useRef<HTMLInputElement>();
-  // sheet::admin has been relieved of assessment-sheet duties entirely --
-  // none of these gates include it. Create/close (formerly admin-only, with
-  // no other role covering them) now belong to sheet::hod.
-  // Upload: the registry roles, or the assigned assessor (not dean/hod)
-  const canUpload = useHasRole("ais", ["sheet::pg-registry", "sheet::ug-registry", "mysheet::assessor"]);
+  // Upload: admin, the registry roles, or the assigned assessor (not dean/hod)
+  const canUpload = useHasRole("ais", ["sheet::admin", "sheet::pg-registry", "sheet::ug-registry", "mysheet::assessor"]);
   // Download: every sheet/mysheet role gets this
-  const canDownload = useHasRole("ais", ["sheet::dean", "sheet::hod", "sheet::pg-registry", "sheet::ug-registry", "mysheet::assessor"]);
-  // Submit: the assigned assessor only
-  const canSubmit = useHasRole("ais", ["mysheet::assessor"]);
-  const canCloseSheet = useHasRole("ais", ["sheet::hod"]);
-  // Moderate: the department head only
-  const canModerate = useHasRole("ais", ["sheet::hod","sheet::pg-registry", "sheet::ug-registry"]);
-  // Publish / Unpublish: dean or hod
-  const canPublish = useHasRole("ais", ["sheet::dean", "sheet::hod"]);
-  // Reverse: HOD, or the registry roles (not dean)
-  const canReverse = useHasRole("ais", ["sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
-  const canAssignSheet = useHasRole("ais", ["sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
+  const canDownload = useHasRole("ais", ["sheet::admin", "sheet::dean", "sheet::hod", "sheet::pg-registry", "sheet::ug-registry", "mysheet::assessor"]);
+  // Submit: admin or the assigned assessor only
+  const canSubmit = useHasRole("ais", ["sheet::admin", "mysheet::assessor"]);
+  const canCloseSheet = useHasRole("ais", ["sheet::admin"]);
+  // Moderate: admin or the department head only
+  const canModerate = useHasRole("ais", ["sheet::admin", "sheet::hod","sheet::pg-registry", "sheet::ug-registry"]);
+  // Publish / Unpublish: admin or dean
+  const canPublish = useHasRole("ais", ["sheet::admin", "sheet::dean"]);
+  // Reverse: admin, HOD, or the registry roles (not dean)
+  const canReverse = useHasRole("ais", ["sheet::admin", "sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
+  const canAssignSheet = useHasRole("ais", ["sheet::admin", "sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
 
   const assignSheet = async () => {
     const inp = window.prompt("Provide Staff ID of Assessor!");

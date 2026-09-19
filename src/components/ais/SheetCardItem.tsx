@@ -10,7 +10,7 @@ type Props = {
 };
 
 function SheetCardItem({ data }: Props) {
-  const canEditSheet = useHasRole("ais", ["sheet::hod", "sheet::pg-registry", "sheet::ug-registry"]);
+  const canEditSheet = useHasRole("ais", ["sheet::admin"]);
 
   return (
     <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
