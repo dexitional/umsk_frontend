@@ -67,7 +67,7 @@ function Guide({}: Props) {
             <div className="gd-brand">
               <img src={Logo} alt="AKATSICO" className="gd-mark" />
               <div>
-                <div className="gd-name">AKATSICO Unified Portal</div>
+                <div className="gd-name">AKATSICO</div>
                 <div className="gd-sub">Operational Guide</div>
               </div>
             </div>
@@ -176,17 +176,27 @@ function Guide({}: Props) {
                 <div className="gd-block">
                   <div className="gd-eyebrow">Student Module</div>
                   <h2>Student records</h2>
-                  <p>Every enrolled student's full record — programme, level, contact info, guardian, academic and financial history — with tabs for profile, academic statement, finance statement, account management, and ID card printing.</p>
+                  <p>Every enrolled student's full record — programme, level, contact info, guardian, academic and financial history — with tabs for profile, academic statement, finance statement, account management, and ID card printing. <b>Upload</b> and <b>Sample</b> alongside <b>New</b> let a batch of students be admitted from a spreadsheet in one go, mapping <code>ApplicantID</code> onto the student's ID and a year-group number onto their starting semester.</p>
                   <div className="gd-shot-row">
-                    <Shot name="ais-students" alt="AIS students list" caption="Student Module — searchable roster." />
+                    <Shot name="ais-students" alt="AIS students list" caption="Student Module — searchable roster, with New / Sample / Upload." />
                     <Shot name="ais-student-detail" alt="AIS student detail" caption="A single student's academic record." />
                   </div>
                 </div>
 
                 <div className="gd-block">
+                  <div className="gd-eyebrow">Account Management</div>
+                  <h2>Index numbers &amp; Google Workspace accounts</h2>
+                  <p><b>Generate Index Number</b> assigns the format <code>&lt;duration&gt;&lt;admission year&gt;&lt;programme prefix&gt;&lt;sequence&gt;</code> — e.g. <code>4252030001</code> for a 4-year programme (prefix <code>203</code>) admitted in '25, the 1st such student that year — and is disabled once set, since an index number never changes.</p>
+                  <p><b>Generate Student Email</b> both assigns the student's <code>@student.akatsico.edu.gh</code> address and — if the integration is configured — creates a matching Google Workspace account in the same action, carrying over name, phone, personal email, student ID, index number, and programme. A fresh password is issued at the same time and texted to the student, since generating the email is the only moment a plaintext password exists to hand to Google (the portal itself only ever stores a hash).</p>
+                  <p>From then on, <b>Reset Student Access</b> and the student's own <b>Change Password</b> keep the Google account's password in sync automatically — nothing further to do. If a Google account failed to provision (API outage, etc.), <b>Retry Google Sync</b> appears and tries again with a fresh password.</p>
+                  <Shot name="ais-student-account" alt="AIS student account management" caption="Account Management — Generate Student Email and Retry Google Sync alongside the other account actions." />
+                  <div className="gd-callout gd-callout-note"><span className="gd-ic">Note</span><div>Password policy is enforced everywhere a password is set or changed — at least 8 characters with a mix of upper/lower-case and a number — so a portal password is never one Google Workspace would reject.</div></div>
+                </div>
+
+                <div className="gd-block">
                   <div className="gd-eyebrow">Assessment Sheet &amp; Assessor Sheet</div>
                   <h2>Scores and grading</h2>
-                  <p>Each course/semester gets an assessment sheet. Course lecturers (<code>mysheet::assessor</code>) enter scores on <b>Assessor Sheet</b>, submitted sheets are reviewed and published by registry/deans (<code>sheet::hod</code>, <code>sheet::dean</code>, <code>sheet::admin</code>) on <b>Assessment Sheet</b>. Publishing releases results to students; a separate reverse action lets a mistake be pulled back before publish.</p>
+                  <p>Each course/semester gets an assessment sheet. Course lecturers (<code>mysheet::assessor</code>) enter scores on <b>Assessor Sheet</b>, submitted sheets are reviewed and published by registry/deans/admins (<code>sheet::hod</code>, <code>sheet::dean</code>, <code>sheet::admin</code>) on <b>Assessment Sheet</b>. Publishing releases results to students; a separate reverse action lets a mistake be pulled back before publish.</p>
                   <Shot name="ais-sheets" alt="AIS assessment sheets" caption="Assessment Sheet — the score-capture and publish workflow." />
                 </div>
 
@@ -194,7 +204,14 @@ function Guide({}: Props) {
                   <div className="gd-eyebrow">Resit Session, Resit Module &amp; My Resits</div>
                   <h2>Handling resits</h2>
                   <p>A resit session groups all resit-eligible course registrations for a period. Course heads (<code>resit::assessor</code>) capture resit scores from <b>My Resits</b> — cards grouped by course, scoped to only the courses they're responsible for. Saving a score marks the resit "taken" and writes the score into the assessment table in one step.</p>
-                  <Shot name="ais-resit-session-detail" alt="AIS resit session" caption="A resit session — registered courses and capture status." />
+                  <Shot name="ais-resit-sessions" alt="AIS resit sessions" caption="Resit Session — one row per registered/capture-ready resit period." />
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">ExamScore Module</div>
+                  <h2>Correcting exam scores after the fact</h2>
+                  <p>A narrower, upload-only clone of Backlog for one specific fix: updating just the exam-score component of an already-published assessment (never creating a new one). <b>Upload Sheet</b> stages a batch — session, course, semester, index number, assessment type (N/R), and the new exam score, each row tagged with a free-text label for your own reference — and a separate approval step recomputes the total score (class + exam) and commits it. Uploads and edits are both capped at a maximum score of 40.</p>
+                  <Shot name="ais-examscores" alt="AIS ExamScore Module" caption="ExamScore Module — staged batches awaiting approval, each with its own tag." />
                 </div>
 
                 <div className="gd-block">
@@ -230,7 +247,7 @@ function Guide({}: Props) {
                   <div className="gd-eyebrow">Workflow</div>
                   <h2>Publish a fee bill for a session</h2>
                   <ol className="gd-steps">
-                    <li><div className="gd-step-body">Open <b>Student Bills</b> → Create. Set title, currency, amount, discount, student category (Ghanaian / International), payment quota, target programme, target session, and bank account.</div></li>
+                    <li><div className="gd-step-body">Open <b>Student Bills</b> → Create. Set title, amount, discount, student category (Ghanaian / International), payment quota, target programme, target session, and bank account. Every amount in the system is GHC — there's no currency to choose.</div></li>
                     <li><div className="gd-step-body">Open the new bill's <b>Actions</b> tab and click <b>Publish Bill</b> to activate it against its target group — or use <b>Attach To Student</b> to bill someone individually.</div></li>
                     <li><div className="gd-step-body">Check the <b>Receivers</b> tab to confirm who was billed, and <b>Activity</b> for a history of publish events (amount, discount, recipient counts).</div></li>
                     <li><div className="gd-step-body">If needed, <b>Revoke Bill</b> un-publishes it, or <b>Remove From Student</b> detaches one student.</div></li>
@@ -256,10 +273,16 @@ function Guide({}: Props) {
                 </div>
 
                 <div className="gd-block">
+                  <div className="gd-eyebrow">Student Charges &amp; Student Refunds</div>
+                  <h2>Ad-hoc debits and credits</h2>
+                  <p><b>Student Charges</b> adds a one-off charge outside a mass bill — fees, fines, graduation, resit — and debits the student's account for the amount. <b>Student Refunds</b> is its mirror image: the same form, but it credits the account instead, for money owed back to a student. Both write straight to the same running ledger you see on Student Accounts, so a refund shows up there immediately.</p>
+                  <Shot name="fms-refunds" alt="FMS refunds" caption="Student Refunds — same shape as Charges, opposite effect on the balance." />
+                </div>
+
+                <div className="gd-block">
                   <div className="gd-eyebrow">Also in this module</div>
                   <h2>Configuration &amp; reporting</h2>
                   <div className="gd-module-grid">
-                    <div className="gd-module-chip"><div className="gd-mc-title">Student Charges</div><div className="gd-mc-role">Ad-hoc charges outside a mass bill — fees, fines, graduation, resit.</div></div>
                     <div className="gd-module-chip"><div className="gd-mc-title">Service Costs</div><div className="gd-mc-role">Set the price of priced services (e.g. transcript fee).</div></div>
                     <div className="gd-module-chip"><div className="gd-mc-title">System Reports</div><div className="gd-mc-role">Filterable exports for periodic financial reporting and reconciliation.</div></div>
                   </div>
@@ -408,6 +431,7 @@ function Guide({}: Props) {
                   ["Who actually receives the Registration/Resit Reminder SMS, and can I preview the list first?", "Clicking either button first shows you the exact recipient count in a confirmation dialog before anything is sent — nothing goes out until you confirm. Registration Reminder targets everyone with no course registration for that specific semester; Resit Reminder targets students with a resit course from that semester that's neither registered nor taken (deduplicated, so one text per student even with multiple outstanding courses)."],
                   ["Why does My Resits only show some courses and not others?", "My Resits is scoped to the courses you're personally responsible for as an assessor (resit::assessor) — it's not a full resit roster. resit::admin sees everything via the Resit Session/Resit Module screens instead."],
                   ["A student says their results aren't showing — what's the usual cause?", "Results only appear on the Student Portal once the course's assessment sheet has been published (Assessment Sheet module). If a sheet is still in draft, submitted-but-unpublished, or was reversed, the student won't see anything yet — check the sheet's status before assuming it's a display bug."],
+                  ["A student's Google account never showed up after Generate Student Email — what do I do?", "The institutional email and portal password are still created either way; the Google Workspace part is best-effort and can fail on its own (an outage, a name collision, etc.) without affecting anything else. Open Account Management and use Retry Google Sync — it issues a fresh password and tries again, falling back to just re-syncing the password if Google reports the account already exists."],
                 ]} />
 
                 <FaqGroup title="Finance" query={q} items={[

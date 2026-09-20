@@ -4,20 +4,25 @@
    itself rather than :root for the same reason. */
 
 .gd-page {
-  --ink: #1D1712;
-  --paper: #F7F3EC;
+  /* Re-themed to match the app's actual brand palette (tailwind.config.js:
+     primary is Tailwind blue-900/950, secondary navy sampled from the
+     AKATSICO crest) instead of the previous unrelated rust/cream editorial
+     palette -- variable names are kept as-is so the ~45 usage sites below
+     don't need touching, only what they resolve to. */
+  --ink: #172554;         /* primary.dark -- headings, high-contrast text */
+  --paper: #F4F8FB;       /* secondary.accent.50 -- page background */
   --surface: #FFFFFF;
-  --rust: #BF5B2E;
-  --rust-deep: #7C3B1C;
-  --umber: #5B4A3A;
-  --umber-soft: #8A7A6B;
-  --gold: #A9832E;
-  --line: #E4DACB;
-  --line-soft: #EDE5D6;
+  --rust: #1E3A8A;        /* primary.DEFAULT -- links, selection, focus ring */
+  --rust-deep: #0A1358;   /* secondary.DEFAULT -- hover/deeper accent */
+  --umber: #334155;       /* body text */
+  --umber-soft: #64748B;  /* muted/secondary text */
+  --gold: #3C80AA;        /* secondary.accent.600 -- emphasis accent */
+  --line: #C6DDEB;        /* secondary.accent.200 -- borders */
+  --line-soft: #E5EFF6;   /* secondary.accent.100 */
   --good: #3F7D5C;
   --warn: #B8862E;
   --crit: #B14A3D;
-  --gd-shadow: 0 1px 2px rgba(29,23,18,.06), 0 8px 24px -12px rgba(29,23,18,.18);
+  --gd-shadow: 0 1px 2px rgba(10,19,88,.06), 0 8px 24px -12px rgba(10,19,88,.18);
   --gd-radius: 10px;
   --font-display: Iowan Old Style, Palatino Linotype, Palatino, Georgia, "Noto Serif", serif;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -69,10 +74,9 @@
 /* ---- Sidebar ---- */
 .gd-sidebar {
   width: 268px; flex-shrink: 0;
-  /* App's Tailwind `primary` color (tailwind.config.js), so the guide's
-     sidebar matches the rest of the app's chrome rather than the guide's
-     own standalone charcoal. */
-  background: #343434;
+  /* App's actual Tailwind `secondary` color (tailwind.config.js), so the
+     guide's sidebar matches the rest of the app's chrome. */
+  background: #0A1358;
   color: var(--paper);
   display: flex; flex-direction: column;
   position: sticky; top: 0; height: 100vh;
@@ -82,7 +86,7 @@
 .gd-sidebar-head .gd-brand { display: flex; align-items: center; gap: 12px; }
 .gd-sidebar-head .gd-mark { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
 .gd-sidebar-head .gd-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: .01em; line-height: 1.15; }
-.gd-sidebar-head .gd-sub { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: #E0895C; margin-top: 3px; }
+.gd-sidebar-head .gd-sub { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: #A1C6DE; margin-top: 3px; }
 
 .gd-navgroup { padding: 6px 14px; }
 .gd-navgroup + .gd-navgroup { margin-top: 4px; border-top: 1px solid rgba(247,243,236,.08); padding-top: 14px; }
