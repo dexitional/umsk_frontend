@@ -86,6 +86,18 @@ function AISAccountCard({ data }: Props) {
     }
   };
 
+  const retryGsuiteSync = async () => {
+    const ok = window.confirm("Retry Google Workspace Sync ?");
+    if (ok) {
+      try {
+        const resp = await Service.retryGsuiteSync(data?.id);
+        if (resp) navigate(0);
+      } catch (error) {
+        toast.error("Google Workspace sync failed. Check the GSuite configuration.");
+      }
+    }
+  };
+
   const progressStudent = async () => {
     const ok = window.confirm("Progress Student for Academic Session ?");
     if (ok) {
@@ -251,6 +263,34 @@ function AISAccountCard({ data }: Props) {
             <GoPasskeyFill className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
             <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
               Generate Student Email
+            </span>
+          </button>
+        ) : null}
+        {/* Google Workspace Sync -- only relevant once an institutional
+            email exists; active (retry) when not yet synced, disabled-style
+            confirmation once it is. */}
+        {canAdminAccount && data?.instituteEmail ? (
+          <button
+            onClick={!data?.gsuiteSynced ? retryGsuiteSync : undefined}
+            className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
+              data?.gsuiteSynced
+                ? "bg-primary/5 border-primary/20 cursor-not-allowed"
+                : "bg-secondary-accent/5 border-secondary-accent/20"
+            } border shadow`}
+          >
+            <GoPasskeyFill
+              className={`${
+                data?.gsuiteSynced
+                  ? "text-primary/60 border-primary/20"
+                  : "text-secondary-accent border-secondary-accent/20"
+              } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
+            />
+            <span
+              className={`font-semibold text-sm md:text-base ${
+                data?.gsuiteSynced ? "text-primary/50" : "text-secondary-accent"
+              } font-noto`}
+            >
+              {data?.gsuiteSynced ? "Google Account Synced" : "Retry Google Sync"}
             </span>
           </button>
         ) : null}

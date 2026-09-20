@@ -480,6 +480,22 @@ class Service {
       }
   }
 
+    async retryGsuiteSync(studentId){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/gsuite-retry`, { studentId },{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          if(res.status == 200){
+             toast.success(`Google Workspace account synced!`);
+             return res.data;
+          }
+          else throw new(res.data.message)
+
+      } catch (error) {
+         return checkSession(error)
+      }
+  }
+
     async pardonStudent(studentId){
         try {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/students/pardon`, { studentId },{
