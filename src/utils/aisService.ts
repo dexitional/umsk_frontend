@@ -1007,10 +1007,11 @@ class Service {
             if(res.status == 200){
                toast.success("Record deleted!")
                return res.data
-            } 
+            }
             else throw new(res.data.message)
-        
-        } catch (error) { 
+
+        } catch (error: any) {
+           toast.error(error?.response?.data?.message || "Failed to delete scheme")
            return checkSession(error)
         }
      }

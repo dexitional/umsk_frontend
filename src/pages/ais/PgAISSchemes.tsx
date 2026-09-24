@@ -9,8 +9,19 @@ import { useHasRole } from "../../utils/roles";
 type Props = {};
 
 export async function action({ params }) {
-  await Service.deleteScheme(params.courseId);
-  return redirect("/ais/schemes");
+  try {
+    // The route is schemes/:schemeId/destroy -- was reading params.courseId
+    // (always undefined), so every delete request went out as
+    // DELETE /schemes/undefined and Prisma correctly rejected it as
+    // "record not found" no matter which scheme was actually clicked.
+    await Service.deleteScheme(params.schemeId);
+    return redirect("/ais/schemes");
+  } catch (error) {
+    // Service.deleteScheme already shows the toast; this just stops the
+    // rejection from reaching the route's error boundary (which would
+    // otherwise crash the whole page instead of just showing the message).
+    return false;
+  }
 }
 
 export async function loader({ request }) {
