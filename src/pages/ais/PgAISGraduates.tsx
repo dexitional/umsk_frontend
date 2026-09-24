@@ -55,7 +55,6 @@ function PgAISGraduates({}: Props) {
               )}
             </div>
           )}
-          ={" "}
           {/* { view == 'list' && (
            <ProgressionListView data={data?.data} />
          )} */}

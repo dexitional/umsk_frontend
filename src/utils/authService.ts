@@ -151,15 +151,27 @@ export const useUserStore = create<StoreState>()(
                 localStorage.setItem("@Auth:token", token);
                 if(user?.user?.group_id == 2)
                   set({ user:resp.data, token, tag: user?.user?.tag })
-                else 
+                else
                   set({ user:resp.data, token,tag: null })
               } else {
-                set({ message:resp.message, tag: null })
-                setTimeout( async() => set({ message:null }), 1000)
+                // The backend responds 401 on any lookup failure, so axios
+                // normally throws before this branch is reached -- kept as a
+                // defensive fallback for a 200 that still reports failure.
+                // Thrown below so the single catch block handles both paths
+                // (and shows exactly one toast, not two).
+                throw new Error(resp.message)
               }
             } catch (err) {
-              set({ message:err.message, loading: false })
+              // /auth/switch only fails this way when there's no SSO login
+              // row for the target tag (e.g. a student whose portal access
+              // was never staged) -- surface that instead of failing
+              // silently, and re-throw so the caller's window.location.href
+              // redirect doesn't fire on top of a failed switch.
+              const noAccess = err?.response?.status === 401;
+              toast.error(noAccess ? "This account has no staged portal access yet." : "Failed to switch user.")
+              set({ message:err.message, loading: false, tag: null })
               setTimeout( async() => set({ message:null }), 1000)
+              throw err
             }
         },
         

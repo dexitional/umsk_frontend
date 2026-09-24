@@ -17,7 +17,7 @@ function FMSFinanceCard({ data }: Props) {
   return (
     <div className="p-6 w-full space-y-3 rounded">
     {/* <h1 className="px-4 py-1 w-fit bg-slate-100/80 text-primary/80 rounded text-sm font-bold">{data && `${data[0]?.student?.fname} ${data[0]?.student?.mname ? data[0]?.student?.mname+' ':''}${data[0]?.student?.lname} - ${data[0]?.studentId}`}</h1> */}
-    <SubPageTitle title={data && `${data[0]?.student?.fname} ${data[0]?.student?.mname ? data[0]?.student?.mname+' ':''}${data[0]?.student?.lname} - ${data[0]?.studentId}`} page="FINANCE STATEMENT" />
+    <SubPageTitle title={data?.length ? `${data[0]?.student?.fname} ${data[0]?.student?.mname ? data[0]?.student?.mname+' ':''}${data[0]?.student?.lname} - ${data[0]?.studentId}` : undefined} page="FINANCE STATEMENT" />
     <div className={`${data?.length ? 'shadow-md':''} w-full rounded-lg text-xs overflow-x-scroll md:overflow-hidden`}>
           { data?.length ? (
           <div className="px-3 py-2 bg-primary/10 border text-primary-dark/80 font-bold hidden md:grid gap-2 grid-cols-1 md:grid-cols-8 tracking-wider">

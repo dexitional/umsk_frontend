@@ -390,7 +390,13 @@ class Service {
             else throw new(res.data.message)
 
         } catch (error) {
-            toast.error(error?.response?.data || "Failed to stage student portal access")
+            // Passing the raw response object (not its .message string) to
+            // toast.error crashes the whole app: react-hot-toast renders it
+            // as a React child, and an object isn't a valid one -- an
+            // uncaught render error that blanks the screen. Every other
+            // service function in this file extracts .message; this one
+            // didn't.
+            toast.error(error?.response?.data?.message || "Failed to stage student portal access")
             console.log(error?.response)
         }
     }
@@ -406,8 +412,12 @@ class Service {
                 toast(`Password changed to: \t${data?.password} for ${email}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
             }
             else throw new(res.data.message)
-        
+
         } catch (error) {
+           // checkSession re-throws (for an expired-session logout), but
+           // nothing upstream shows the failure to the user otherwise --
+           // surface it here so "Reset Student Access" doesn't fail silently.
+           toast.error(error?.response?.data?.message || "Failed to reset student access")
            return checkSession(error)
         }
     }
@@ -425,8 +435,9 @@ class Service {
                return res.data
             }
             else throw new(res.data.message)
-        
+
         } catch (error) {
+           toast.error(error?.response?.data?.message || "Failed to update photo")
            return checkSession(error)
         }
     }
@@ -441,8 +452,9 @@ class Service {
                 return res.data
             }
             else throw new(res.data.message)
-        
+
         } catch (error) {
+           toast.error(error?.response?.data?.message || "Failed to remove photo")
            return checkSession(error)
         }
     }
@@ -455,10 +467,11 @@ class Service {
             if(res.status == 200){
                toast.success("Index number generated!")
                return res.data
-            } 
+            }
             else throw new(res.data.message)
-        
-        } catch (error) { 
+
+        } catch (error) {
+           toast.error(error?.response?.data?.message || "Failed to generate index number")
            return checkSession(error)
         }
     }
@@ -508,6 +521,7 @@ class Service {
             else throw new(res.data.message)
 
         } catch (error) {
+           toast.error(error?.response?.data?.message || "Failed to activate finance pardon")
            return checkSession(error)
         }
     }
@@ -2383,9 +2397,9 @@ class Service {
                return false;
             } 
             else throw(res.data.message)
-         
-         } catch (error) { 
-            toast.error("Student already progressed !")
+
+         } catch (error: any) {
+            toast.error(error?.response?.data?.message || "Student already progressed !")
          }
     }
 
@@ -2410,11 +2424,16 @@ class Service {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/evaluations?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
                headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202)
+            // The backend returns 204 (not 202) when there are no evaluations --
+            // same convention as loadDashboard above. Axios drops the body on a
+            // 204, so res.data is undefined here; returning it as-is (rather
+            // than falling into the throw below) lets the page render its own
+            // "No Records" empty state instead of crashing to an error page.
+            if(res.status == 200 || res.status == 204)
             return res.data
             else throw new(res.data.message)
-      
-      } catch (error) { 
+
+      } catch (error) {
          return checkSession(error)
       }
    }

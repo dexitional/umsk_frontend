@@ -80,10 +80,17 @@ class FmsService {
     async fetchAccount(accountId){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/accounts/${encodeURIComponent(accountId)}`)
-            if(res.status == 200 || res.status == 204)
+            if(res.status == 200)
                return res.data
+            // The backend sends 202 (not 204) for a student with no financial
+            // records at all -- a legitimate, common case (e.g. a newly
+            // admitted student), not a real error. Its body is a plain
+            // {message} object, not the array FMSFinanceCard expects, so
+            // normalize to an empty array rather than passing that through.
+            else if(res.status == 202)
+               return []
             else throw new(res.data.message)
-        
+
         } catch (error) {
             return checkSession(error)
         }
