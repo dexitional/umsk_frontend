@@ -61,7 +61,18 @@ function PgAISStudents({}: Props) {
     setUploading(true);
     excelToJson(file, async (rows: any[]) => {
       try {
-        await Service.uploadStudent(rows);
+        const resp = await Service.uploadStudent(rows);
+        // Student rows themselves are created all-or-nothing, but email
+        // generation + portal/GSuite staging runs per-student right after
+        // and can fail independently (e.g. a transient GSuite hiccup) --
+        // surface those so staff know who still needs manual "Generate
+        // Email"/"Stage Account" on their Account tab.
+        if (resp?.provisionErrors?.length) {
+          toast.error(
+            `Uploaded, but email/access setup failed for: ${resp.provisionErrors.map((e: any) => e.id).join(', ')}. Use each student's Account tab to finish setup.`,
+            { duration: 10000 }
+          );
+        }
         closeUploadModal();
         setTimeout(() => navigate(0), 2000);
       } catch (error: any) {
@@ -109,6 +120,9 @@ function PgAISStudents({}: Props) {
             <DialogTitle className="text-sm md:text-base font-semibold text-primary/70 tracking-wide uppercase">
               Upload Student Batch
             </DialogTitle>
+            <p className="text-xs md:text-sm text-gray-500">
+              Institute email and portal/Google account access are generated automatically for every student in the sheet.
+            </p>
             <label className="flex flex-col space-y-2">
               <span className="text-sm text-gray-500 font-medium">Sheet File</span>
               <input
