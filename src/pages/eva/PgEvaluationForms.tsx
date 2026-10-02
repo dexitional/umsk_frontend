@@ -1,5 +1,6 @@
 import React from "react";
-import { HiCheckCircle, HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { HiArrowRight, HiCheck, HiOutlineChatBubbleLeftRight, HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import AISPEmpty from "../../components/aisp/AISPEmpty";
 import { Link, useLoaderData } from "react-router-dom";
 import AISPPageHeader from "../../components/aisp/AISPPageHeader";
 import Service from "../../utils/aisService";
@@ -14,58 +15,66 @@ export async function loader() {
 function PgEvaluationForms({}: Props) {
   const { data }: any = useLoaderData();
 
-  return (
-    <div className="p-4 md:p-0 space-y-6 md:space-y-8">
-      <AISPPageHeader
-        title="Evaluations"
-        subtitle="Assess your registered courses under each open evaluation form — completed courses show a receipt automatically"
-      />
+  const done = data.filter((form: any) => form.completed).length;
 
-      <div className="space-y-4">
-        {data.map((form: any) => (
+  return (
+    <div className="space-y-6 md:space-y-8">
+      <AISPPageHeader photo="culture"
+        eyebrow="Academics"
+        title="Evaluations"
+        subtitle="Assess your registered courses under each open evaluation form — completed courses show a receipt automatically."
+        Icon={HiOutlineChatBubbleLeftRight}
+      >
+        {data.length ? (
+          <span className="px-3 py-1.5 rounded-full bg-white/[0.15] ring-1 ring-inset ring-white/25 backdrop-blur text-xs font-bold text-white whitespace-nowrap">
+            {done} of {data.length} completed
+          </span>
+        ) : null}
+      </AISPPageHeader>
+
+      <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+        {data.map((form: any, i: number) => (
           <div
             key={form.id}
-            className="p-4 md:p-5 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center gap-4"
+            style={{ animationDelay: `${i * 60}ms` }}
+            className="aisp-rise aisp-card relative overflow-hidden p-5 md:p-6 flex flex-col gap-5"
           >
-            {form.completed ? (
-              <HiCheckCircle className="hidden md:flex h-10 w-10 text-green-500 shrink-0" />
-            ) : (
-              <HiOutlineClipboardDocumentCheck className="hidden md:flex h-10 w-10 text-primary/40 shrink-0" />
-            )}
-            <div className="flex-1 flex flex-col space-y-1">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm md:text-base font-semibold text-primary">
-                  {form.name}
-                </h3>
-                {form.completed && (
-                  <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[0.65rem] font-semibold uppercase tracking-wider">
-                    Completed
-                  </span>
-                )}
+            <div className={`pointer-events-none absolute -top-12 -right-12 h-36 w-36 rounded-full blur-2xl ${form.completed ? "bg-emerald-300/25" : "bg-sky-300/25"}`} />
+            <div className="relative flex items-start justify-between gap-3">
+              <div
+                className={`h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-lg ${
+                  form.completed ? "from-emerald-400 to-teal-500 shadow-emerald-500/30" : "from-sky-500 to-indigo-600 shadow-sky-500/30"
+                }`}
+              >
+                {form.completed ? <HiCheck className="h-6 w-6" /> : <HiOutlineClipboardDocumentCheck className="h-6 w-6" />}
               </div>
-              {form.description ? (
-                <p className="text-xs md:text-sm text-slate-400">{form.description}</p>
-              ) : null}
+              <span
+                className={`px-2.5 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-wider ring-1 ring-inset ${
+                  form.completed ? "bg-emerald-50 text-emerald-700 ring-emerald-200" : "bg-amber-50 text-amber-700 ring-amber-200"
+                }`}
+              >
+                {form.completed ? "Completed" : "Open"}
+              </span>
             </div>
-            <Link
-              to={form.key}
-              className={`px-5 py-2 rounded-lg font-semibold text-xs tracking-wider uppercase transition-colors whitespace-nowrap ${
-                form.completed
-                  ? "bg-primary/10 text-primary hover:bg-primary/20"
-                  : "bg-secondary-accent text-white hover:bg-secondary-accent/90"
-              }`}
-            >
-              {form.completed ? "View Receipt" : "Assess"}
+            <div className="relative flex-1 space-y-1">
+              <h3 className="text-base font-bold text-slate-900">{form.name}</h3>
+              {form.description ? <p className="text-sm text-slate-500">{form.description}</p> : null}
+            </div>
+            <Link to={form.key} className={`relative ${form.completed ? "aisp-btn-soft" : "aisp-btn-primary"}`}>
+              {form.completed ? "View Receipt" : "Start Assessment"}
+              <HiArrowRight className="h-4 w-4" />
             </Link>
           </div>
         ))}
       </div>
 
       {!data.length ? (
-        <div className="p-10 bg-white border border-slate-100 rounded-2xl shadow-sm text-center">
-          <h1 className="text-slate-400 text-xs font-semibold tracking-widest uppercase">
-            No Evaluations Open Right Now ...
-          </h1>
+        <div className="aisp-card">
+          <AISPEmpty
+            title="No evaluations open right now"
+            message="When an evaluation window opens for your courses, it will appear here."
+            Icon={HiOutlineChatBubbleLeftRight}
+          />
         </div>
       ) : null}
     </div>

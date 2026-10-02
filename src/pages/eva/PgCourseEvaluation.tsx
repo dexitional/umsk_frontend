@@ -243,7 +243,7 @@ function PgCourseEvaluation() {
   // Return  Evaluation Printout
   if(courses.status == 'completed')
     return (
-      <div className="p-4 md:p-6 space-y-4 md:space-y-2">
+      <div className="aisp-rise aisp-card p-5 md:p-8 space-y-4 md:space-y-2">
          <PageTitle
             title="Evaluation Receipt"
             createtext=""
@@ -265,7 +265,7 @@ function PgCourseEvaluation() {
         ? "You have no registered courses for the active semester, so there is nothing to evaluate right now."
         : "No courses are currently available for evaluation.";
     return (
-      <div className="md:pl-10 p-4 md:p-6 space-y-4 md:space-y-10">
+      <div className="aisp-rise aisp-card p-5 md:p-8 space-y-6 md:space-y-10">
         <PageTitle
           title="Student Course Evaluation"
           createtext=""
@@ -282,7 +282,7 @@ function PgCourseEvaluation() {
   // Return Evaluation Form
   if(courses.status == 'started')
   return (
-    <div className="md:pl-10 p-4 md:p-6 space-y-4 md:space-y-10">
+    <div className="aisp-rise aisp-card p-5 md:p-8 space-y-6 md:space-y-10">
       <PageTitle
         title={formKey === "course" ? "Student Course Evaluation" : `${formLabel} Evaluation`}
         createtext=""

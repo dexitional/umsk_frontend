@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdOutlinePayments } from 'react-icons/md'
+import { HiOutlineArrowDownLeft, HiOutlineArrowUpRight } from 'react-icons/hi2'
 // @ts-ignore
 import ListHeading from './ListHeading';
 import moment from 'moment';
@@ -9,36 +9,39 @@ type Props = {
 }
 
 function FeeListItem({ data }: Props) {
-  const isPayment = data.type == 'PAYMENT';
+  const isPayment = data.type == 'PAYMENT' || (!data.type && data.amount <= 0);
+  const Icon = isPayment ? HiOutlineArrowDownLeft : HiOutlineArrowUpRight;
   return (
-    <div className="px-4 md:px-6 py-4 grid md:grid-cols-6 gap-3 md:gap-4 md:items-center border-b border-slate-50 last:border-0 hover:bg-slate-50/70 transition-colors">
-        <div className="md:col-span-2 flex flex-col space-y-1.5">
+    <div className="aisp-row md:grid-cols-6">
+        <div className="md:col-span-2 flex flex-col gap-1.5">
            <ListHeading title="Narrative"/>
-           <div className="flex items-center space-x-3 min-w-0">
-            <div className={`h-8 w-8 shrink-0 rounded-lg flex items-center justify-center ${isPayment ? 'bg-primary/10' : 'bg-secondary-accent/10'}`}>
-              <MdOutlinePayments className={`h-4 w-4 ${isPayment ? 'text-primary' : 'text-secondary-accent'}`} />
+           <div className="flex items-center gap-3 min-w-0">
+            <div className={`h-9 w-9 shrink-0 rounded-xl flex items-center justify-center ring-1 ring-inset ${isPayment ? 'bg-emerald-50 text-emerald-600 ring-emerald-100' : 'bg-indigo-50 text-indigo-600 ring-indigo-100'}`}>
+              <Icon className="h-4 w-4" />
             </div>
-            <span className="text-sm font-medium text-primary truncate">{data?.narrative?.toUpperCase()}</span>
+            <span className="text-sm font-semibold text-slate-800 truncate">{data?.narrative?.toUpperCase()}</span>
            </div>
         </div>
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <ListHeading title="Amount"/>
-          <span className="text-sm font-semibold text-primary">{data?.currency} {Math.abs(data?.amount)}</span>
+          <span className={`text-sm font-bold tabular-nums ${isPayment ? 'text-emerald-600' : 'text-slate-900'}`}>
+            {data?.currency} {Math.abs(data?.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
         </div>
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <ListHeading title="Type"/>
-          <span className={`inline-flex w-fit items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isPayment ? 'bg-primary/10 text-primary' : 'bg-secondary-accent/10 text-secondary-accent'}`}>
-            <span className={`h-1.5 w-1.5 rounded-full ${isPayment ? 'bg-primary' : 'bg-secondary-accent'}`} />
+          <span className={`inline-flex w-fit items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.68rem] font-bold tracking-wide ring-1 ring-inset ${isPayment ? 'bg-emerald-50 text-emerald-700 ring-emerald-100' : 'bg-indigo-50 text-indigo-700 ring-indigo-100'}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${isPayment ? 'bg-emerald-500' : 'bg-indigo-500'}`} />
             {data.type ? data.type : (data.amount > 0 ? 'CHARGE':'PAYMENT')}
           </span>
         </div>
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <ListHeading title="Reference"/>
-          <span className="text-sm text-slate-500 capitalize">{data?.transaction ? data?.transaction.transtag : 'ACADEMIC-DEBT'}</span>
+          <span className="text-xs font-mono text-slate-500 truncate">{data?.transaction ? data?.transaction.transtag : 'ACADEMIC-DEBT'}</span>
         </div>
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <ListHeading title="Date" />
-          <span className="text-sm text-slate-500">{data?.createdAt && moment(data?.createdAt).format('MMM DD, YYYY')?.toUpperCase()}</span>
+          <span className="text-sm text-slate-500">{data?.createdAt && moment(data?.createdAt).format('MMM DD, YYYY')}</span>
         </div>
     </div>
   )

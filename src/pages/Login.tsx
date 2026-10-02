@@ -150,7 +150,7 @@ function Login() {
         </section>
         <section className="m-2 my-1 md:my-10 md:mx-4 md:w-[28rem] rounded-b-xl md:rounded-xl border-[3px] border-primary-dark/20 backdrop-blur-lg bg-primary bg-[url('./assets/img/eagle.png')] bg-no-repeat bg-bottom flex flex-col justify-between overflow-y-scroll scrollbar-hide">
           <div className="p-6 flex-1 flex flex-col items-center">
-            <h1 className="md:hidden my-4 text-3xl md:text-4xl font-semibold font-mono text-secondary-accent/50 tracking-widest">AKATSICO</h1>
+            <h1 className="md:hidden my-4 text-3xl md:text-4xl font-semibold font-mono text-secondary-accent-300/50 tracking-widest">AKATSICO</h1>
             <h1 className="hidden md:flex my-4 text-3xl md:text-4xl font-mono text-white">UMS PORTAL</h1>
             <img
               src={Adinkra}
@@ -232,7 +232,7 @@ function Login() {
                 } mx-auto py-4 px-3 md:p-4 md:w-[90%] rounded-xl border-[3px] border-primary-dark/30 bg-primary flex-col space-y-4 text-white text-lg`}
               >
                 <div className="shadow bg-white/10 rounded-md flex items-center justify-between overflow-hidden">
-                  <h1 className="px-4 py-1 text-lg text-secondary-accent font-semibold tracking-widest">
+                  <h1 className="px-4 py-1 text-lg text-secondary-accent-300 font-semibold tracking-widest">
                     {loginform == "student"
                       ? "STUDENT LOGIN"
                       : loginform == "voucher"

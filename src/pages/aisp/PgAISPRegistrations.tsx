@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from "react";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import { redirect, useLoaderData } from "react-router-dom";
 import AISPPageHeader from "../../components/aisp/AISPPageHeader";
@@ -40,8 +41,17 @@ function PgAISPRegistrations({}: Props) {
   useLayoutEffect(() => runDefault(), []);
 
   return (
-    <div className="p-4 md:p-0 space-y-6 md:space-y-8">
-      <AISPPageHeader title="Course Registration" subtitle={data?.session?.toUpperCase()} />
+    <div className="space-y-6 md:space-y-8">
+      <AISPPageHeader photo="students"
+        eyebrow={data?.session ? data.session : "Academics"}
+        title="Course Registration"
+        subtitle={
+          slip?.length
+            ? "Your registration is complete. Print your slip or revoke it to make changes."
+            : "Compulsory courses are pre-selected. Add your electives, review your credits and submit."
+        }
+        Icon={HiOutlineClipboardDocumentList}
+      />
       {!slip?.length ? (
         <RegistrationListView
           title={`${sessionLabel}REGISTRATION PROCEDURE`}

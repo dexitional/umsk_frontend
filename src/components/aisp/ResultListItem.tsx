@@ -12,30 +12,33 @@ function ResultListItem({ row }: Props) {
   const grade = row.totalScore == null ? 'I' : (!!row?.status ? row.grade : '--');
   const isFail = grade === 'F';
   const isIncomplete = grade === 'I';
+  const gradeStyle =
+    grade === '--' ? 'bg-slate-50 text-slate-400 ring-slate-100'
+    : isIncomplete ? 'bg-amber-50 text-amber-700 ring-amber-200'
+    : isFail ? 'bg-rose-50 text-rose-600 ring-rose-200'
+    : 'bg-emerald-50 text-emerald-700 ring-emerald-200';
   return (
-    <div className="px-4 md:px-6 py-4 grid md:grid-cols-6 gap-3 md:gap-4 md:items-center border-b border-slate-50 last:border-0 hover:bg-slate-50/70 transition-colors">
-        <div className="flex flex-col space-y-1.5">
+    <div className="aisp-row grid-cols-2 md:grid-cols-6">
+        <div className="flex flex-col gap-1">
           <ListHeading title="Code"/>
-          <span className="text-sm text-slate-500">{row.courseId}</span>
+          <span className="text-xs font-mono font-semibold text-sky-700">{row.courseId}</span>
         </div>
 
-        <div className="md:col-span-2 flex flex-col space-y-1.5">
+        <div className="col-span-2 md:col-span-2 order-first md:order-none flex flex-col gap-1">
            <ListHeading title="Course"/>
-           <span className="text-sm font-medium text-primary">{row.course?.title}</span>
+           <span className="text-sm font-semibold text-slate-800">{row.course?.title}</span>
         </div>
-        <div className="flex flex-col space-y-1.5">
-          <ListHeading title="CR"/>
-          <span className="text-sm text-slate-500">{row?.credit}</span>
+        <div className="flex flex-col gap-1">
+          <ListHeading title="Credit"/>
+          <span className="text-sm text-slate-500 tabular-nums">{row?.credit}</span>
         </div>
-        <div className="flex flex-col space-y-1.5">
-          <ListHeading title="GD"/>
-          <span className={`inline-flex w-fit items-center px-2 py-0.5 rounded-md text-xs font-bold ${
-            grade === '--' ? 'text-slate-400' : isIncomplete ? 'bg-amber-50 text-amber-600' : isFail ? 'bg-red-50 text-red-500' : 'bg-primary/10 text-primary'
-          }`}>{grade}</span>
+        <div className="flex flex-col gap-1">
+          <ListHeading title="Grade"/>
+          <span className={`inline-flex w-fit min-w-[2.25rem] justify-center items-center px-2 py-1 rounded-lg text-xs font-extrabold ring-1 ring-inset ${gradeStyle}`}>{grade}</span>
         </div>
-        <div className="flex flex-col space-y-1.5">
-          <ListHeading title="GP" />
-          <span className="text-sm font-semibold text-primary">{row.totalScore && (!!row?.status) ? isNaN(row.gradepoint * row.credit) ? '--':(row.gradepoint * row.credit).toFixed(1) : '--' }</span>
+        <div className="flex flex-col gap-1">
+          <ListHeading title="Grade Point" />
+          <span className="text-sm font-bold text-slate-900 tabular-nums">{row.totalScore && (!!row?.status) ? isNaN(row.gradepoint * row.credit) ? '--':(row.gradepoint * row.credit).toFixed(1) : '--' }</span>
         </div>
     </div>
   )

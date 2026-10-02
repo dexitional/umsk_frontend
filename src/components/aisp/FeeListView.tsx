@@ -1,4 +1,7 @@
 import React from 'react';
+import { HiOutlineReceiptPercent } from 'react-icons/hi2';
+import AISPEmpty from './AISPEmpty';
+import AISPPanel from './AISPPanel';
 import FeeListItem from './FeeListItem';
 
 type Props = {
@@ -10,8 +13,13 @@ function FeeListView({ data }: Props) {
   const sum = data?.reduce((sum:any,cur: any) => cur.amount+sum, 0);
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-      <div className="px-6 py-3 hidden md:grid grid-cols-6 gap-4 items-center border-b border-slate-100 text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <AISPPanel
+      title="Statement of Account"
+      subtitle={`${data?.length || 0} transaction${data?.length == 1 ? '' : 's'}`}
+      Icon={HiOutlineReceiptPercent}
+      bodyClassName="pt-5"
+    >
+      <div className="aisp-thead grid-cols-6">
           <div className="col-span-2">Narrative</div>
           <div>Amount</div>
           <div>Type</div>
@@ -21,23 +29,20 @@ function FeeListView({ data }: Props) {
       <div>
         { data && data?.map((row:any) => (<FeeListItem key={row.id} data={row} />))}
         { !data?.length && (
-          <div className="py-10 text-center text-slate-400 text-xs font-semibold uppercase tracking-widest">
-            No Record ...
-          </div>
+          <AISPEmpty title="No transactions yet" message="Bills and payments posted to your account will appear here." Icon={HiOutlineReceiptPercent} />
         )}
       </div>
       { data?.length ? (
-      <div className="px-6 py-4 flex items-center justify-between border-t border-slate-100 bg-slate-50/50">
-          <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-            NET {sum > 0 ? 'DEBT' : 'BALANCE'}
+      <div className="px-6 py-4 flex items-center justify-between border-t border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+          <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-slate-400">
+            Net {sum > 0 ? 'Debt' : 'Balance'}
           </span>
-          <span className={`text-base font-bold ${sum > 0 ? 'text-red-500' : 'text-primary'}`}>
-            {data && data[0]?.currency} {Math.abs(sum)}
+          <span className={`text-lg font-extrabold tracking-tight ${sum > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+            {data && data[0]?.currency} {Math.abs(sum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
       </div>
       ): null }
-
-    </div>
+    </AISPPanel>
   )
 }
 

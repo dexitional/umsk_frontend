@@ -19,7 +19,12 @@ export default {
         secondary: {
           DEFAULT: '#0a1358',
           accent: {
-            DEFAULT: '#aacce1',
+            // Was #aacce1 (1.7:1 on white -- too light for the text and
+            // solid-fill uses this token mostly gets). Now the lightest
+            // shade between the 600/700 steps that still clears WCAG AA:
+            // 4.56:1 on white, for text and white-on-accent buttons.
+            // Use secondary-accent-200/300 where a light tint is wanted.
+            DEFAULT: '#397ca6',
             50: '#f4f8fb',
             100: '#e5eff6',
             200: '#c6ddeb',
@@ -58,6 +63,8 @@ export default {
       'arial-narrow': ["'Arial Narrow'", 'Arial', 'sans-serif'],
       // Matches the profile-card design reference's typography.
       'inter': ["'Inter'", ...defaultTheme.fontFamily.sans],
+      // Student portal (aisp) display + body face.
+      'jakarta': ["'Plus Jakarta Sans'", "'Inter'", ...defaultTheme.fontFamily.sans],
     },
   },
   plugins: [

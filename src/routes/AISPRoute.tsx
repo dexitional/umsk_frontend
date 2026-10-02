@@ -13,7 +13,8 @@ const AISRoute:any =  {
    errorElement: <Error />,
    //action: chosenAction,
    children: [
-      {  element: <AISPPager />,
+      {  id: 'aisp-student',
+         element: <AISPPager />,
          loader: aispPagerLoader,
          children: [
             {

@@ -1,4 +1,6 @@
 import React from 'react'
+import { HiOutlineMegaphone } from 'react-icons/hi2';
+import AISPEmpty from './AISPEmpty';
 import NoticeListItem from './NoticeListItem';
 
 type Props = {
@@ -7,8 +9,8 @@ type Props = {
 
 function NoticeListView({ data }: Props) {
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-      <div className="px-6 py-3 hidden md:grid grid-cols-7 gap-4 items-center border-b border-slate-100 text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <section className="aisp-rise aisp-card overflow-hidden">
+      <div className="aisp-thead grid-cols-7">
           <div className="col-span-4">Title</div>
           <div>Reference</div>
           <div>Date</div>
@@ -17,12 +19,10 @@ function NoticeListView({ data }: Props) {
       <div>
         { data && data?.map((row:any) => (<NoticeListItem key={row.id} data={row} />))}
         { !data?.length && (
-          <div className="py-10 text-center text-slate-400 text-xs font-semibold uppercase tracking-widest">
-            No Messages ...
-          </div>
+          <AISPEmpty title="No messages" message="New circulars and announcements will appear here." Icon={HiOutlineMegaphone} />
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

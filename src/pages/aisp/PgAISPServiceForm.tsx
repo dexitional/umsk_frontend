@@ -1,13 +1,11 @@
 import React from "react";
+import { HiOutlineTruck } from "react-icons/hi2";
+import AISPPageHeader from "../../components/aisp/AISPPageHeader";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 
 type Props = {};
-
-const inputClass =
-  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-secondary-accent/20 focus:border-secondary-accent/40 transition-colors";
-const labelClass = "text-xs font-semibold text-slate-500 uppercase tracking-wider";
 
 // Save Form
 export async function action({ request, params }) {
@@ -36,20 +34,18 @@ function PgAISPServiceForm({}: Props) {
   const user = useUserStore((state) => state.user);
 
   return (
-    <div className="p-4 md:p-0 space-y-6 md:space-y-8">
-      <div>
-        <h1 className="text-xl md:text-2xl font-bold text-primary">
-          {data?.id ? "Update" : "Create"} Service Request
-        </h1>
-        <p className="text-xs md:text-sm text-slate-400 mt-1">
-          Please provide necessary information
-        </p>
-      </div>
+    <div className="space-y-6 md:space-y-8">
+      <AISPPageHeader photo="lab"
+        eyebrow="Services"
+        title={`${data?.id ? "Update" : "Create"} Service Request`}
+        subtitle="Tell us where and how to deliver your document."
+        Icon={HiOutlineTruck}
+      />
 
       <Form method="post">
-        <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-4 max-w-lg">
-          <label className="flex flex-col space-y-1.5">
-            <span className={labelClass}>
+        <div className="aisp-rise aisp-card p-6 md:p-8 space-y-5 max-w-xl">
+          <label className="flex flex-col gap-2">
+            <span className="aisp-label">
               Recipient's Postal address or Email address
             </span>
             <textarea
@@ -58,17 +54,17 @@ function PgAISPServiceForm({}: Props) {
               defaultValue={data?.receipient}
               required
               rows={4}
-              className={inputClass}
+              className="aisp-input"
             />
           </label>
-          <label className="flex flex-col space-y-1.5">
-            <span className={labelClass}>Mode of Delivery</span>
+          <label className="flex flex-col gap-2">
+            <span className="aisp-label">Mode of Delivery</span>
             <select
               arial-label="mode"
               name="mode"
               defaultValue={data?.mode}
               required
-              className={inputClass}
+              className="aisp-input"
             >
               <option selected disabled>
                 -- Choose --
@@ -78,14 +74,14 @@ function PgAISPServiceForm({}: Props) {
               <option value="FOREIGN">FOREIGN MAIL</option>
             </select>
           </label>
-          <label className="flex flex-col space-y-1.5">
-            <span className={labelClass}>Document Type</span>
+          <label className="flex flex-col gap-2">
+            <span className="aisp-label">Document Type</span>
             <select
               arial-label="version"
               name="version"
               defaultValue={data?.version}
               required
-              className={inputClass}
+              className="aisp-input"
             >
               <option selected disabled>
                 -- Choose --
@@ -97,7 +93,7 @@ function PgAISPServiceForm({}: Props) {
 
           <div className="flex items-center gap-3 pt-2">
             <button
-              className="flex-1 py-2.5 px-4 rounded-lg bg-secondary-accent text-white font-semibold text-sm hover:bg-secondary-accent/90 transition-colors"
+              className="aisp-btn-primary flex-1"
               type="submit"
             >
               Save
@@ -106,7 +102,7 @@ function PgAISPServiceForm({}: Props) {
               onClick={() => {
                 if (confirm("Cancel")) navigate(-1);
               }}
-              className="py-2.5 px-4 rounded-lg bg-slate-100 text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-colors"
+              className="aisp-btn-soft"
               type="button"
             >
               Cancel

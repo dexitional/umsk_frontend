@@ -1,14 +1,12 @@
 import moment from "moment";
 import React, { useState } from "react";
+import { HiOutlineGlobeAlt, HiOutlineUser, HiOutlineUserCircle } from "react-icons/hi2";
+import AISPPageHeader from "../../components/aisp/AISPPageHeader";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 
 type Props = {};
-
-const inputClass =
-  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-secondary-accent/20 focus:border-secondary-accent/40 transition-colors";
-const labelClass = "text-xs font-semibold text-slate-500 uppercase tracking-wider";
 
 // Ghana Card format: GHA-XXXXXXXXX-X — a 3-letter prefix, 9 digits, a
 // hyphen, then 1 final check digit (10 digits total in the numbered block).
@@ -75,31 +73,32 @@ function PgAISPProfileForm({}: Props) {
     (data?.semesterNum == 1 && category == "PG");
 
   return (
-    <div className="p-4 md:p-0 space-y-6 md:space-y-8">
-      <div>
-        <h1 className="text-xl md:text-2xl font-bold text-primary">
-          {data?.id ? "Edit" : "Create"} Student Profile
-        </h1>
-        <p className="text-xs md:text-sm text-slate-400 mt-1">
-          Please provide necessary information
-        </p>
-      </div>
+    <div className="space-y-6 md:space-y-8">
+      <AISPPageHeader photo="gate"
+        eyebrow="My Profile"
+        title={`${data?.id ? "Edit" : "Create"} Student Profile`}
+        subtitle="Keep your contact and personal details up to date."
+        Icon={HiOutlineUserCircle}
+      />
 
-      <Form method="post" className="grid md:grid-cols-2 gap-6">
+      <Form method="post" className="grid lg:grid-cols-2 gap-6 items-start">
         {/* Record */}
-        <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-4">
-          <h2 className="text-sm font-bold text-primary">
-            Personal Information
-          </h2>
+        <div className="aisp-rise aisp-card p-6 md:p-7 space-y-5">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-sky-50 text-sky-600 ring-1 ring-inset ring-sky-100 flex items-center justify-center">
+              <HiOutlineUser className="h-[1.1rem] w-[1.1rem]" />
+            </div>
+            <h2 className="text-[0.95rem] font-bold text-slate-900">Contact Information</h2>
+          </div>
           <div className="space-y-4">
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Title</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Title</span>
               <select
                 arial-label="titleId"
                 name="titleId"
                 defaultValue={data?.titleId}
                 required
-                className={inputClass}
+                className="aisp-input"
               >
                 <option selected disabled>
                   -- Choose --
@@ -113,8 +112,8 @@ function PgAISPProfileForm({}: Props) {
               </select>
             </label>
 
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Phone Number</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Phone Number</span>
               <input
                 arial-label="phone"
                 name="phone"
@@ -123,45 +122,51 @@ function PgAISPProfileForm({}: Props) {
                 maxLength={10}
                 defaultValue={data?.phone}
                 required
-                className={inputClass}
+                className="aisp-input"
               />
             </label>
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Email Address</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Email Address</span>
               <input
                 arial-label="email"
                 name="email"
                 type="email"
                 defaultValue={data?.email}
-                className={inputClass}
+                className="aisp-input"
               />
             </label>
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Hometown</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Hometown</span>
               <input
                 arial-label="hometown"
                 name="hometown"
                 defaultValue={data?.hometown}
-                className={inputClass}
+                className="aisp-input"
               />
             </label>
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Residential Address</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Residential Address</span>
               <textarea
                 arial-label="address"
                 name="address"
                 defaultValue={data?.address}
                 rows={2}
-                className={inputClass}
+                className="aisp-input"
               ></textarea>
             </label>
           </div>
         </div>
 
-        <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-4">
+        <div className="aisp-rise aisp-card p-6 md:p-7 space-y-5" style={{ animationDelay: "80ms" }}>
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-sky-50 text-sky-600 ring-1 ring-inset ring-sky-100 flex items-center justify-center">
+              <HiOutlineGlobeAlt className="h-[1.1rem] w-[1.1rem]" />
+            </div>
+            <h2 className="text-[0.95rem] font-bold text-slate-900">Identity &amp; Background</h2>
+          </div>
           <div className="space-y-4">
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Ghana Card Number</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Ghana Card Number</span>
               <input
                 arial-label="ghcardNo"
                 name="ghcardNo"
@@ -173,20 +178,20 @@ function PgAISPProfileForm({}: Props) {
                 pattern={GHANA_CARD_PATTERN}
                 title="Format: GHA-123456789-0"
                 maxLength={15}
-                className={inputClass}
+                className="aisp-input"
               />
             </label>
           </div>
 
           <div className="space-y-4">
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Religion</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Religion</span>
               <select
                 arial-label="religionId"
                 name="religionId"
                 defaultValue={data?.religionId}
                 required
-                className={inputClass}
+                className="aisp-input"
               >
                 <option selected disabled>
                   -- Choose --
@@ -199,13 +204,13 @@ function PgAISPProfileForm({}: Props) {
                   ))}
               </select>
             </label>
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Region</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Region</span>
               <select
                 arial-label="regionId"
                 name="regionId"
                 defaultValue={data?.regionId}
-                className={inputClass}
+                className="aisp-input"
               >
                 <option selected disabled>
                   -- Choose --
@@ -218,14 +223,14 @@ function PgAISPProfileForm({}: Props) {
                   ))}
               </select>
             </label>
-            <label className="flex flex-col space-y-1.5">
-              <span className={labelClass}>Country of Citizenship</span>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Country of Citizenship</span>
               <select
                 arial-label="countryId"
                 name="countryId"
                 defaultValue={data?.countryId}
                 required
-                className={inputClass}
+                className="aisp-input"
               >
                 <option selected disabled>
                   -- Choose --
@@ -240,14 +245,14 @@ function PgAISPProfileForm({}: Props) {
             </label>
 
             {canSeeMajor ? (
-              <label className="flex flex-col space-y-1.5">
-                <span className={labelClass}>Major</span>
+              <label className="flex flex-col gap-2">
+                <span className="aisp-label">Major</span>
                 <select
                   arial-label="majorId"
                   name="majorId"
                   defaultValue={data?.majorId}
                   required
-                  className={inputClass}
+                  className="aisp-input"
                 >
                   <option selected value="NONE">
                     -- NONE --
@@ -268,7 +273,7 @@ function PgAISPProfileForm({}: Props) {
 
             <div className="flex items-center gap-3 pt-2">
               <button
-                className="flex-1 py-2.5 px-4 rounded-lg bg-secondary-accent text-white font-semibold text-sm hover:bg-secondary-accent/90 transition-colors"
+                className="aisp-btn-primary flex-1"
                 type="submit"
               >
                 Save
@@ -277,7 +282,7 @@ function PgAISPProfileForm({}: Props) {
                 onClick={() => {
                   if (confirm("Cancel")) navigate(-1);
                 }}
-                className="py-2.5 px-4 rounded-lg bg-slate-100 text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-colors"
+                className="aisp-btn-soft"
                 type="button"
               >
                 Cancel

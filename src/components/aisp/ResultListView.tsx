@@ -1,4 +1,6 @@
 import React from 'react';
+import { HiOutlineBookOpen } from 'react-icons/hi2';
+import AISPEmpty from './AISPEmpty';
 import ResultListItem from './ResultListItem';
 
 type Props = {
@@ -8,51 +10,50 @@ type Props = {
 }
 
 function ResultListView({ title, data, meta }: Props) {
+  const stats = [
+    { label: 'GPA', value: meta?.gpa == null ? '--' : meta.gpa },
+    { label: 'CGPA', value: meta?.cgpa == null ? '--' : meta.cgpa },
+    { label: 'Credits', value: meta?.credit == null ? '--' : meta.credit.toFixed(1) },
+    { label: 'Grade Pts', value: meta?.gradepoint == null ? '--' : meta.gradepoint.toFixed(1) },
+  ];
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-      <div className="px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2 border-b border-slate-100">
-        <h2 className="text-sm font-bold text-primary">{title}</h2>
-        <span className="w-fit px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-          YEAR {data && Math.ceil(data[0].semesterNum/2) || 'NONE'}
-        </span>
-      </div>
-      <div className="px-6 py-3 hidden md:grid grid-cols-6 gap-4 items-center border-b border-slate-100 text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <section className="aisp-rise aisp-card overflow-hidden">
+      <header className="px-5 md:px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-100">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-sky-500 to-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
+            <span className="text-xs font-extrabold">Y{data && Math.ceil(data[0]?.semesterNum/2) || '–'}</span>
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-sm font-bold text-slate-900 truncate">{title}</h2>
+            <p className="text-xs text-slate-400">{data?.length || 0} course{data?.length == 1 ? '' : 's'} · Year {data && Math.ceil(data[0]?.semesterNum/2) || 'None'}</p>
+          </div>
+        </div>
+        { data?.length ? (
+          <div className="grid grid-cols-4 gap-2">
+            {stats.map((s) => (
+              <div key={s.label} className="px-3 py-2 rounded-xl bg-slate-50 ring-1 ring-inset ring-slate-100 text-center md:min-w-[4.5rem]">
+                <span className="block text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-slate-400">{s.label}</span>
+                <span className="block text-sm font-extrabold text-slate-900 tabular-nums">{s.value}</span>
+              </div>
+            ))}
+          </div>
+        ) : null }
+      </header>
+      <div className="aisp-thead grid-cols-6">
           <div>Code</div>
           <div className="col-span-2">Course</div>
-          <div>CR</div>
-          <div>GD</div>
-          <div>GP</div>
+          <div>Credit</div>
+          <div>Grade</div>
+          <div>Grade Point</div>
       </div>
       <div>
         { data && data?.map((row:any) => (<ResultListItem key={row.id} row={row} />))}
         { !data?.length && (
-          <div className="py-10 text-center text-slate-400 text-xs font-semibold uppercase tracking-widest">
-            No Record ...
-          </div>
+          <AISPEmpty title="No courses recorded" Icon={HiOutlineBookOpen} />
         )}
       </div>
-      { data?.length ?
-      <div className="px-6 py-4 grid grid-cols-2 md:grid-cols-4 gap-3 border-t border-slate-100 bg-slate-50/50">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-wider text-slate-400">CGPA</span>
-            <span className="font-bold text-primary">{ meta?.cgpa == null ? '--' : meta.cgpa }</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-wider text-slate-400">GPA</span>
-            <span className="font-bold text-primary">{ meta?.gpa == null ? '--' : meta.gpa }</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-wider text-slate-400">TCR</span>
-            <span className="font-bold text-primary">{ meta?.credit == null ? '--' : meta.credit.toFixed(1)}</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-wider text-slate-400">TGP</span>
-            <span className="font-bold text-primary">{ meta?.gradepoint == null ? '--' : meta.gradepoint.toFixed(1)}</span>
-          </div>
-      </div>
-      : null }
-    </div>
+    </section>
   )
 }
 

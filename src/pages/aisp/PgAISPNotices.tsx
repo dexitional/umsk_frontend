@@ -1,4 +1,5 @@
 import React from "react";
+import { HiOutlineMegaphone } from "react-icons/hi2";
 import { useLoaderData } from "react-router-dom";
 import AISPPageHeader from "../../components/aisp/AISPPageHeader";
 import NoticeListView from "../../components/aisp/NoticeListView";
@@ -15,8 +16,8 @@ function PgAISPNotices({}: Props) {
   const { data }: any = useLoaderData();
 
   return (
-    <div className="p-4 md:p-0 space-y-6 md:space-y-8">
-      <AISPPageHeader title="NSS Notices" subtitle="Circulars and announcements" />
+    <div className="space-y-6 md:space-y-8">
+      <AISPPageHeader photo="culture" eyebrow="Notices" title="NSS Notices" subtitle="Circulars and announcements" Icon={HiOutlineMegaphone} />
       <NoticeListView data={data} />
     </div>
   );

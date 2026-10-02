@@ -2526,7 +2526,11 @@ class Service {
             else throw new Error(res.data?.message)
 
         } catch (error) {
-           toast.error(error?.response?.data?.message || error.message || "Registration failed")
+           // 4xx carry a student-facing reason; anything else (5xx, network)
+           // may be a raw server/database dump, so show a generic message.
+           const status = error?.response?.status;
+           const reason = status && status < 500 ? error?.response?.data?.message : null;
+           toast.error(reason || "We couldn't complete your registration. Please try again, or contact the Registry if it keeps happening.", { duration: 6000 });
         }
      }
 

@@ -1,4 +1,6 @@
 import React from 'react'
+import { HiOutlineDocumentText } from 'react-icons/hi2';
+import AISPEmpty from './AISPEmpty';
 import ServiceListItem from './ServiceListItem';
 
 type Props = {
@@ -7,8 +9,8 @@ type Props = {
 
 function ServiceListView({ data }: Props) {
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-      <div className="px-6 py-3 hidden md:grid grid-cols-8 gap-4 items-center border-b border-slate-100 text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <section className="aisp-rise aisp-card overflow-hidden">
+      <div className="aisp-thead grid-cols-8">
           <div className="col-span-2">Document</div>
           <div>Transact ID</div>
           <div>Type</div>
@@ -20,12 +22,14 @@ function ServiceListView({ data }: Props) {
       <div>
         { data && data?.map((row:any) => (<ServiceListItem key={row.id} data={row} />))}
         { !data?.length && (
-          <div className="py-10 text-center text-slate-400 text-xs font-semibold uppercase tracking-widest">
-            No Requests ...
-          </div>
+          <AISPEmpty
+            title="No requests yet"
+            message="Pay for a transcript or certificate at the bank or via USSD and your request will show up here."
+            Icon={HiOutlineDocumentText}
+          />
         )}
       </div>
-    </div>
+    </section>
   )
 }
 
