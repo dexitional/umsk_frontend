@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Adinkra2 from "../assets/img/adinkra-bullet.png";
+// Gye Nyame symbol extracted from the AKATSICO crest -- list bullets.
+import Adinkra2 from "../assets/img/adinkra-symbol.png";
 // import Adinkra from '../assets/img/logo/akatsico/logo.png'
 import Adinkra from "../assets/img/adinkra-bullet.png";
 import Logo from "../assets/img/logo.webp";
@@ -104,31 +105,31 @@ function Login() {
             </h2>
             <ul className="space-y-4 text-white">
               {/* <li className="flex items-center space-x-4">
-                <img src={Adinkra2} alt="" className="h-4" />
+                <img src={Adinkra2} alt="" className="h-5 w-5 shrink-0" />
                 <span className="text-[1.1rem] font-semibold">
                   Easy access to Admission Management System.
                 </span>
               </li> */}
               <li className="flex items-center space-x-4">
-                <img src={Adinkra2} alt="" className="h-4" />
+                <img src={Adinkra2} alt="" className="h-5 w-5 shrink-0" />
                 <span className="text-[1.1rem] font-semibold">
                   Easy access to Academic Management System.
                 </span>
               </li>
               <li className="flex items-center space-x-4">
-                <img src={Adinkra2} alt="" className="h-4" />
+                <img src={Adinkra2} alt="" className="h-5 w-5 shrink-0" />
                 <span className="text-[1.1rem] font-semibold">
                   Easy access to Financial Management System.
                 </span>
               </li>
               {/* <li className="flex items-center space-x-4">
-                <img src={Adinkra2} alt="" className="h-4" />
+                <img src={Adinkra2} alt="" className="h-5 w-5 shrink-0" />
                 <span className="text-[1.1rem] font-semibold">
                   Easy access to Election Management System.
                 </span>
               </li> */}
               <li className="flex items-center space-x-4">
-                <img src={Adinkra2} alt="" className="h-4" />
+                <img src={Adinkra2} alt="" className="h-5 w-5 shrink-0" />
                 <span className="text-[1.1rem] font-semibold">
                   Easy access to Student Portal Services.
                 </span>
@@ -145,17 +146,17 @@ function Login() {
             </ul>
           </div>
         </section>
-        <section className="mx-2 my-1 py-2 shadow rounded-t-xl border-primary/20 backdrop-blur-lg bg-primary-dark/50 bg-[url('./assets/img/eagle.png')] bg-no-repeat bg-bottom flex md:hidden items-center justify-center">
+        <section className="mx-2 my-1 py-2 shadow rounded-t-xl border-primary/20 backdrop-blur-lg bg-primary-dark/50 bg-[url('./assets/img/torch.png')] bg-no-repeat bg-bottom flex md:hidden items-center justify-center">
           <img src={Logo} alt="" className="h-20 w-fit" />
         </section>
-        <section className="m-2 my-1 md:my-10 md:mx-4 md:w-[28rem] rounded-b-xl md:rounded-xl border-[3px] border-primary-dark/20 backdrop-blur-lg bg-primary bg-[url('./assets/img/eagle.png')] bg-no-repeat bg-bottom flex flex-col justify-between overflow-y-scroll scrollbar-hide">
+        <section className="m-2 my-1 md:my-10 md:mx-4 md:w-[28rem] rounded-b-xl md:rounded-xl border-[3px] border-primary-dark/20 backdrop-blur-lg bg-primary bg-[url('./assets/img/torch.png')] bg-no-repeat bg-[position:center_bottom_-4rem] flex flex-col justify-between overflow-y-scroll scrollbar-hide">
           <div className="p-6 flex-1 flex flex-col items-center">
             <h1 className="md:hidden my-4 text-3xl md:text-4xl font-semibold font-mono text-secondary-accent-300/50 tracking-widest">AKATSICO</h1>
-            <h1 className="hidden md:flex my-4 text-3xl md:text-4xl font-mono text-white">UMS PORTAL</h1>
+            <h1 className="hidden md:flex my-4 text-2xl md:text-3xl font-mono font-bold tracking-widest text-[#8fd3fc] opacity-30">AKATSICO PORTAL</h1>
             <img
-              src={Adinkra}
+              src={Adinkra2}
               alt=""
-              className="mt-20 p-2 h-22 md:h-24 rounded-md border-2 border-dashed opacity-40 shadow-lg -rotate-45 "
+              className="mt-8 h-24 md:h-32 w-auto opacity-10 drop-shadow-[0_4px_10px_rgba(143,211,252,0.15)]"
             />
             <div className="my-6 md:my-14 w-full space-y-8">
               <div
@@ -214,7 +215,7 @@ function Login() {
                   onClick={async () => await setLoginform("student")}
                   className={`${
                     loginform ? "hidden" : "flex"
-                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-secondary/50 font-bold tracking-wider`}
+                  } py-2.5 px-4 md:px-6 w-full flex items-center space-x-4 shadow rounded bg-secondary/50 font-medium tracking-widest`}
                 >
                   <ImProfile className="h-6 w-6 text-white/80" />
                   <span className="text-sm md:text-base text-white/80">

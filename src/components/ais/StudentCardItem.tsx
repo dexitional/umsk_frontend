@@ -65,7 +65,7 @@ function StudentCardItem({ data }: Props) {
         <div className="flex items-center space-x-4">
           <FaEnvelope className="h-4 w-5 text-primary/70" />
           <span className="text-sm text-gray-500 line-clamp-1">
-            {data?.email?.toLowerCase() || "Not Set"}
+            {data?.instituteEmail?.toLowerCase() || "Not Set"}
           </span>
         </div>
         <div className="flex items-center space-x-4">
