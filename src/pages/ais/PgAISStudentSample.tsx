@@ -16,7 +16,8 @@ type Props = {};
 // form's free-typed "Student Number" field). yearGroup (1, 2, 3, ...) maps
 // to the first-semester value of that year on student.semesterNum --
 // YEAR 1 = 1, YEAR 2 = 3, YEAR 3 = 5, matching the single-create form's
-// "Program Year and Semester" options.
+// "Program Year and Semester" options. indexno is optional (blank = not yet
+// issued), and HALL (or "HALL OF AFFILIATION") maps to instituteAffliate.
 export async function action({ request }) {
   const formData = await request.formData();
   let data: any = Object.fromEntries(formData);
@@ -25,12 +26,14 @@ export async function action({ request }) {
   data.mname = "";
   data.lname = "DOE";
   data.dob = "2000-01-01";
+  data.indexno = "";
   data.yearGroup = "1";
   data.gender = "M";
   data.email = "example@domain.com";
   data.phone = "0244000000";
   data.address = "P.O. BOX 123, ACCRA";
   data.hometown = "CAPE COAST";
+  data.HALL = "";
 
   jsonToExcel([data], `STUDENT_UPLOAD_SAMPLE`);
   return false;
