@@ -12,6 +12,7 @@ import AISPRoute from './routes/AISPRoute';
 import AISRoute from './routes/AISRoute';
 import EVSRoute from './routes/EVSRoute';
 import FMSRoute from './routes/FMSRoute';
+import LOGRoute from './routes/LOGRoute';
 import PrintRoute from './routes/PrintRoute';
 import { useUserStore } from './utils/authService';
 import { ErrorBoundary } from './pages/ErrorRoot';
@@ -63,6 +64,8 @@ const App = memo(() => {
          {...FMSRoute },
          /* ELECTA SYSTEM ROUTE */
          {...EVSRoute },
+         /* LOG MODULE (audit::admin) */
+         {...LOGRoute },
          /* PRINT LAYOUT & ROUTE */
          {...PrintRoute },
       ]

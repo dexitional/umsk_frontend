@@ -2,7 +2,7 @@ import React from "react";
 // @ts-ignore
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { GiVote } from "react-icons/gi";
-import { HiAcademicCap } from "react-icons/hi2";
+import { HiAcademicCap, HiOutlineShieldCheck } from "react-icons/hi2";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { SiCashapp } from "react-icons/si";
 import { useNavigation } from "react-router-dom";
@@ -17,7 +17,7 @@ function Home() {
   const { user, logout } = useUserStore((state) => state);
 
   const navigation = useNavigation();
-  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs"].includes(r));
+  const loadModule: any = navigation?.location?.pathname.split("/").find((r: any) => ["ais", "fms", "evs", "logs"].includes(r));
 
   console.log("user", user);
 
@@ -25,6 +25,7 @@ function Home() {
   const hasFms = user?.roles?.find((r) => r?.app?.toLowerCase() == "fms");
 
   const hasEvs = user?.roles?.find((r) => r?.app?.toLowerCase() == "evs");
+  const hasLogs = user?.roles?.some((r: any) => r?.role == "audit::admin");
   const isEvsAdmin = user?.roles?.find((r) => r?.role?.toLowerCase() == "election::admin");
 
   // Assessors land on their own sheets; anyone else with AIS access lands on
@@ -121,6 +122,17 @@ function Home() {
                       ]} 
                   />
                   } */}
+
+              { hasLogs && (
+                <AppCard
+                  title="Log & Audit Trail System &reg;"
+                  desc="Monitor system activity, user actions and the full audit trail of assessment records."
+                  Icon={HiOutlineShieldCheck}
+                  links={[{ title: "Goto Application", url: "/logs" }]}
+                  tag="logs"
+                  page={loadModule}
+                />
+              )}
 
               { hasAis && (
                 <AppCard

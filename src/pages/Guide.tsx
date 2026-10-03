@@ -4,13 +4,14 @@ import { useUserStore } from "../utils/authService";
 import Logo from "../assets/img/logo.webp";
 import "./Guide.css";
 
-type SectionId = "overview" | "ais" | "fms" | "aisp" | "roles" | "faq";
+type SectionId = "logs" | "overview" | "ais" | "fms" | "aisp" | "roles" | "faq";
 
 const TITLES: Record<SectionId, [string, string, string]> = {
   overview: ["Guide", "Overview", "What the Unified Portal is and how its parts fit together."],
   ais: ["Academics", "AIS — Academics", "Students, calendars, assessment, resits, and graduation."],
   fms: ["Finance", "FMS — Finance", "Bills, charges, payments, and financial reporting."],
   aisp: ["Self-service", "Student Portal", "The enrolled student's self-service home."],
+  logs: ["Oversight", "Log & Audit Trail", "System-wide activity, and a full audit trail of assessment records and account changes."],
   roles: ["Reference", "Roles & Duties", "Every permission tag in the system and what it grants."],
   faq: ["Reference", "FAQ", "Common questions, answered."],
 };
@@ -35,7 +36,7 @@ function Guide({}: Props) {
     return (Object.keys(TITLES) as SectionId[]).includes(hash as SectionId) ? (hash as SectionId) : "overview";
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [roleFilter, setRoleFilter] = useState<"all" | "ais" | "fms">("all");
+  const [roleFilter, setRoleFilter] = useState<"all" | "oversight" | "ais" | "fms">("all");
   const [faqQuery, setFaqQuery] = useState("");
 
   useEffect(() => {
@@ -87,6 +88,11 @@ function Guide({}: Props) {
           <div className="gd-navgroup">
             <div className="gd-navlabel">Self-service</div>
             <NavItem id="aisp" active={active} onClick={go} label="Student Portal" />
+          </div>
+
+          <div className="gd-navgroup">
+            <div className="gd-navlabel">Oversight</div>
+            <NavItem id="logs" active={active} onClick={go} label="Log & Audit Trail" />
           </div>
 
           <div className="gd-navgroup">
@@ -323,6 +329,85 @@ function Guide({}: Props) {
               </section>
             )}
 
+            {active === "logs" && (
+              <section className="gd-page-section gd-active">
+                <p className="gd-lede">The Log &amp; Audit Trail module is a single place to answer <i>who did what, to whom, and when</i> across the whole portal — sign-ins, student and course changes, password resets, and a complete, field-by-field history of every change to students' assessment records (registrations, scores, publishing).</p>
+
+                <div className="gd-stat-row">
+                  <div className="gd-stat"><div className="gd-n">1</div><div className="gd-l">Role needed: audit::admin</div></div>
+                  <div className="gd-stat"><div className="gd-n">3</div><div className="gd-l">Assessment change types</div></div>
+                  <div className="gd-stat"><div className="gd-n">0</div><div className="gd-l">Passwords ever shown</div></div>
+                  <div className="gd-stat"><div className="gd-n">100%</div><div className="gd-l">Assessment writes covered</div></div>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">Access</div>
+                  <h2>Who can open it</h2>
+                  <p>Only staff holding <code>audit::admin</code> see the <b>Log &amp; Audit Trail System</b> card on the dashboard and can open <code>/logs</code>; everyone else gets a "restricted" screen, and the underlying data is refused by the server too. The role is assigned like any other from <b>User Roles</b>, and takes effect the next time the person signs in.</p>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">What is recorded</div>
+                  <h2>Assessment audit trail</h2>
+                  <div className="gd-block-dek">Every change to a student's assessment record is captured automatically — whichever screen it came from (course registration, assessment sheets, publishing, backlogs, resits, transcripts, exam-score approval).</div>
+                  <div className="gd-tablewrap">
+                    <table>
+                      <thead><tr><th>Event</th><th className="gd-wrap">What the entry shows</th></tr></thead>
+                      <tbody>
+                        <tr><td><code>ASSESSMENT_CREATED</code></td><td className="gd-wrap">The new record(s) in full — student, course, session, scores, status. A registration of several courses is one entry listing every record.</td></tr>
+                        <tr><td><code>ASSESSMENT_UPDATED</code></td><td className="gd-wrap">Only the fields that actually changed, as <b>before → after</b> (e.g. Exam score 40 → 48, Published No → Yes). Saving a sheet without changing anything does not create an entry.</td></tr>
+                        <tr><td><code>ASSESSMENT_DELETED</code></td><td className="gd-wrap">A complete snapshot of each removed record, so it can be reconstructed if the deletion was a mistake.</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p>Each entry also records <b>who</b> made the change, <b>which student</b> was affected, and <b>where</b> it came from (the screen's request path and the user's network address). Changes made inside an approval that fails part-way are rolled back — and so are their log entries, so the trail never shows a change that didn't happen.</p>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">What is recorded</div>
+                  <h2>Account &amp; password events</h2>
+                  <div className="gd-tablewrap">
+                    <table>
+                      <thead><tr><th>Event</th><th className="gd-wrap">Performed by → affected account</th></tr></thead>
+                      <tbody>
+                        <tr><td><code>STUDENT_ACCOUNT_RESET</code></td><td className="gd-wrap">The staff member who reset it → the student.</td></tr>
+                        <tr><td><code>STUDENT_ACCOUNT_STAGED</code></td><td className="gd-wrap">The staff member (or system, for bulk uploads) who created portal access → the student.</td></tr>
+                        <tr><td><code>STUDENT_PIN_RESET</code> / <code>STUDENT_PINS_RESET_ALL</code></td><td className="gd-wrap">The signed-in staff member → one student, or every student (listed in the entry).</td></tr>
+                        <tr><td><code>STAFF_ACCOUNT_RESET</code></td><td className="gd-wrap">The staff member who reset it → the staff account (shown in the entry's details).</td></tr>
+                        <tr><td><code>USER_PASSWORD_CHANGED</code></td><td className="gd-wrap">The account owner, changing their own password.</td></tr>
+                        <tr><td><code>FORGOT_PASSWORD_CHANGED</code></td><td className="gd-wrap">The account owner, via "forgot password" (the account is identified even if they typed their email).</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="gd-callout gd-callout-note"><span className="gd-ic">Note</span><div>No password, password hash or PIN is ever written into a log entry, and any credential-like field in older entries is shown as <code>[redacted]</code>.</div></div>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">Using the module</div>
+                  <h2>Reading the overview</h2>
+                  <p>The top of the page summarises activity: <b>total events</b>, <b>today</b>, the <b>last 7 days</b>, and <b>assessment changes</b> split into created, updated and deleted. Below that, the <b>Activity</b> chart shows events per day for the last 14 days (hover or focus a column for the exact count), and <b>Most active</b> ranks the users with the most events in the last 30 days — click a name to see only their activity.</p>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">Using the module</div>
+                  <h2>Finding an event</h2>
+                  <ol className="gd-steps">
+                    <li><div className="gd-step-body"><b>Pick a category</b> from the tabs — Assessments, Authentication, Students, Academics, Finance, Messaging — each showing how many events it holds.</div></li>
+                    <li><div className="gd-step-body"><b>Narrow it down</b> with the search box (action, user or student — press Enter), the <b>action</b> list, and the <b>from/to</b> dates.</div></li>
+                    <li><div className="gd-step-body"><b>Click a person</b> in the <i>Performed by</i> or <i>Student</i> column to filter to just them; active filters appear as chips you can remove individually or all at once.</div></li>
+                    <li><div className="gd-step-body"><b>Share the view</b> — filters live in the page address, so copying the URL gives a colleague exactly the same filtered list.</div></li>
+                  </ol>
+                </div>
+
+                <div className="gd-block">
+                  <div className="gd-eyebrow">Using the module</div>
+                  <h2>Inspecting an event</h2>
+                  <p>Click any row to open its detail panel: who performed it and which student it concerns, when it happened, the request it came from, and — for assessment changes — every affected record (created values, <b>before → after</b> for updates, a full snapshot for deletions). <b>Show raw data</b> reveals the full entry, with a <b>Copy</b> button for attaching to a support ticket. Press <b>Esc</b> or the ✕ to close; the panel's address can be shared to open that exact entry.</p>
+                  <div className="gd-callout gd-callout-note"><span className="gd-ic">Note</span><div>Entries recorded before the audit trail went live keep their original, simpler format — they show their raw data, without the before → after breakdown.</div></div>
+                </div>
+              </section>
+            )}
+
             {active === "roles" && (
               <section className="gd-page-section gd-active">
                 <p className="gd-lede">Access is granted per feature, not per module — a person can hold any combination of these tags. Every tag follows the same shape: <code>feature::level</code> (e.g. <code>bill::admin</code>). "-ug" / "-pg" suffixes scope a tag to undergraduate or postgraduate records only.</p>
@@ -331,6 +416,7 @@ function Guide({}: Props) {
                   <button className={roleFilter === "all" ? "gd-active" : ""} onClick={() => setRoleFilter("all")}>All modules</button>
                   <button className={roleFilter === "ais" ? "gd-active" : ""} onClick={() => setRoleFilter("ais")}>Academics (AIS)</button>
                   <button className={roleFilter === "fms" ? "gd-active" : ""} onClick={() => setRoleFilter("fms")}>Finance (FMS)</button>
+                  <button className={roleFilter === "oversight" ? "gd-active" : ""} onClick={() => setRoleFilter("oversight")}>Oversight</button>
                 </div>
 
                 {(roleFilter === "all" || roleFilter === "ais") && (
@@ -407,6 +493,20 @@ function Guide({}: Props) {
                   </div>
                 )}
 
+                {(roleFilter === "all" || roleFilter === "oversight") && (
+                  <div className="gd-block">
+                    <h2>Oversight roles</h2>
+                    <div className="gd-tablewrap">
+                      <table>
+                        <thead><tr><th>Tag</th><th className="gd-wrap">Grants</th></tr></thead>
+                        <tbody>
+                          <tr><td><code>audit::admin</code></td><td className="gd-wrap">Full access to the <LinkTo id="logs" onClick={go}>Log &amp; Audit Trail</LinkTo> module: all system activity and the complete assessment and account-change audit trail.</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
                 <div className="gd-callout gd-callout-note"><span className="gd-ic">Note</span><div>Applicants and students don't hold any of these tags — their access comes entirely from being signed in as themselves; each self-service screen only ever shows their own record.</div></div>
               </section>
             )}
@@ -439,6 +539,13 @@ function Guide({}: Props) {
                   ["A student paid but their balance hasn't updated — what do I check first?", "Confirm the payment was recorded against the correct Student ID on Fees Payments (not Other Payments — those are separate categories, e.g. graduation or resit fees, and won't touch the academic fee balance). Then check the student's statement on Student Accounts for the actual ledger entry."],
                   ["What's the difference between retiring an account and just letting the balance sit?", "Retire zeroes out a balance permanently (e.g. a written-off or resolved-outside-the-system debt) — it's a one-way action, not a payment. Use it only when you're certain the balance shouldn't be collected, not as a way to \"clear\" something you plan to revisit."],
                   ["Where do I find a printable receipt for a payment?", "Open the payment from Fees Payments (or Other Payments) — its detail page is the two-page official receipt itself, with a Print button."],
+                ]} />
+
+                <FaqGroup title="Audit & logs" query={q} items={[
+                  ["How do I find out who changed a student's score?", "Open the Log & Audit Trail module, choose the Assessments tab and search the student's index number (or click their name in any row). Each \"Assessment updated\" entry shows who made the change, when, and the exact before → after values."],
+                  ["How can I see who reset a student's password?", "Search the student in the Log & Audit Trail module and look for \"Student account reset\" (or \"Student PIN reset\") — the Performed by column is the staff member who did it."],
+                  ["Why don't I see the Log & Audit Trail card on my dashboard?", "It's only shown to holders of audit::admin. Ask for the role to be assigned in User Roles, then sign out and back in."],
+                  ["Can the logs show me a user's password?", "No. Passwords, password hashes and PINs are never recorded, and any credential-like field in older entries is displayed as [redacted]."],
                 ]} />
 
                 <footer className="gd-page-end">Can't find an answer here? The behaviour described throughout this guide reflects the system as currently deployed — if something doesn't match what you're seeing, it's worth confirming directly rather than assuming the guide is wrong.</footer>
