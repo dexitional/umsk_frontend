@@ -8,7 +8,7 @@ type Props = {
 }
 
 function AISBacklogRecordCard({ title,data }: Props) {
-  const gridCols = data.type == 'ASSESSMENT' ? 'grid-cols-9' : 'grid-cols-6';
+  const gridCols = data.type == 'ASSESSMENT' ? 'grid-cols-12' : 'grid-cols-6';
   return (
     <div className="w-full space-y-3 rounded">
     <h1 className="text-sm font-bold font-roboto tracking-wider text-primary-dark/60 flex flex-col md:flex-row justify-between">
@@ -27,6 +27,9 @@ function AISBacklogRecordCard({ title,data }: Props) {
 
             <span>COURSE</span>
             { data.type == 'ASSESSMENT' ? <>
+            <span>QUIZ</span>
+            <span>MIDSEM</span>
+            <span>ASSIGN.</span>
             <span>CLASS</span>
             <span>EXAMS</span>
             <span>TOTAL</span>
@@ -53,6 +56,9 @@ function AISBacklogRecordCard({ title,data }: Props) {
               </span>
               <span className="col-span-1 font-bold self-center">{row.courseId}</span>
               { data.type == 'ASSESSMENT' ? <>
+              <span className="col-span-1 font-bold self-center">{row.scoreQuiz ?? '-'}</span>
+              <span className="col-span-1 font-bold self-center">{row.scoreMidsem ?? '-'}</span>
+              <span className="col-span-1 font-bold self-center">{row.scoreAssignment ?? '-'}</span>
               <span className="col-span-1 font-bold self-center">{row.scoreClass}</span>
               <span className="col-span-1 font-bold self-center">{row.scoreExam}</span>
               <span className="col-span-1 font-bold self-center">{row.scoreTotal}</span>

@@ -22,20 +22,24 @@ function AISStaffAccountCard({ data, isUser }: Props) {
   const stageAccess = async () => {
     const ok = window.confirm("Setup User Access ?");
     if (ok) {
-      const resp = await Service.stageStaffAccess(data?.staffNo);
-      if (resp) setTimeout(() => navigate(0), 1000);
-      toast(`Username: ${data?.instituteEmail ? data?.instituteEmail : data?.staffNo}, Password: ${resp.password}`, {
-        duration: 20000,
-        className:
-          "bg-green-50 border rounded text-base font-semibold text-primary-dark",
-      });
+      try {
+        const resp = await Service.stageStaffAccess(data?.staffNo);
+        toast(`Username: ${resp?.username}, Password: ${resp?.password}`, {
+          duration: 20000,
+          className:
+            "bg-green-50 border rounded text-base font-semibold text-primary-dark",
+        });
+        setTimeout(() => navigate(0), 1000);
+      } catch (e) {
+        // Service already surfaced the error toast.
+      }
     }
   };
 
   const resetAccess = async () => {
     const ok = window.confirm("Reset User Account Password ?");
     if (ok) {
-      await Service.resetStaffAccess(data?.staffNo);
+      await Service.resetStaffAccess(data?.staffNo).catch(() => {});
     }
   };
 

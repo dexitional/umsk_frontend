@@ -10,6 +10,19 @@ import {
   HiAcademicCap,
   HiOutlineTableCells,
   HiOutlineBriefcase,
+  HiOutlineUserGroup,
+  HiOutlineGlobeAlt,
+  HiOutlineHeart,
+  HiOutlineEye,
+  HiOutlineSpeakerWave,
+  HiOutlineAcademicCap,
+  HiOutlineCake,
+  HiOutlineInboxArrowDown,
+  HiOutlineClipboardDocumentCheck,
+  HiOutlineEnvelopeOpen,
+  HiOutlineClock,
+  HiOutlineBuildingOffice2,
+  HiOutlineWrenchScrewdriver,
 } from "react-icons/hi2";
 import ReportCard from "./ReportCard";
 import ReportDropdown from "./ReportDropdown";
@@ -173,23 +186,66 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
     },
   ];
 
+  // GTEC statutory return -- each table downloads as its own Excel file,
+  // laid out exactly like GTEC's sample return. Student/staff tables are
+  // for the current academic session.
+  const gtec = (table: string, title: string, description: string, Icon: any, fields: any = null) => ({
+    type: `gtec_${table}`, title, description, Icon, fields,
+    gradient: "from-sky-600 to-blue-700",
+    glow: "hover:shadow-sky-500/20",
+  });
+  const STATUTORY_REPORTS = [
+    gtec("t03", "Table 3: Applications", "Applications for admission by gender and programme", HiOutlineInboxArrowDown),
+    gtec("t04", "Table 4: Qualified Applicants", "Applications qualified for admission", HiOutlineClipboardDocumentCheck),
+    gtec("t05", "Table 5: Admission Offered", "Admissions offered by gender and programme", HiOutlineEnvelopeOpen),
+    gtec("t06", "Table 6: New Entrants", "New entrants by gender and programme", HiOutlineUserPlus),
+    gtec("t07", "Table 7: Student Enrolment", "Enrolment by year of study and gender", HiOutlineUserGroup),
+    gtec("t08", "Table 8: Foreign Students", "Foreign students by nationality and gender", HiOutlineGlobeAlt),
+    gtec("t09", "Table 9: Mobility Impairment", "Students with mobility impairment or loss of limbs", HiOutlineHeart),
+    gtec("t10", "Table 10: Vision Impairment", "Students with vision impairment", HiOutlineEye),
+    gtec("t11", "Table 11: Hearing & Speech Impairment", "Deaf, hard of hearing, speech-impaired or dual-sensory students", HiOutlineSpeakerWave),
+    gtec("t12", "Table 12: Full-time Academic Staff", "Teaching staff by department, rank and qualification", HiOutlineAcademicCap),
+    gtec("t13", "Table 13: Academic Staff Age", "Full-time teaching staff by department and age group", HiOutlineCake),
+    gtec("t14", "Table 14: Part-time Academic Staff", "Part-time teaching staff by department, rank and qualification", HiOutlineClock),
+    gtec("t15", "Table 15: Non-teaching Staff (Admin)", "Non-teaching staff in central administration and support units", HiOutlineBuildingOffice2),
+    gtec("t16", "Table 16: Non-teaching Staff (Departments)", "Non-teaching staff in teaching departments", HiOutlineWrenchScrewdriver),
+    gtec("t17", "Table 17: Graduating Students", "Graduates by programme and class of degree", HiAcademicCap,
+      <ReportDropdown label="GRADUATION SESSION" name="gsession" options={gsessionOptions} />),
+  ];
+
+  const renderCards = (reports: any[], offset = 0) =>
+    reports.map(({ type, title, description, Icon, gradient, glow, fields }, i) => (
+      <ReportCard
+        key={type}
+        index={offset + i}
+        type={type}
+        title={title}
+        description={description}
+        Icon={Icon}
+        gradient={gradient}
+        glow={glow}
+        isSubmitting={submittingType === type}
+      >
+        {fields}
+      </ReportCard>
+    ));
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-      {REPORTS.map(({ type, title, description, Icon, gradient, glow, fields }, i) => (
-        <ReportCard
-          key={type}
-          index={i}
-          type={type}
-          title={title}
-          description={description}
-          Icon={Icon}
-          gradient={gradient}
-          glow={glow}
-          isSubmitting={submittingType === type}
-        >
-          {fields}
-        </ReportCard>
-      ))}
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+        {renderCards(REPORTS)}
+      </div>
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-sm md:text-base font-semibold text-gray-700">GTEC Statutory Returns</h2>
+          <p className="text-[0.7rem] md:text-xs text-gray-400">
+            Each table exports as its own Excel file in GTEC's format. A "Data notes" sheet lists any records that couldn't be counted.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+          {renderCards(STATUTORY_REPORTS, REPORTS.length)}
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,0 +1,99 @@
+import moment from "moment";
+import React from "react";
+import { HiOutlineDocumentText, HiOutlinePencilSquare, HiOutlinePlus, HiOutlinePrinter, HiOutlineTrash } from "react-icons/hi2";
+import { Link, useLoaderData, useRevalidator } from "react-router-dom";
+import Service from "../../utils/aisService";
+import { useHasRole } from "../../utils/roles";
+
+// Admission letter templates (ams_letter), one active letter per programme.
+export async function loader() {
+  const [letters, programs] = await Promise.all([Service.fetchAdmissionLetters(), Service.fetchProgramList()]);
+  return { letters: Array.isArray(letters) ? letters : [], programs: Array.isArray(programs) ? programs : [] };
+}
+
+function PgAISAdmissionLetters() {
+  const { letters, programs }: any = useLoaderData();
+  const canEdit = useHasRole("ais", ["sletter::admin"]);
+  const revalidator = useRevalidator();
+  const covered = new Set(letters.filter((l: any) => l.status).map((l: any) => l.programId));
+  const missing = programs.filter((p: any) => p.status !== false && p.category === "UG" && !covered.has(p.id));
+
+  const remove = async (l: any) => {
+    if (!window.confirm(`Delete the admission letter "${l.title}"?`)) return;
+    if (await Service.deleteAdmissionLetter(l.id)) revalidator.revalidate();
+  };
+
+  return (
+    <div className="md:pl-10 p-4 md:p-6 space-y-5 animate-fade-in-up">
+      <div className="relative overflow-hidden rounded-xl bg-primary/90 px-5 py-3.5 md:px-7 md:py-4 shadow-md shadow-slate-500/10">
+        <div className="relative flex items-center gap-3">
+          <span className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white/90">
+            <HiOutlineDocumentText className="h-5 w-5" />
+          </span>
+          <div className="flex-1">
+            <h1 className="text-base md:text-lg font-semibold tracking-wide text-white">Admission Letters</h1>
+            <p className="text-[0.7rem] md:text-xs text-white/60">Templates per programme, printed for newly admitted first years</p>
+          </div>
+          {canEdit ? (
+            <Link to="create" className="flex items-center gap-1.5 rounded-lg bg-white/15 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/25 md:text-sm">
+              <HiOutlinePlus className="h-4 w-4" /> New letter
+            </Link>
+          ) : null}
+        </div>
+      </div>
+
+      {missing.length ? (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800">
+          No active admission letter yet for: {missing.map((p: any) => p.longName || p.shortName).join(", ")}.
+        </p>
+      ) : null}
+
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="hidden grid-cols-12 gap-3 border-b border-slate-100 bg-slate-50 px-4 py-2.5 text-[0.65rem] font-semibold uppercase tracking-wider text-slate-500 md:grid">
+          <span className="col-span-4">Programme</span>
+          <span className="col-span-3">Title</span>
+          <span>Category</span>
+          <span>Status</span>
+          <span className="col-span-1">Updated</span>
+          <span className="col-span-2 text-right">Actions</span>
+        </div>
+        {letters.length ? (
+          letters.map((l: any) => (
+            <div key={l.id} className="grid grid-cols-1 gap-2 border-b border-slate-100 px-4 py-3 text-sm last:border-b-0 md:grid-cols-12 md:items-center md:gap-3">
+              <span className="font-medium text-slate-700 md:col-span-4">{l.program?.longName || <em className="text-slate-400">No programme</em>}</span>
+              <span className="text-slate-600 md:col-span-3">{l.title}</span>
+              <span>
+                <span className="rounded-md bg-primary/5 px-2 py-0.5 text-xs font-semibold text-primary">{l.category}</span>
+              </span>
+              <span>
+                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${l.status ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>{l.status ? "Active" : "Inactive"}</span>
+              </span>
+              <span className="text-xs text-slate-400 md:col-span-1">{moment(l.updatedAt).format("MMM D, YYYY")}</span>
+              <span className="flex gap-1.5 md:col-span-2 md:justify-end">
+                {l.status && l.programId ? (
+                  <Link to={`print?programId=${encodeURIComponent(l.programId)}`} title="Print letters for this programme's first years" className="rounded-md border border-slate-200 p-1.5 text-slate-500 hover:text-primary">
+                    <HiOutlinePrinter className="h-4 w-4" />
+                  </Link>
+                ) : null}
+                {canEdit ? (
+                  <>
+                    <Link to={`${l.id}/edit`} title="Edit" className="rounded-md border border-slate-200 p-1.5 text-slate-500 hover:text-primary">
+                      <HiOutlinePencilSquare className="h-4 w-4" />
+                    </Link>
+                    <button type="button" onClick={() => remove(l)} title="Delete" className="rounded-md border border-slate-200 p-1.5 text-slate-500 hover:text-rose-600">
+                      <HiOutlineTrash className="h-4 w-4" />
+                    </button>
+                  </>
+                ) : null}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="px-4 py-12 text-center text-sm text-slate-400">No admission letters yet.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default PgAISAdmissionLetters;

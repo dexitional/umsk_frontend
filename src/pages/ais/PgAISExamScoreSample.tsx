@@ -8,20 +8,24 @@ import {
 import SubPageTitle from "../../components/ais/SubPageTitle";
 import Service from "../../utils/aisService";
 import { jsonToExcel } from "../../utils/util";
+import { scoreMax } from "../../utils/scoreRange";
 
 type Props = {};
 
 // Narrower clone of PgAISBacklogSample: only the fields uploadExamScore
 // actually reads -- sessionId, courseId, semesterNum, type (N/R, used with
 // the other fields purely to find/confirm the matching assessment record),
-// indexno, and a blank examScore placeholder. No Grading Scheme (schemeId)
-// -- this never creates an assessment record, only updates examScore/
-// totalScore on an existing one.
+// indexno, a blank examScore placeholder, and the Grading Scheme (schemeId)
+// whose exam maximum the upload validates the scores against. This never
+// creates an assessment record, only updates examScore/totalScore on an
+// existing one.
 export async function action({ request }) {
   const formData = await request.formData();
   let data: any = Object.fromEntries(formData);
+  const schemes = await Service.fetchSchemeList();
+  const max = scoreMax(schemes?.find((s: any) => s.id === data.schemeId), "exam");
   data.indexno = "41329275";
-  data.examScore = " -- LEAVE BLANK IF NO SCORE / IC -- MAX 40 -- ";
+  data.examScore = ` -- LEAVE BLANK IF NO SCORE / IC -- MAX ${max} -- `;
 
   jsonToExcel([data], `EXAM_SCORES_${data.courseId}_YEAR${Math.ceil(data.semesterNum / 2)}`);
   return false;
@@ -30,12 +34,13 @@ export async function action({ request }) {
 export async function loader() {
   const sessions = await Service.fetchSessionList();
   const courses = await Service.fetchCourseList();
-  return { courses, sessions };
+  const schemes = await Service.fetchSchemeList();
+  return { courses, sessions, schemes };
 }
 
 function PgAISExamScoreSample({}: Props) {
   const navigate = useNavigate();
-  const { courses, sessions }: any = useLoaderData();
+  const { courses, sessions, schemes }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -77,6 +82,27 @@ function PgAISExamScoreSample({}: Props) {
                     sessions?.map((row: any) => (
                       <option key={row.id} value={row.id}>
                         {row.title?.toUpperCase()} &nbsp; ({row.default && `DEFAULT`})
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  GRADING SCHEME
+                </span>
+                <select
+                  arial-label="schemeId"
+                  name="schemeId"
+                  required
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option selected disabled>
+                    -- Choose --
+                  </option>
+                  {schemes &&
+                    schemes?.map((row: any) => (
+                      <option key={row.id} value={row.id}>
+                        {row.title?.toUpperCase()} &nbsp; (EXAM MAX {scoreMax(row, "exam")})
                       </option>
                     ))}
                 </select>

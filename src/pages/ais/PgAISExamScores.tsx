@@ -9,13 +9,15 @@ import BacklogShimCard from "../../components/shims/BacklogShimCard";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 import { excelToJson } from "../../utils/util";
+import { scoreMax } from "../../utils/scoreRange";
 import { useHasRole } from "../../utils/roles";
 
 type Props = {};
 
-// Matches the backend's EXAM_SCORE_MAX in aisController.ts -- checked here
-// too so a bad sheet is rejected immediately instead of round-tripping.
-const EXAM_SCORE_MAX = 40;
+// Exam scores are checked against the exam maximum of the grading scheme
+// named in each row (schemeId, from the upload sample) -- 40 when the file
+// has no scheme. Same rule as the backend's uploadExamScore, checked here
+// first so the problem rows are shown before anything is sent.
 
 // Exam Score Manager: narrower clone of the Backlog module (PgAISBacklogs) --
 // upload-only (no manual create form), backed by its own activityExam model,
@@ -29,13 +31,15 @@ export async function loader({ request }) {
   const page = new URL(request.url).searchParams.get("page") || 1;
   const limit = new URL(request.url).searchParams.get("limit") || pglimit || 9;
   const data = await Service.fetchExamScoreUploads(search, page, limit);
-  return { data, search, page };
+  const schemes = await Service.fetchSchemeList();
+  return { data, search, page, schemes };
 }
 
 function PgAISExamScores({}: Props) {
   const [view, setView] = useState("card");
   const {
     data: { data, totalPages, totalData },
+    schemes,
   }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation.state === "loading";
@@ -62,12 +66,26 @@ function PgAISExamScores({}: Props) {
     }
     setUploading(true);
     excelToJson(file, async (data: any[]) => {
-      const overMax = data.filter((row: any) => row.examScore !== "" && row.examScore != null && parseFloat(row.examScore) > EXAM_SCORE_MAX);
-      if (overMax.length) {
-        const indexnos = [...new Set(overMax.map((row: any) => row.indexno))];
-        toast.error(
-          `Upload rejected: exam score exceeds the maximum of ${EXAM_SCORE_MAX} for ${overMax.length} of ${data.length} student record(s): ${indexnos.join(", ")}.`,
-          { duration: 8000 }
+      const problems: string[] = [];
+      const unknownSchemes = new Set<string>();
+      for (const row of data) {
+        const schemeId = String(row.schemeId ?? "").trim();
+        const scheme = schemeId ? schemes?.find((s: any) => s.id === schemeId) : null;
+        if (schemeId && !scheme) { unknownSchemes.add(schemeId); continue; }
+        const raw = String(row.examScore ?? "").trim();
+        if (raw === "") continue;
+        const value = Number(raw), max = scoreMax(scheme, "exam");
+        if (Number.isNaN(value)) problems.push(`${row.indexno}: "${raw}" is not a number`);
+        else if (value < 0) problems.push(`${row.indexno}: ${value} is below 0`);
+        else if (value > max) problems.push(`${row.indexno}: ${value} exceeds the maximum of ${max}`);
+      }
+      if (unknownSchemes.size || problems.length) {
+        window.alert(
+          [
+            "Upload rejected -- no scores were uploaded.",
+            unknownSchemes.size ? `Grading scheme not found: ${[...unknownSchemes].join(", ")}. Please generate a new upload sample.` : "",
+            problems.length ? `${problems.length} of ${data.length} record(s) have an invalid exam score:\n${problems.slice(0, 25).join("\n")}${problems.length > 25 ? `\n...and ${problems.length - 25} more` : ""}` : "",
+          ].filter(Boolean).join("\n\n")
         );
         setUploading(false);
         return;

@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast';
+import * as FileSaver from 'file-saver';
 import { useUserStore } from './authService';
 import axios from './axios';
 
@@ -57,6 +58,25 @@ class Service {
       }
   }
 
+
+  // GTEC statutory return table -- the server builds the Excel file.
+  async downloadStatutoryReport(data, fallbackName = 'GTEC Report'){
+    try {
+        const res = await axios.post(`${REACT_APP_API_URL}/ais/report/statutory`, data, {
+            headers: { "Content-Type" : "application/json", "x-access-token" : token },
+            responseType: 'blob',
+        })
+        const name = /filename="?([^";]+)"?/.exec(res.headers?.['content-disposition'] || '')?.[1] || `${fallbackName}.xlsx`;
+        FileSaver.saveAs(res.data, name);
+        return true;
+    } catch (error) {
+        // Error bodies arrive as a Blob because of responseType.
+        let message = 'Report generation failed';
+        try { message = JSON.parse(await error?.response?.data?.text())?.message || message } catch (e) {}
+        toast.error(message);
+        return checkSession(error)
+    }
+  }
 
   async loadBroadsheet(data){
    try {
@@ -2580,73 +2600,145 @@ class Service {
       }
    }
 
+  // Admission letters (ams_letter templates, one active per programme).
+  async fetchAdmissionLetters(){
+      try {
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/admission-letters`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  async fetchAdmissionLetter(id){
+      try {
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/admission-letters/${encodeURIComponent(id)}`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  // Create (no id) or update; shows the server's message on failure.
+  async saveAdmissionLetter(id, data){
+      try {
+          const res = id
+            ? await axios.patch(`${REACT_APP_API_URL}/ais/admission-letters/${encodeURIComponent(id)}`, data,{ headers: { "Content-Type" : "application/json", "x-access-token" : token } })
+            : await axios.post(`${REACT_APP_API_URL}/ais/admission-letters`, data,{ headers: { "Content-Type" : "application/json", "x-access-token" : token } })
+          toast.success("Admission letter saved!")
+          return res.data
+      } catch (error) {
+          toast.error(error?.response?.data?.message || "Admission letter not saved")
+      }
+  }
+
+  async deleteAdmissionLetter(id){
+      try {
+          const res = await axios.delete(`${REACT_APP_API_URL}/ais/admission-letters/${encodeURIComponent(id)}`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          toast.success("Admission letter deleted!")
+          return res.data
+      } catch (error) {
+          toast.error(error?.response?.data?.message || "Admission letter not deleted")
+      }
+  }
+
+  // Ready-to-print letters for one student ({ studentId }) or a programme's
+  // newly admitted first years ({ programId }). Throws with the server's
+  // message (e.g. no active letter for the programme).
+  async fetchAdmissionLetterPrint(params){
+      try {
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/admission-letters/print`,{
+             params,
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  // Service letters. Every call carries the session token (the routes sit
+  // behind verifyToken; writes also need sletter::admin). Save/delete
+  // failures show the server's message instead of failing silently.
   async fetchLetters(keyword,page,limit){
       try {
-          const res = await axios.get(`${REACT_APP_API_URL}/ais/letters?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`)
-          if(res.status == 200 || res.status == 204)
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/letters?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          if(res.status == 200 || res.status == 202 || res.status == 204)
             return res.data
-          else throw new(res.data.message)
+          else throw new Error(res.data?.message)
       
       } catch (error) { 
-          console.error(error.message)
+          console.error(error?.message)
       }
   }
 
   async fetchLetter(letterId){
       try {
-          const res = await axios.get(`${REACT_APP_API_URL}/ais/letters/${letterId}`)
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/letters/${encodeURIComponent(letterId)}`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
           if(res.status == 200 || res.status == 204)
              return res.data
-          else throw new(res.data.message)
+          else throw new Error(res.data?.message)
       
       } catch (error) {
-          console.error(error.message)
+          console.error(error?.message)
       }
   }
 
   async postLetter(data){
       try {
           const res = await axios.post(`${REACT_APP_API_URL}/ais/letters`, data,{
-             headers: { "Content-Type" : "application/json" }
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
           })
           if(res.status == 200){
-             toast.success("Record saved!")
+             toast.success("Letter saved!")
              return res.data
           } 
-          else throw new(res.data.message)
+          else throw new Error(res.data?.message)
       
       } catch (error) { 
-          console.error(error.message)
+          toast.error(error?.response?.data?.message || error?.message || "Letter not saved")
       }
   }
 
   async updateLetter(letterId,data){
       try {
-          const res = await axios.patch(`${REACT_APP_API_URL}/ais/letters/${letterId}`, data,{
-             headers: { "Content-Type" : "application/json" }
+          const res = await axios.patch(`${REACT_APP_API_URL}/ais/letters/${encodeURIComponent(letterId)}`, data,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
           })
           if(res.status == 200){
-             toast.success("Record saved!")
+             toast.success("Letter saved!")
              return res.data
           } 
-          else throw new(res.data.message)
+          else throw new Error(res.data?.message)
       
       } catch (error) { 
-          console.error(error.message)
+          toast.error(error?.response?.data?.message || error?.message || "Letter not saved")
       }
   }
 
   async deleteLetter(letterId){
       try {
-          const res = await axios.delete(`${REACT_APP_API_URL}/ais/letters/${letterId}`)
+          const res = await axios.delete(`${REACT_APP_API_URL}/ais/letters/${encodeURIComponent(letterId)}`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
           if(res.status == 200){
-             toast.success("Record deleted!")
+             toast.success("Letter deleted!")
              return res.data
           } 
-          else throw new(res.data.message)
+          else throw new Error(res.data?.message)
       
       } catch (error) { 
-          console.error(error.message)
+          toast.error(error?.response?.data?.message || error?.message || "Letter not deleted")
       }
   }
 
@@ -2912,7 +3004,44 @@ class Service {
         }
      }
      
-     async fetchUserRoles(keyword,page,limit){
+     /* Access Control -- role assignment by person (see aisController
+       fetchAccessOverview / fetchUserAccess / saveUserAccess). */
+    async fetchAccessOverview(){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/access`,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            return res.data
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async fetchUserAccess(tag){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/access/users/${encodeURIComponent(tag)}`,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            return res.data
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    // Replaces the person's roles with exactly `roleIds`; throws with the
+    // server's message on a validation error.
+    async saveUserAccess(tag, roleIds, note = ''){
+        try {
+            const res = await axios.put(`${REACT_APP_API_URL}/ais/access/users/${encodeURIComponent(tag)}`, { roleIds, note },{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            return res.data
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    async fetchUserRoles(keyword,page,limit){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/uroles?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`,{
                headers: { "Content-Type" : "application/json", "x-access-token" : token }
@@ -3055,17 +3184,12 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/staff/stage`,{ staffId },{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            console.log(res.status)
-            if(res.status == 200 || res.status == 202){
-                return res.data
-            } else if(res.status == 500){
-              console.error("User account already staged")
-            }
-            else throw new(res.data.message)
+            if(res.status == 200) return res.data
+            throw new Error(res.data?.message || "Account staging failed")
         
         } catch (error) {
-            console.log(error?.response)
-            console.error(error?.response?.data)
+           toast.error(error?.response?.data?.message || error?.message || "Account staging failed")
+           return checkSession(error)
         }
     }
 
@@ -3074,13 +3198,15 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/staff/reset`,{ staffId },{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202){
+            if(res.status == 200){
                 const data = res?.data
-                toast(`Password changed to: \t${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                toast(`Username: ${data?.username}, Password: ${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                return data
             }
-            else throw new(res.data.message)
+            throw new Error(res.data?.message || "Password reset failed")
         
         } catch (error) {
+           toast.error(error?.response?.data?.message || error?.message || "Password reset failed")
            return checkSession(error)
         }
     }
@@ -3154,6 +3280,20 @@ class Service {
      async fetchRegions(){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/regions`,{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200 || res.status == 202)
+              return res.data
+            else throw new(res.data.message)
+        
+        } catch (error) { 
+           return checkSession(error)
+        }
+     }
+
+     async fetchHalls(){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/ais/halls`,{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
             if(res.status == 200 || res.status == 202)

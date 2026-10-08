@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { GoPasskeyFill } from "react-icons/go";
 import { HiUserAdd } from "react-icons/hi";
+import { HiOutlinePrinter } from "react-icons/hi2";
 import { TbPhotoCancel, TbPhotoEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 // @ts-ignore
@@ -26,6 +27,7 @@ function AISAccountCard({ data }: Props) {
   const canAdminAccount = useHasRole("ais", ["student::admin"]);
   const canCoreAccount = useHasRole("ais", ["student::admin", "student::clerk", "student::registry"]);
   const canFinanceAccount = useHasRole("ais", ["student::admin", "student::finance"]);
+  const canPrintAdmission = useHasRole("ais", ["student::admin", "student::clerk", "student::registry", "sletter::admin", "sletter::clerk"]);
 
   // Tracks which single action (if any) is currently in flight, by key --
   // disables every button on the card while one is running (these all
@@ -192,6 +194,18 @@ function AISAccountCard({ data }: Props) {
             <span className={`font-semibold text-sm md:text-base text-secondary-accent font-noto ${pending === "stage" ? "animate-pulse" : ""}`}>
               {pending === "stage" ? "Staging..." : "Stage Student Access"}
             </span>
+          </button>
+        ) : null}
+        {/* Print Admission Letter */}
+        {canPrintAdmission ? (
+          <button
+            type="button"
+            onClick={() => navigate(`/ais/admission-letters/print?studentId=${encodeURIComponent(data?.id)}`)}
+            disabled={!!pending}
+            className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <HiOutlinePrinter className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+            <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">Print Admission Letter</span>
           </button>
         ) : null}
         {/* Reset Account */}

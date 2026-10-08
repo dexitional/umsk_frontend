@@ -1,5 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { HiOutlineGlobeAlt, HiOutlineUser, HiOutlineUserCircle } from "react-icons/hi2";
 import AISPPageHeader from "../../components/aisp/AISPPageHeader";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
@@ -23,26 +24,29 @@ function formatGhanaCard(raw: string): string {
   return formatted;
 }
 
+// dob is stored as UTC midnight -- read the calendar date in UTC so it
+// doesn't shift a day in timezones west of GMT.
+const toDateInput = (d?: string) => (d ? moment.utc(d).format("YYYY-MM-DD") : "");
+
 // Save Form
 export async function action({ request, params }) {
   const user = useUserStore.getState().user;
   const id = user?.user?.tag || 0;
   const formData = await request.formData();
-  let data = Object.fromEntries(formData);
-  data.dob = moment(data.dob);
-  data.entryDate = moment(data.entryDate);
-  data.completeStatus = data.completeStatus == 1;
-  data.deferStatus = data.deferStatus == 1;
-  data.graduateStatus = data.graduateStatus == 1;
-  delete data.indexno;
+  // Only the fields on this form. dob / instituteAffliate are absent once
+  // their one-time edit is used up (disabled inputs aren't submitted), and
+  // the server ignores anything a student isn't allowed to change.
+  const data: any = Object.fromEntries(formData);
+  if (!data.dob) delete data.dob;
+  if (!data.instituteAffliate) delete data.instituteAffliate;
 
-  let resp;
-  if (id != 0) resp = await Service.updateStudent(id, data);
-  else resp = await Service.postStudent(data);
-
-  if (resp) {
-    return redirect(`/aisp/profile`);
+  try {
+    const resp = await Service.updateStudent(id, data);
+    if (resp) return redirect(`/aisp/profile`);
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || "Profile update failed");
   }
+  return null;
 }
 
 // Load Data of Single
@@ -54,16 +58,33 @@ export async function loader() {
   const titles = await Service.fetchTitles();
   const programs = await Service.fetchProgramList();
   const majors = await Service.fetchMajorList();
+  const halls = await Service.fetchHalls();
   const user = useUserStore.getState().user;
   const data = await Service.fetchStudent(user?.user?.tag);
 
-  return { data, countries, regions, religions, disabilities, titles, majors };
+  return { data, countries, regions, religions, disabilities, titles, majors, halls };
 }
 
 function PgAISPProfileForm({}: Props) {
   const navigate = useNavigate();
-  const { data, countries, regions, religions, titles, majors }: any =
+  const { data, countries, regions, religions, titles, majors, halls }: any =
     useLoaderData();
+  const dobLocked = !!data?.dobEditedAt;
+  const hallLocked = !!data?.affiliateEditedAt;
+
+  // Date of Birth and Hall of Affiliation can each be changed only once --
+  // confirm before a save that would use that up.
+  const confirmOneTimeEdits = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+    const changed: string[] = [];
+    const dob = (form.elements.namedItem("dob") as HTMLInputElement)?.value;
+    const hall = (form.elements.namedItem("instituteAffliate") as HTMLSelectElement)?.value;
+    if (!dobLocked && dob && dob !== toDateInput(data?.dob)) changed.push("Date of Birth");
+    if (!hallLocked && hall && hall.toUpperCase() !== (data?.instituteAffliate || "").trim().toUpperCase()) changed.push("Hall of Affiliation");
+    if (changed.length && !window.confirm(`${changed.join(" and ")} can only be changed ONCE from the portal. Further corrections will require the College Registry.\n\nSave this change?`)) {
+      e.preventDefault();
+    }
+  };
   const [programId, setprogramId] = useState(data?.programId);
   // Major is only relevant/collected for: final-year (semester 5) UG/DP/CP
   // students, or first-semester (semester 1) PG students.
@@ -81,7 +102,7 @@ function PgAISPProfileForm({}: Props) {
         Icon={HiOutlineUserCircle}
       />
 
-      <Form method="post" className="grid lg:grid-cols-2 gap-6 items-start">
+      <Form method="post" onSubmit={confirmOneTimeEdits} className="grid lg:grid-cols-2 gap-6 items-start">
         {/* Record */}
         <div className="aisp-rise aisp-card p-6 md:p-7 space-y-5">
           <div className="flex items-center gap-3">
@@ -165,6 +186,48 @@ function PgAISPProfileForm({}: Props) {
             <h2 className="text-[0.95rem] font-bold text-slate-900">Identity &amp; Background</h2>
           </div>
           <div className="space-y-4">
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Date of Birth</span>
+              <input
+                arial-label="dob"
+                name="dob"
+                type="date"
+                defaultValue={toDateInput(data?.dob)}
+                max={moment().subtract(10, "years").format("YYYY-MM-DD")}
+                disabled={dobLocked}
+                className="aisp-input disabled:opacity-60 disabled:cursor-not-allowed"
+              />
+              <span className="text-xs text-slate-500">
+                {dobLocked
+                  ? `Changed on ${moment(data?.dobEditedAt).format("MMM D, YYYY")}. Contact the College Registry for further corrections.`
+                  : "You can change this only once."}
+              </span>
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Hall of Affiliation</span>
+              <select
+                arial-label="instituteAffliate"
+                name="instituteAffliate"
+                defaultValue={data?.instituteAffliate?.trim() || ""}
+                disabled={hallLocked}
+                className="aisp-input disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <option value="" disabled>
+                  -- Choose --
+                </option>
+                {halls &&
+                  halls?.map((hall: string) => (
+                    <option key={hall} value={hall}>
+                      {hall}
+                    </option>
+                  ))}
+              </select>
+              <span className="text-xs text-slate-500">
+                {hallLocked
+                  ? `Changed on ${moment(data?.affiliateEditedAt).format("MMM D, YYYY")}. Contact the College Registry for further corrections.`
+                  : "You can change this only once."}
+              </span>
+            </label>
             <label className="flex flex-col gap-2">
               <span className="aisp-label">Ghana Card Number</span>
               <input

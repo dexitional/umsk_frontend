@@ -20,9 +20,15 @@ export async function action({ request, params }) {
       data.status = 0;
       data.credit = +data.credit
       data.indexno = '41329275';
-      data.classScore = ' -- LEAVE BLANK IF NO SCORE / IC -- ';
+      // Class = quiz + midsem + assignment and total = class + exam are
+      // computed on upload -- classScore is only read when a row has no
+      // quiz/midsem/assignment breakdown.
+      data.quiz = ' -- QUIZ SCORE (MAX 20) / BLANK IF NONE -- ';
+      data.midsem = ' -- MIDSEM SCORE (MAX 20) / BLANK IF NONE -- ';
+      data.assignment = ' -- ASSIGNMENT SCORE (MAX 20) / BLANK IF NONE -- ';
+      data.classScore = ' -- AUTO: QUIZ + MIDSEM + ASSIGNMENT. LEAVE BLANK -- ';
       data.examScore = ' -- LEAVE BLANK IF NO SCORE / IC --';
-      data.totalScore = ' -- LEAVE BLANK IF NO SCORE / IC --';
+      data.totalScore = ' -- AUTO: CLASS + EXAM. LEAVE BLANK -- ';
       
   jsonToExcel([data], `${data.courseId}_YEAR${Math.ceil(data.semesterNum/2)}`)
   return false;

@@ -10,8 +10,25 @@ import {
 import SubPageTitle from "../../components/ais/SubPageTitle";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
+import { scoreMax } from "../../utils/scoreRange";
 
 type Props = {};
+
+// Assessment scores: Class = Quiz + Midsem + Assignment (an older entry with
+// no breakdown keeps its class score), Total = Class + Exam. The server
+// recomputes the same way when saving.
+const num = (v: any) => (v === "" || v == null || isNaN(parseFloat(v)) ? null : parseFloat(v));
+const round2 = (v: number | null) => (v == null ? "" : Math.round(v * 100) / 100);
+const classOf = (r: any) => {
+  const parts = [r?.scoreQuiz, r?.scoreMidsem, r?.scoreAssignment].map(num);
+  return parts.every((p) => p == null) ? num(r?.scoreClass) : parts.reduce((a: number, p) => a + (p ?? 0), 0);
+};
+const totalOf = (r: any) => {
+  const c = classOf(r), e = num(r?.scoreExam);
+  return c == null && e == null ? num(r?.scoreTotal) : (c ?? 0) + (e ?? 0);
+};
+let rowKey = 0;
+const withKey = (r: any) => ({ ...r, _key: ++rowKey });
 
 // Save Form
 export async function action({ request, params }) {
@@ -50,11 +67,17 @@ function PgAISBacklogForm({}: Props) {
   const navigate = useNavigate();
   const { data, courses, sessions, schemes }: any = useLoaderData();
   const [form, setForm] = useState(data);
-  const [meta, setMeta] = useState(data.meta ?? [{ indexno: "" }]);
+  // Each row gets a stable key so removing one doesn't shift the uncontrolled
+  // inputs of the rows below it.
+  const [meta, setMeta] = useState(() => (data.meta ?? [{ indexno: "" }]).map(withKey));
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const addMeta = () => setMeta([...meta, { indexno: "" }]);
+  const addMeta = () => setMeta([...meta, withKey({ indexno: "" })]);
   const removeMeta = (index) => setMeta([...meta.filter((r, i) => i != index)]);
+  const setScore = (index: number, key: string, value: string) =>
+    setMeta(meta.map((r, i) => (i == index ? { ...r, [key]: value } : r)));
+  // Max marks come from the chosen academic scheme's score range.
+  const scheme = schemes?.find((s: any) => s.id == form?.schemeId);
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -117,8 +140,8 @@ function PgAISBacklogForm({}: Props) {
                   {sessions &&
                     sessions?.map((row: any) => (
                       <option key={row.id} value={row.id}>
-                        {row.title?.toUpperCase()} &nbsp; ( {row.tag}{" "}
-                        {row.default && ` - DEFAULT`} )
+                        {row.title?.toUpperCase()}
+                        {row.default && ` - DEFAULT`} 
                       </option>
                     ))}
                 </select>
@@ -184,7 +207,7 @@ function PgAISBacklogForm({}: Props) {
                 <>
                   {meta?.map((r: any, i: number) => {
                     return (
-                      <div className="relative md:pl-6 grid grid-cols-1 md:grid-cols-4 gap-3">
+                      <div key={r._key} className="relative md:pl-6 grid grid-cols-1 md:grid-cols-4 gap-3">
                         <button
                           type="button"
                           onClick={() => removeMeta(i)}
@@ -278,7 +301,7 @@ function PgAISBacklogForm({}: Props) {
                 <>
                   {meta?.map((r: any, i: number) => {
                     return (
-                      <div className="relative md:pl-6 grid grid-cols-1 md:grid-cols-6 gap-3">
+                      <div key={r._key} className="relative md:pl-6 grid grid-cols-1 md:grid-cols-4 gap-3">
                         <button
                           type="button"
                           onClick={() => removeMeta(i)}
@@ -361,26 +384,56 @@ function PgAISBacklogForm({}: Props) {
                             <option value="R">RESIT</option>
                           </select>
                         </label>
-                        <div className="grid grid-cols-3 gap-2 col-span-2 ">
+                        <div className="md:col-span-4 grid grid-cols-3 md:grid-cols-6 gap-2">
+                          {[
+                            { key: "scoreQuiz", label: "QUIZ", max: scoreMax(scheme, "quiz") },
+                            { key: "scoreMidsem", label: "MIDSEM", max: scoreMax(scheme, "midsem") },
+                            { key: "scoreAssignment", label: "ASSIGNMENT", max: scoreMax(scheme, "assignment") },
+                          ].map((f) => (
+                            <label key={f.key} className="flex flex-col space-y-2">
+                              <span className="text-xs md:text-xs text-gray-400 font-bold">
+                                {f.label} <span className="font-normal">/ {f.max}</span>
+                              </span>
+                              <input
+                                arial-label={`${i + 1}_${f.key}`}
+                                name={`${i + 1}_${f.key}`}
+                                type="number"
+                                step="any"
+                                min={0}
+                                max={f.max}
+                                value={r?.[f.key] ?? ""}
+                                onChange={(e) => setScore(i, f.key, e.target.value)}
+                                className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
+                              />
+                            </label>
+                          ))}
                           <label className="flex flex-col space-y-2">
                             <span className="text-xs md:text-xs text-gray-400 font-bold">
-                              CLASS
+                              CLASS <span className="font-normal">/ {scoreMax(scheme, "class")}</span>
                             </span>
                             <input
                               arial-label={`${i + 1}_scoreClass`}
                               name={`${i + 1}_scoreClass`}
-                              defaultValue={r?.scoreClass}
-                              className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
+                              value={round2(classOf(r))}
+                              readOnly
+                              tabIndex={-1}
+                              title="Quiz + Midsem + Assignment"
+                              className="focus:ring-0 border border-primary-dark/10 bg-slate-100 text-xs md:text-xs font-bold tracking-widest text-gray-600 rounded-md cursor-not-allowed"
                             />
                           </label>
                           <label className="flex flex-col space-y-2">
                             <span className="text-xs md:text-xs text-gray-400 font-bold">
-                              EXAMS
+                              EXAMS <span className="font-normal">/ {scoreMax(scheme, "exam")}</span>
                             </span>
                             <input
                               arial-label={`${i + 1}_scoreExam`}
                               name={`${i + 1}_scoreExam`}
-                              defaultValue={r?.scoreExam}
+                              type="number"
+                              step="any"
+                              min={0}
+                              max={scoreMax(scheme, "exam")}
+                              value={r?.scoreExam ?? ""}
+                              onChange={(e) => setScore(i, "scoreExam", e.target.value)}
                               className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
                             />
                           </label>
@@ -391,16 +444,11 @@ function PgAISBacklogForm({}: Props) {
                             <input
                               arial-label={`${i + 1}_scoreTotal`}
                               name={`${i + 1}_scoreTotal`}
-                              onFocus={(e) =>
-                                setForm({
-                                  ...form,
-                                  [`${i + 1}_scoreTotal`]:
-                                    parseFloat(form[`${i + 1}_scoreClass`]) +
-                                    parseFloat(form[`${i + 1}_scoreExam`]),
-                                })
-                              }
-                              defaultValue={r?.scoreTotal}
-                              className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
+                              value={round2(totalOf(r))}
+                              readOnly
+                              tabIndex={-1}
+                              title="Class + Exams"
+                              className="focus:ring-0 border border-primary-dark/10 bg-slate-100 text-xs md:text-xs font-bold tracking-widest text-gray-600 rounded-md cursor-not-allowed"
                             />
                           </label>
                         </div>
@@ -415,7 +463,7 @@ function PgAISBacklogForm({}: Props) {
                 <>
                   {meta?.map((r: any, i: number) => {
                     return (
-                      <div className="relative md:pl-6 grid grid-cols-1 md:grid-cols-4 gap-3">
+                      <div key={r._key} className="relative md:pl-6 grid grid-cols-1 md:grid-cols-4 gap-3">
                         <button
                           type="button"
                           onClick={() => removeMeta(i)}

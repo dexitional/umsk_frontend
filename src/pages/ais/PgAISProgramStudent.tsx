@@ -1,6 +1,6 @@
 import React from "react";
 import { BsActivity } from "react-icons/bs";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import AISStudentCard from "../../components/ais/AISStudentCard";
 import Service from "../../utils/aisService";
 
@@ -13,6 +13,7 @@ export async function loader({ params }) {
 
 function PgAISProgramStudent({}: Props) {
   const { data }: any = useLoaderData();
+  const { programId } = useParams();
 
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center space-y-8 md:space-y-8 ">
@@ -23,6 +24,7 @@ function PgAISProgramStudent({}: Props) {
               key={title}
               title={title.toUpperCase()}
               data={row}
+              programId={programId}
             />
           ))}
         {!data.length ? (

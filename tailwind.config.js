@@ -58,6 +58,10 @@ export default {
       'sans': ["'Roboto'", ...defaultTheme.fontFamily.sans],
       'poppins': ["'Poppins'", 'sans-serif'],
       'roboto': ["'Roboto'", 'sans-serif'],
+      // Letterhead display face (AKATSI on printed letters/transcripts).
+      'cinzel': ["'Cinzel'", "'Times New Roman'", 'serif'],
+      // Letterhead text (standard College of Education letterhead).
+      'courier': ["'Courier New'", 'Courier', 'monospace'],
       'noto': ["'Noto Sans'", 'sans-serif'],
       'quicksand': ["'Quicksand'", 'sans-serif'],
       'arial-narrow': ["'Arial Narrow'", 'Arial', 'sans-serif'],

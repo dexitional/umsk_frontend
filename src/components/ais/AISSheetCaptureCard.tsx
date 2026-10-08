@@ -8,6 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import Service from "../../utils/aisService";
+import { scoreMax } from "../../utils/scoreRange";
 const { REACT_APP_API_URL } = import.meta.env;
 
 type Props = {
@@ -130,9 +131,11 @@ function AISSheetCaptureCard({ title, data }: Props) {
           <span>PHOTO</span>
           <span className="col-span-2">INDEX NUMBER</span>
           <span className="col-span-3">FULL NAME</span>
-          <span>QUIZ</span>
-          <span className="text-center">ASSIGNMENT</span>
-          <span>MIDSEM</span>
+          {/* Max marks from the assigned scheme's score range (each row's
+              input also uses its own row's scheme). */}
+          <span>QUIZ <span className="font-normal">/ {scoreMax(data?.[0]?.scheme, "quiz")}</span></span>
+          <span className="text-center">ASSIGNMENT <span className="font-normal">/ {scoreMax(data?.[0]?.scheme, "assignment")}</span></span>
+          <span>MIDSEM <span className="font-normal">/ {scoreMax(data?.[0]?.scheme, "midsem")}</span></span>
           <span>TOTAL</span>
         </div>
         {data
@@ -161,7 +164,8 @@ function AISSheetCaptureCard({ title, data }: Props) {
                 onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreA}
                 min={0}
-                max={20}
+                max={scoreMax(row.scheme, "quiz")}
+                title={`Max ${scoreMax(row.scheme, "quiz")}`}
                 className="px-2 py-0.5 w-12 h-7 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <input
@@ -170,7 +174,8 @@ function AISSheetCaptureCard({ title, data }: Props) {
                 onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreB}
                 min={0}
-                max={20}
+                max={scoreMax(row.scheme, "assignment")}
+                title={`Max ${scoreMax(row.scheme, "assignment")}`}
                 className="px-2 py-0.5 w-12 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <input
@@ -179,7 +184,8 @@ function AISSheetCaptureCard({ title, data }: Props) {
                 onBlur={(e) => clampScoreOnBlur(e, i)}
                 defaultValue={row.scoreC}
                 min={0}
-                max={20}
+                max={scoreMax(row.scheme, "midsem")}
+                title={`Max ${scoreMax(row.scheme, "midsem")}`}
                 className="px-2 py-0.5 w-12 h-6 self-center rounded border border-primary/30 bg-primary/5 text-xs text-primary-dark font-bold"
               />
               <div className="flex items-center justify-center font-bold italic text-sm text-gray-500">

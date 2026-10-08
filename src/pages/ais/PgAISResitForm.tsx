@@ -3,6 +3,7 @@ import { MdOutlineRemoveCircle } from "react-icons/md";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import SubPageTitle from "../../components/ais/SubPageTitle";
 import Service from "../../utils/aisService";
+import { scoreMax } from "../../utils/scoreRange";
 
 type Props = {};
 
@@ -42,6 +43,8 @@ function PgAISResitForm({}: Props) {
   const [meta, setMeta] = useState(data.meta ?? [{ indexno: "" }]);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  // Max class / exam marks come from the chosen academic scheme's score range.
+  const scheme = schemes?.find((s: any) => s.id == form?.schemeId);
   const addMeta = () => setMeta([...meta, { indexno: "" }]);
   const removeMeta = (index) => setMeta([...meta.filter((r, i) => i != index)]);
 
@@ -351,22 +354,30 @@ function PgAISResitForm({}: Props) {
                         <div className="grid grid-cols-3 gap-2 col-span-2 ">
                           <label className="flex flex-col space-y-2">
                             <span className="text-xs md:text-xs text-gray-400 font-bold">
-                              CLASS
+                              CLASS <span className="font-normal">/ {scoreMax(scheme, "class")}</span>
                             </span>
                             <input
                               arial-label={`${i + 1}_scoreClass`}
                               name={`${i + 1}_scoreClass`}
+                              type="number"
+                              step="any"
+                              min={0}
+                              max={scoreMax(scheme, "class")}
                               defaultValue={r?.scoreClass}
                               className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
                             />
                           </label>
                           <label className="flex flex-col space-y-2">
                             <span className="text-xs md:text-xs text-gray-400 font-bold">
-                              EXAMS
+                              EXAMS <span className="font-normal">/ {scoreMax(scheme, "exam")}</span>
                             </span>
                             <input
                               arial-label={`${i + 1}_scoreExam`}
                               name={`${i + 1}_scoreExam`}
+                              type="number"
+                              step="any"
+                              min={0}
+                              max={scoreMax(scheme, "exam")}
                               defaultValue={r?.scoreExam}
                               className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-xs md:text-xs font-bold tracking-widest text-gray-500 rounded-md"
                             />

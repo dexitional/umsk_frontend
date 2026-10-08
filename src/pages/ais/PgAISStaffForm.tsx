@@ -499,6 +499,7 @@ function PgAISStaffForm({}: Props) {
                   </option>
                   <option value="TEMPORAL">TEMPORAL</option>
                   <option value="PERMANENT">PERMANENT</option>
+                  <option value="PARTTIME">PART-TIME</option>
                   <option value="RETIRED">RETIRED</option>
                   <option value="ABSENCE">ABSENCE</option>
                   <option value="EXITED">EXITED</option>

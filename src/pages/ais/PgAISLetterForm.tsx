@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Form,
   redirect,
@@ -10,8 +10,7 @@ import SubPageTitle from "../../components/ais/SubPageTitle";
 import { default as Helper, default as Service } from "../../utils/aisService";
 
 import toast from "react-hot-toast";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import RichHtmlField from "../../components/ais/RichHtmlField";
 
 type Props = {};
 
@@ -22,9 +21,12 @@ export async function action({ request, params }) {
   const signature = formData.get("signature");
 
   if (signature?.size && !signature?.type?.match("image.*")) {
-    toast("Please upload an image file as signature!", {
-      className: "text-red-400 font-medium",
-    });
+    toast.error("Please upload an image file as signature!");
+    return false;
+  }
+  // Stored inline as base64 -- keep it a reasonable size.
+  if (signature?.size > 2 * 1024 * 1024) {
+    toast.error("Signature image is too large (max 2 MB).");
     return false;
   }
 
@@ -44,26 +46,23 @@ export async function action({ request, params }) {
 }
 // Load Data of Single
 export async function loader({ params }) {
-  const categories = await Helper.fetchCategories();
   let data = { id: "" };
   const id = params?.letterId || 0;
   if (id != 0) data = await Service.fetchLetter(id);
-  return { data, categories };
+  return { data };
 }
 
 function PgAISLetterForm({}: Props) {
   const navigate = useNavigate();
-  const { data, categories }: any = useLoaderData();
-  const signRef: any = useRef(null);
-  const tempRef: any = useRef(null);
-  const fileRef: any = useRef(null);
+  const { data }: any = useLoaderData();
   const [file, setFile] = useState(data?.signature);
-  const [showEditor, setShowEditor] = useState(false);
+  // Signatory and template live in state so the Editor and HTML views share
+  // one value -- switching views (or saving without editing) used to submit
+  // them empty and wipe the stored letter.
+  const [signatory, setSignatory] = useState(data?.signatory ?? "");
+  const [template, setTemplate] = useState(data?.template ?? "");
   const navigation = useNavigation();
   const loading = navigation?.state;
-
-  const signChange: any = (value) => (signRef.current.value = value);
-  const tempChange: any = (value) => (tempRef.current.value = value);
 
   const fileChange = async (e) => {
     const f = e.target.files[0];
@@ -76,11 +75,6 @@ function PgAISLetterForm({}: Props) {
       }
     }
   };
-
-  useEffect(() => {
-    signRef.current.value = data?.signatory;
-    tempRef.current.value = data?.template;
-  }, []);
 
   return (
     <main className="md:pl-10 p-2 md:p-6 space-y-4 md:space-y-10">
@@ -120,6 +114,7 @@ function PgAISLetterForm({}: Props) {
                 <input
                   arial-label="title"
                   name="title"
+                  required
                   defaultValue={data?.title}
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                 />
@@ -143,8 +138,9 @@ function PgAISLetterForm({}: Props) {
                   <option value="int">INTRODUCTION</option>
                   <option value="def">DEFERMENT</option>
                   <option value="per">PERMIT</option>
+                  <option value="res">RESUMPTION</option>
                   <option value="vc">VICE-CHANCELLOR</option>
-                  <option value="pro">PRO-VICE CHANCELLOR</option>
+                  <option value="pvc">PRO-VICE CHANCELLOR</option>
                   <option value="reg">REGISTRAR</option>
                 </select>
               </label>
@@ -154,81 +150,21 @@ function PgAISLetterForm({}: Props) {
                 </span>
                 <div className="flex items-center space-x-4">
                   <input
-                    arial-label="title"
+                    arial-label="signature"
                     name="signature"
                     type="file"
+                    accept="image/*"
+                    required={!data?.signature}
                     onChange={fileChange}
                     className="flex-1 focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                   />
                   <div className="w-36 border rounded">
-                    <img src={file} className="h-8 w-full object-cover" />
+                    {file ? <img src={file} className="h-8 w-full object-contain" /> : <div className="h-8" />}
                   </div>
                 </div>
               </label>
-              <label className="flex flex-col space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm md:text-base text-gray-500 font-medium">
-                    Signatory
-                  </span>
-                  <div
-                    className="px-2 py-0.5 w-fit text-xs text-white bg-primary cursor-pointer"
-                    onClick={() => setShowEditor(!showEditor)}
-                  >
-                    Toggle View
-                  </div>
-                </div>
-                {showEditor ? (
-                  <>
-                    <input type="hidden" ref={signRef} name="signatory" />
-                    <ReactQuill
-                      theme="snow"
-                      value={data?.signatory}
-                      onChange={signChange}
-                      className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-white/5 text-sm md:text-base text-gray-500 rounded-md"
-                    />
-                  </>
-                ) : (
-                  <textarea
-                    name="signatory"
-                    ref={signRef}
-                    defaultValue={data?.signatory}
-                    className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-white/5 text-sm md:text-base text-gray-500 rounded-md"
-                  />
-                )}
-              </label>
-
-              <label className="flex flex-col space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm md:text-base text-gray-500 font-medium">
-                    Letter Template
-                  </span>
-                  <div
-                    className="px-2 py-0.5 w-fit text-xs text-white bg-primary cursor-pointer"
-                    onClick={() => setShowEditor(!showEditor)}
-                  >
-                    Toggle View
-                  </div>
-                </div>
-                {showEditor ? (
-                  <>
-                    <input type="hidden" ref={tempRef} name="template" />
-                    <ReactQuill
-                      theme="snow"
-                      value={data?.template}
-                      onChange={tempChange}
-                      className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-white/5 text-sm md:text-base text-gray-500 rounded-md"
-                    />
-                  </>
-                ) : (
-                  <textarea
-                    name="template"
-                    ref={tempRef}
-                    defaultValue={data?.template}
-                    rows={10}
-                    className="focus:ring-0 border focus:border-slate-300 border-primary-dark/10 bg-white/5 text-sm md:text-base text-gray-500 rounded-md"
-                  />
-                )}
-              </label>
+              <RichHtmlField label="Signatory" name="signatory" value={signatory} onChange={setSignatory} rows={4} />
+              <RichHtmlField label="Letter Template" name="template" value={template} onChange={setTemplate} rows={16} editorClassName="[&_.ql-editor]:min-h-[16rem]" />
 
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">

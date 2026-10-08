@@ -409,3 +409,114 @@ export const defaultLetterTemplate = `
     } 
  }
 
+
+// Admission letters (Admission Letters module): fills a template's ::tokens
+// for one student. `data` is { student, session, letter, bill } as returned
+// by GET /ais/admission-letters/print. Longer tokens are replaced before the
+// tokens they start with (::namelg before ::name).
+export const ADMISSION_PLACEHOLDERS: [string, string][] = [
+  ["::reference", "Student number"],
+  ["::indexno", "Index number"],
+  ["::title", "Title, e.g. Mr."],
+  ["::namelg", "Full name in capitals"],
+  ["::name", "Full name"],
+  ["::first_name", "First name"],
+  ["::gender_title", "He / She"],
+  ["::gender_self", "him / her"],
+  ["::program_name_big", "Programme (as stored)"],
+  ["::program_name", "Programme (title case)"],
+  ["::major", "Major, if any"],
+  ["::programme_years", "Programme length, e.g. 4"],
+  ["::programme_years_words", "Programme length in words, e.g. FOUR"],
+  ["::admission_title", "Letter title"],
+  ["::start_level", "Starting level, e.g. 100"],
+  ["::session_year", "Academic year"],
+  ["::admit_year", "Admission year, e.g. 2026/2027"],
+  ["::register_start", "Registration starts"],
+  ["::register_end", "Registration ends"],
+  ["::orient_start", "Orientation starts"],
+  ["::lecture_start", "Lectures start"],
+  ["::medical_start", "Medicals start"],
+  ["::medical_end", "Medicals end"],
+  ["::payment_end", "Fees deadline"],
+  ["::matriculate_start", "Matriculation"],
+  ["::fee_amount", "First-year fee, in words and figures"],
+  ["::discount_amount", "Fee after discount"],
+  ["::bank_name", "Bank name"],
+  ["::bank_account", "Bank account number"],
+  ["::account_name", "Bank account name"],
+  ["::date", "Today's date"],
+  ["::signature", "Signature image"],
+  ["::signatory", "Signatory block"],
+];
+
+// "ZAHARA ADAMS" -> "Zahara Adams"; small joining words stay lowercase
+// ("Bachelor of Education in Junior High School"). Names are stored in
+// capitals, so letters set the case in the text rather than via CSS.
+const SMALL_WORDS = new Set(["of", "in", "and", "the", "for", "to", "a", "an", "on", "at", "with"]);
+export const capitalise = (s?: string | null) =>
+  (s || "")
+    .toLowerCase()
+    .split(/(\s+)/)
+    .map((w, i) => (i > 0 && SMALL_WORDS.has(w) ? w : w.replace(/(^|[-'’])([a-z])/g, (_m, p, c) => p + c.toUpperCase())))
+    .join("");
+
+export const loadAdmissionPlacerData = (template: string, data: any) => {
+  const st = data?.student || {};
+  const session = data?.session || {};
+  const bill = data?.bill || st?.bill || {};
+  const letter = data?.letter || {};
+  const day = (d: any) => (d ? moment(d).format("dddd, Do MMMM, YYYY") : "");
+  const full = [st.fname, st.mname, st.lname].filter(Boolean).join(" ");
+  const money = (amount: number) => {
+    const words = new ToWords({
+      localeCode: bill?.currency == "USD" ? "en-US" : "en-GH",
+      converterOptions: { currency: true, ignoreDecimal: false, ignoreZeroCurrency: false, doNotAddOnly: true },
+    });
+    const n = !isNaN(amount) ? amount : 0;
+    const figure = n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return `${words.convert(n)} (${bill?.currency == "USD" ? "$" : "GH¢"}${figure})`;
+  };
+  const year = session?.year || "";
+  const years = Math.max(1, Math.ceil((Number(st.program?.semesterTotal) || 8) / 2));
+  const admitYear = st.entryDate ? `${moment(st.entryDate).format("YYYY")}/${moment(st.entryDate).add(1, "years").format("YYYY")}` : year;
+  const values: Record<string, string> = {
+    "::reference": st.id || "",
+    "::indexno": st.indexno || "",
+    "::title": st.title?.label ? `${st.title.label}.` : "",
+    "::namelg": full.toUpperCase(),
+    "::name": capitalise(full),
+    "::first_name": capitalise(st.fname),
+    "::gender_title": st.gender == "M" ? "He" : "She",
+    "::gender_self": st.gender == "M" ? "him" : "her",
+    "::program_name_big": st.program?.longName || "",
+    "::program_name": capitalise(st.program?.longName),
+    "::major": st.major?.longName || "",
+    "::programme_years_words": new ToWords().convert(years).toUpperCase(),
+    "::programme_years": String(years),
+    "::admission_title": letter.title || "",
+    "::start_level": String(Math.max(1, Math.ceil((st.semesterNum || 1) / 2)) * 100),
+    "::session_year": year,
+    "::admit_year": admitYear,
+    "::register_start": day(session.registerStart),
+    "::register_end": day(session.registerEnd),
+    "::orient_start": day(session.orientStart),
+    "::lecture_start": day(session.lectureStart),
+    "::medical_start": day(session.medicalStart),
+    "::medical_end": day(session.medicalEnd),
+    "::payment_end": day(session.paymentEnd),
+    "::matriculate_start": day(session.matriculateStart),
+    "::fee_amount": money(Number(bill?.amount) || 0),
+    "::discount_amount": money((Number(bill?.amount) || 0) - (Number(bill?.discount) || 0)),
+    "::bank_name": bill?.bankacc?.bankName || "",
+    "::bank_account": bill?.bankacc?.bankAccount || "",
+    "::account_name": bill?.bankacc?.accountName || "",
+    "::date": moment().format("MMMM Do, YYYY"),
+    "::signature": letter.signature ? `<img src="${letter.signature}" style="height:56px" />` : "",
+    "::signatory": letter.signatory || "",
+    "::cert_condition": "",
+  };
+  let out = template || "";
+  for (const key of Object.keys(values).sort((a, b) => b.length - a.length)) out = out.split(key).join(values[key]);
+  return out;
+};

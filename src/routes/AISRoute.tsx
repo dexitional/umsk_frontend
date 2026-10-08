@@ -1,4 +1,5 @@
 import React from 'react';
+import { redirect } from 'react-router-dom';
 
 import AISLayout from '../components/ais/AISLayout';
 import Error from '../pages/Error';
@@ -21,8 +22,8 @@ const AISRoute:any =  {
       {  path:'roles',
          lazy: () => import('../pages/ais/PgAISRoles').then(m => ({ Component: m.default, loader: m.loader })),
       },
-      {  path:'roles/:roleId/destroy',
-         lazy: () => import('../pages/ais/PgAISRoles').then(m => ({ action: m.action })),
+      {  path:'roles/:tag',
+         lazy: () => import('../pages/ais/PgAISRoleUser').then(m => ({ Component: m.default, loader: m.loader })),
       },
       {  path:'reports',
          lazy: () => import('../pages/ais/PgAISReport').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
@@ -352,6 +353,22 @@ const AISRoute:any =  {
       {
          path:'letters/:letterId/destroy',
          lazy: () => import('../pages/ais/PgAISLetters').then(m => ({ action: m.action })),
+      },
+      {
+         path:'admission-letters',
+         lazy: () => import('../pages/ais/PgAISAdmissionLetters').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'admission-letters/create',
+         lazy: () => import('../pages/ais/PgAISAdmissionLetterForm').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'admission-letters/print',
+         lazy: () => import('../pages/ais/PgAISAdmissionLetterPrint').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'admission-letters/:letterId/edit',
+         lazy: () => import('../pages/ais/PgAISAdmissionLetterForm').then(m => ({ Component: m.default, loader: m.loader })),
       },
       {
          path:'letters/:letterId/edit',
@@ -779,12 +796,9 @@ const AISRoute:any =  {
                lazy: () => import('../pages/ais/PgAISStaffRole').then(m => ({ Component: m.default, loader: m.loader })),
             },
             {
+               // Editing now happens inline on the roles tab.
                path:'roles/create',
-               lazy: () => import('../pages/ais/PgAISStaffRoleForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-            },
-            {
-               path:'roles/:roleId/destroy',
-               lazy: () => import('../pages/ais/PgAISStaffRole').then(m => ({ action: m.action })),
+               loader: ({ params }) => redirect(`/ais/staff/${encodeURIComponent(params.staffId as string)}/roles`),
             },
             {
                path:'account',

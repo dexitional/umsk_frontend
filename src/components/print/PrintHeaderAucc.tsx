@@ -1,51 +1,47 @@
-import moment from 'moment'
 import React from 'react'
 import Logo from '../../assets/img/logo.webp';
 
-type Props = {}
+type Props = {
+  // "Our Ref" value, e.g. ADMISSIONS-2026/2027 on admission letters.
+  ourRef?: string;
+  yourRef?: string;
+  office?: string;
+}
 
-function PrintHeaderAkatsico({}: Props) {
+// College letterhead in the standard College of Education layout: the
+// college name in bold Courier across the top; the reply note, references
+// and office on the left; the crest in the middle; address and contacts on
+// the right; a thin rule underneath. Printed with letters and transcripts.
+function PrintHeaderAkatsico({ ourRef = "", yourRef = "", office = "OFFICE OF THE PRINCIPAL" }: Props) {
   return (
-    <div className="hidden print:flex md:flex flex-col print:border-b-4 print:border-secondary-accent">
-        <span className="m-0 p-0 text-[3.5rem] print:text-[2.9rem] text-primary-dark font-roboto font-semibold tracking-widest md:leading-[4rem] text-center">AKATSI </span>
-        <span className="m-0 print:-mt-3 p-0 text-[2.1rem] print:text-[1.5rem] text-secondary-accent font-bold font-roboto tracking-wider text-center leading-0">COLLEGE OF EDUCATION</span><br/><br/>
-        <div className="my-6 mx-auto print:-mt-10 print:mb-3 w-full max-w-4xl flex justify-between">
-            <div className="w-fit space-y-2  print:space-y-2 print:text-[0.65rem]">
-                <div className="flex space-x-5 text-sm print:text-[0.65rem]">
-                    <div className="">
-                        <p>TELEPHONE:</p>
-                        {/* <p>DIRECT:</p> */}
-                        {/* <p>FAX:</p> */}
-                    </div>
-                    <div className="font-semibold">
-                        {/* <p>233-3321-32480-3 Ext. 208/219</p> */}
-                        <p>233-3070-16193</p>
-                        {/* <p>233-3321-32484</p> */}
-                    </div>
-                </div>
-                <div className="flex space-x-10 text-sm print:text-xs">
-                    <div className="">
-                        <p>E-MAIL:</p>
-                        <p>WEBSITE:</p>
-                    </div>
-                    <div className="font-medium">
-                        <p>info@akatsico.edu.gh</p>
-                        <p>www.akatsico.edu.gh</p>
-                    </div>
-                </div>
-            </div>
-            <div className="w-48 print:w-48 flex item-center justify-center">
-               <img className="h-24  print:h-[5rem]" src={Logo} />
-            </div>
-            <div className="w-48 space-y-3 print:space-y-2 print:text-xs flex flex-col items-start">
-                <div className="flex justify-end font-semibold text-slate-900 tracking-wider">
-                    <p className="print:m-0 print:leading-[17px] text-[0.89rem] print:text-xs text-left leading-[1.2rem]">Registrar's Office<br/>Postal Box LG 510<br/>Legon, Accra<br/>Ghana.</p>
-                </div>
-                {/* <div className="flex justify-center">
-                    <p className=" print:pr-0 print:m-0 print:leading-[17px] font-medium text-sm print:text-xs text-right leading-[1.2rem]">{ moment().format("Do MMMM, YYYY")}</p>
-                </div> */}
-            </div>
+    <div className="hidden print:block md:block text-black">
+      <h1 className="text-center font-courier font-bold uppercase leading-none tracking-[0.03em] text-[2.4rem] print:text-[24pt]">
+        Akatsi College of Education
+      </h1>
+      <div className="mt-4 print:mt-3 grid grid-cols-[1fr_auto_1fr] items-start gap-6 print:gap-4">
+        {/* Reply note, references, office */}
+        <div className="font-courier font-bold text-[0.86rem] print:text-[9pt] leading-[1.15]">
+          <p className="font-sans italic font-bold text-[0.74rem] print:text-[7.5pt] leading-[1.15]">
+            In case of reply, the number and date of this<br />
+            <span className="underline">letter should be quoted:</span>
+          </p>
+          <p className="mt-2 print:mt-1.5"><i className="font-semibold">Our Ref:</i> {ourRef}</p>
+          <p><i className="font-semibold">Your Ref:</i> {yourRef}</p>
+          <p className="mt-6 print:mt-5 uppercase tracking-wide">{office}</p>
         </div>
+        {/* Crest */}
+        <img className="h-28 print:h-[24mm] object-contain" src={Logo} alt="Akatsi College of Education crest" />
+        {/* Address and contacts */}
+        <div className="justify-self-end font-courier font-bold text-[0.86rem] print:text-[9pt] leading-[1.15]">
+          <p>Akatsi, Volta Region, Ghana</p>
+          <p>GPS: VX-0021-0401</p>
+          <p className="mt-2 print:mt-1.5"><span className="font-bold">Telephone:</span> +233 25 675 4949</p>
+          <p><span className="invisible font-bold">Telephone:</span> +233 24 538 3769</p>
+          <p className="mt-2 print:mt-1.5"><span className="font-bold">E-mail:</span> info@akatsico.edu.gh</p>
+          <p><span className="font-bold">Website:</span> www.akatsico.edu.gh</p>
+        </div>
+      </div>
+      <hr className="mt-2 print:mt-1.5 border-t border-slate-400" />
     </div>
   )
 }

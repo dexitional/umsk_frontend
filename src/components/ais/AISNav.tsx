@@ -41,7 +41,8 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="Backlog Module" url="backlogs" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) && (<AISNavItem title="ExamScore Module" url="examscores" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['transwift::admin','transwift::clerk'].includes(r?.role)) && (<AISNavItem title="Transwift Module" url="transwifts" Icon={GrDashboard} />) } 
-        { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) && (<AISNavItem title="Service Letter" url="letters" Icon={GrDashboard} />) } 
+        { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) && (<AISNavItem title="Service Letter" url="letters" Icon={GrDashboard} />) }
+        { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) && (<AISNavItem title="Admission Letters" url="admission-letters" Icon={GrDashboard} />) } 
         
         {/* {['ais clerk','ais techlead','ais admin'].includes(aisRole?.appRole?.title?.toLowerCase()) && <AISNavItem title="Pixo System &reg;" url="pixo" Icon={GrDashboard} /> } */}
         
@@ -52,7 +53,7 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) && (<AISNavItem title="Staff Module" url="staff" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) && (<AISNavItem title="Job Module" url="jobs" Icon={GrDashboard} />) }
         { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) && (<AISNavItem title=" Unit Module" url="units" Icon={GrDashboard} />) }
-        { aisRoles?.find((r:any) => ['hrm::admin'].includes(r?.role)) && (<AISNavItem title=" User Roles" url="roles" Icon={GrDashboard} />) }
+        { aisRoles?.find((r:any) => ['access::admin'].includes(r?.role)) && (<AISNavItem title=" User Roles" url="roles" Icon={GrDashboard} />) }
         {/* {['ais techlead','ais admin'].includes(aisRole?.appRole?.title?.toLowerCase()) && <AISNavItem title=" Utility Module" url="units" Icon={GrDashboard} /> } Religion,Region,Country,Disability, */}
         
     </div>

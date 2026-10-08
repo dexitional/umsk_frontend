@@ -55,12 +55,13 @@ function AISRoleNav({ user }: Props) {
             { aisRoles?.find((r:any) => ['backlog::admin','backlog::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="ExamScore Module" url="examscores" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['transwift::admin','transwift::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Transwift Module" url="transwifts" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Service Letter" url="letters" Icon={GrDashboard}></Menu.Item>) }
+            { aisRoles?.find((r:any) => ['sletter::admin','sletter::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Admission Letters" url="admission-letters" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['deferment::admin','deferment::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Deferment Module" url="deferments" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['circular::admin','circular::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Circular Module" url="notices" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Staff Module" url="staff" Icon={GrDashboard}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Job Module" url="jobs" Icon={GrDashboard} ></Menu.Item>) }
             { aisRoles?.find((r:any) => ['hrm::admin','hrm::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title=" Unit Module" url="units" Icon={GrDashboard}></Menu.Item>) }
-            { aisRoles?.find((r:any) => ['hrm::admin'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title=" User Roles" url="roles" Icon={GrDashboard}></Menu.Item>) }
+            { aisRoles?.find((r:any) => ['access::admin'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title=" User Roles" url="roles" Icon={GrDashboard}></Menu.Item>) }
 
           </div>
         </Menu.Items>

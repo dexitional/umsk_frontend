@@ -12,6 +12,12 @@ export async function action({ request, params }) {
   let data = Object.fromEntries(formData);
   console.log(data)
   let resp:any;
+  // GTEC statutory tables download as ready-made Excel files.
+  if(String(data?.type).startsWith('gtec_')){
+    const table = String(data.type).slice(5);
+    await Service.downloadStatutoryReport({ table, gsession: data?.gsession }, `GTEC ${table.toUpperCase()}`).catch(() => {});
+    return true;
+  }
   if(data?.type == 'graduate_sheet'){
     resp = await Service.loadBroadsheet(data);
   } else {

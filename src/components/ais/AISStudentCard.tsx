@@ -1,18 +1,31 @@
 import React from 'react'
+import { HiOutlinePrinter } from 'react-icons/hi2';
+import { Link } from 'react-router-dom';
+import { useHasRole } from '../../utils/roles';
 const { REACT_APP_API_URL } = import.meta.env;
 
 type Props = {
     data?: any;
     title?: string;
-    
+    programId?: string;
 }
 
-function AISStudentCard({ title,data }: Props) {
+function AISStudentCard({ title,data,programId }: Props) {
+  // Bulk admission letters for the programme's newly admitted first years.
+  const canPrintAdmission = useHasRole("ais", ["student::admin", "student::clerk", "student::registry", "sletter::admin", "sletter::clerk"]);
+  const showPrint = !!programId && canPrintAdmission && title == 'LEVEL 100';
   return (
     <div className="w-full space-y-3 rounded">
     <h1 className="text-sm font-bold font-roboto tracking-wider text-primary-dark/60 flex flex-col md:flex-row justify-between">
       <span className="px-3 py-0.5 rounded border border-primary/50">{title}</span>
-      <span className="px-3 py-0.5 rounded bg-primary/70 text-xs text-white font-bold flex items-center">{data?.length} STUDENTS</span>
+      <span className="flex items-center gap-2">
+        {showPrint ? (
+          <Link to={`/ais/admission-letters/print?programId=${encodeURIComponent(programId as string)}`} className="px-3 py-0.5 rounded border border-primary/50 text-xs text-primary-dark/70 font-bold flex items-center gap-1.5 hover:bg-primary/5">
+            <HiOutlinePrinter className="h-3.5 w-3.5" /> PRINT LETTERS
+          </Link>
+        ) : null}
+        <span className="px-3 py-0.5 rounded bg-primary/70 text-xs text-white font-bold flex items-center">{data?.length} STUDENTS</span>
+      </span>
     </h1>
     <div className="w-full rounded-lg shadow-md text-xs overflow-x-scroll md:overflow-hidden">
           <div className="px-3 py-2 bg-primary/10 text-primary-dark/70 font-bold grid grid-cols-9 tracking-wider">

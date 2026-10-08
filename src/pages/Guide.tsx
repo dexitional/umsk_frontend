@@ -454,7 +454,8 @@ function Guide({}: Props) {
                           <tr><td><code>sletter::admin</code></td><td className="gd-wrap">Manage academic (service) letter templates.</td></tr>
                           <tr><td><code>circular::admin</code></td><td className="gd-wrap">Send circulars/notices.</td></tr>
                           <tr><td><code>circular::clerk</code></td><td className="gd-wrap">Create circulars.</td></tr>
-                          <tr><td><code>hrm::admin</code></td><td className="gd-wrap">Manage staff, jobs, units, and assign user roles.</td></tr>
+                          <tr><td><code>hrm::admin</code></td><td className="gd-wrap">Manage staff, jobs and units.</td></tr>
+                          <tr><td><code>access::admin</code></td><td className="gd-wrap">Assign and revoke user roles (User Roles / Access Control).</td></tr>
                           <tr><td><code>logs::admin</code></td><td className="gd-wrap">Delete progression/registration/evaluation log entries.</td></tr>
                           <tr><td><code>acareport::admin</code></td><td className="gd-wrap">Generate academic system reports.</td></tr>
                         </tbody>
@@ -521,7 +522,7 @@ function Guide({}: Props) {
                 </div>
 
                 <FaqGroup title="Accounts & access" query={q} items={[
-                  ["I signed in but see \"Access denied\" or an empty menu — why?", "Your account has no permission tags for that area yet. Each menu item and page only appears for the specific tag(s) listed in Roles & Duties — ask whoever holds hrm::admin to assign the ones you need."],
+                  ["I signed in but see \"Access denied\" or an empty menu — why?", "Your account has no permission tags for that area yet. Each menu item and page only appears for the specific tag(s) listed in Roles & Duties — ask whoever holds access::admin to assign the ones you need."],
                   ["Does my username need to match exactly, including capitalisation?", "No — sign-in is case-insensitive, so MKOFI and mkofi both work. Stray leading/trailing spaces (easy to introduce when copy-pasting) are trimmed automatically too."],
                   ["A student can't get past the login screen — what usually causes this?", "Almost always a wrong ID/password pair, or an account that hasn't been issued yet. If credentials are confirmed correct and it still fails, it's worth checking that the account genuinely exists in that role's underlying table before assuming it's a permissions issue."],
                   ["Can one person be both a staff member and a student?", "Yes — staff and student accounts are separate logins even for the same person (e.g. a graduate assistant who is also enrolled). Use the appropriate sign-in option for what you're trying to do."],

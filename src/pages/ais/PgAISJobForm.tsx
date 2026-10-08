@@ -17,6 +17,7 @@ export async function action({ request, params }) {
   const formData = await request.formData();
   let data = Object.fromEntries(formData);
   data.status = data.status == 1;
+  data.dutyType = data.dutyType || null; // optional enum -- blank means not set
   let resp;
   if (id != 0) resp = await Service.updateJob(id, data);
   else resp = await Service.postJob(data);
@@ -121,6 +122,21 @@ function PgAISJobForm({}: Props) {
                   <option value="JS">JUNIOR STAFF</option>
                   <option value="SS">SENIOR STAFF</option>
                   <option value="SM">SENIOR MEMBER/FELLOW</option>
+                </select>
+              </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  Duty Type <em className="text-primary-dark/50">&nbsp;<sub>Used for non-teaching staff in GTEC returns</sub></em>
+                </span>
+                <select
+                  arial-label="dutyType"
+                  name="dutyType"
+                  defaultValue={data?.dutyType ?? ""}
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option value="">-- Not set --</option>
+                  <option value="TECHNICAL">TECHNICAL</option>
+                  <option value="NON_TECHNICAL">NON-TECHNICAL</option>
                 </select>
               </label>
               <label className="flex flex-col space-y-2">
