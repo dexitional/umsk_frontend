@@ -1,4 +1,5 @@
 import React from "react";
+import toast from "react-hot-toast";
 import { useLoaderData } from "react-router-dom";
 import { HiOutlineDocumentChartBar } from "react-icons/hi2";
 import ReportListView from "../../components/fms/ReportListView";
@@ -8,12 +9,23 @@ import { jsonToExcel } from "../../utils/util";
 
 type Props = {};
 
+// Downloads the report as Excel. Route actions must return a value, so this
+// always returns null (jsonToExcel itself returns nothing); empty results
+// and failures are reported in a toast instead of the error screen.
 export async function action({ request, params }) {
   const formData = await request.formData();
   let data = Object.fromEntries(formData);
-  let resp = await FmsService.loadReport(data);
-  if (resp.data?.length)
-    return jsonToExcel(resp.data, data?.type + "_" + Date.now());
+  try {
+    const resp = await FmsService.loadReport(data);
+    if (resp?.data?.length) {
+      jsonToExcel(resp.data, data?.type + "_" + Date.now());
+      toast.success(`Report downloaded (${resp.data.length} row${resp.data.length === 1 ? "" : "s"}).`);
+    } else {
+      toast.error("No records found for the selected filters.");
+    }
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || "The report could not be generated. Please try again.");
+  }
   return null;
 }
 

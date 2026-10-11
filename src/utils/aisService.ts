@@ -567,8 +567,24 @@ class Service {
           const res = await axios.post(`${REACT_APP_API_URL}/ais/students/upload`, rows,{
               headers: { "Content-Type" : "application/json", "x-access-token" : token }
            })
+          // Success/failure toasts are shown by the upload dialog (PgAISStudents).
           if(res.status == 200){
-             toast.success("Students uploaded!")
+             return res.data
+          }
+          else throw new(res.data.message)
+
+      } catch (error) {
+         return checkSession(error)
+      }
+    }
+
+    async uploadFresher(rows){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/upload-freshers`, rows,{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          // Success/failure toasts are shown by the upload dialog (PgAISStudents).
+          if(res.status == 200){
              return res.data
           }
           else throw new(res.data.message)
@@ -2655,6 +2671,44 @@ class Service {
       try {
           const res = await axios.get(`${REACT_APP_API_URL}/ais/admission-letters/print`,{
              params,
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  // Activate Admission: creates the programme's freshers' portal accounts +
+  // emails and texts them the admission notice. Returns { total, activated,
+  // errors }; throws with the server's message.
+  async activateAdmission(letterId){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/admission-letters/${encodeURIComponent(letterId)}/activate`, {},{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  // Student portal: own admission letter bundle + admissionStatus.
+  async fetchMyAdmission(studentId){
+      try {
+          const res = await axios.get(`${REACT_APP_API_URL}/ais/students/${encodeURIComponent(studentId)}/admission`,{
+             headers: { "Content-Type" : "application/json", "x-access-token" : token }
+          })
+          return res.data
+      } catch (error) {
+          return checkSession(error)
+      }
+  }
+
+  // Student portal: decision is "ACCEPTED" or "REJECTED".
+  async respondAdmission(studentId, decision){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/${encodeURIComponent(studentId)}/admission`, { decision },{
              headers: { "Content-Type" : "application/json", "x-access-token" : token }
           })
           return res.data

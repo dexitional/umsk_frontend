@@ -1,5 +1,5 @@
 import React from 'react';
-import AISPLayout from '../components/aisp/AISPLayout';
+import AISPLayout, { loader as aispLayoutLoader } from '../components/aisp/AISPLayout';
 import AISPPager, { loader as aispPagerLoader } from '../components/aisp/AISPPager';
 import Error from '../pages/Error';
 
@@ -9,6 +9,10 @@ const user = useUserStore.getState().user
 
 const AISRoute:any =  {
    path: "aisp",
+   // The signed-in student's record, for the admission-offer gate (see
+   // AISPLayout) -- read by children via useRouteLoaderData("aisp-root").
+   id: 'aisp-root',
+   loader: aispLayoutLoader,
    element: <AISPLayout />,
    errorElement: <Error />,
    //action: chosenAction,
@@ -24,6 +28,11 @@ const AISRoute:any =  {
                lazy: () => import('../pages/aisp/PgAISPDash').then(m => ({ Component: m.default, loader: m.loader })),
             }
          ]
+      },
+
+      // Admission offer (freshers): letter, fees, accept / reject
+      {  path:'admission',
+         lazy: () => import('../pages/aisp/PgAISPAdmission').then(m => ({ Component: m.default, loader: m.loader })),
       },
 
       // Profile

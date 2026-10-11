@@ -8,9 +8,9 @@ import Service from "../../utils/fmsService";
 import { useHasRole } from "../../utils/roles";
 type Props = {};
 
-// Refund Module: clone of the Charges module, but the opposite effect --
-// a charge debits a student's account, a refund credits it (see
-// fmsController.ts's postRefund/updateRefund for the sign flip).
+// Refund Module: clone of the Charges module, and posted the same way --
+// a refund adds a positive amount to the student's account like a charge
+// or bill (see fmsController.ts's postRefund/updateRefund).
 export async function action({ params }) {
   const data = await Service.deleteRefund(params.refundId);
   if (data) return redirect("/fms/refunds");

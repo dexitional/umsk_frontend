@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { Outlet, useLocation, useNavigation } from "react-router-dom";
+import { Navigate, Outlet, useLoaderData, useLocation, useNavigation } from "react-router-dom";
+import { ADMISSION_PATH, admissionLocked, isAdmissionOpenPath } from "../../utils/admission";
+import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 import { AISPCrest } from "./AISPPhotoBlend";
 import AISPSidebar from "./AISPSidebar";
@@ -10,14 +12,32 @@ type Props = {
   children?: React.ReactNode;
 };
 
+// The student's record, for the admission-offer gate below. A failed fetch
+// leaves the portal ungated rather than unusable (course registration is
+// still blocked server-side for a locked fresher).
+export async function loader() {
+  try {
+    const user = useUserStore.getState().user;
+    const student = await Service.fetchStudent(user?.user?.tag);
+    return { student };
+  } catch (error) {
+    return { student: null };
+  }
+}
+
 function AISPLayout({ children }: Props) {
   const navigation = useNavigation();
   const loading = navigation.state === "loading";
   const { logout, user, switchUser, tag } = useUserStore((state) => state);
   const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { student }: any = useLoaderData() || {};
 
   useEffect(() => setDrawerOpen(false), [pathname]);
+
+  // A fresher who hasn't accepted their admission offer only gets the
+  // admission page, profile, fees and password change.
+  if (admissionLocked(student) && !isAdmissionOpenPath(pathname)) return <Navigate to={ADMISSION_PATH} replace />;
 
   const signout = async () => {
     if (window.confirm("Log Out?")) {

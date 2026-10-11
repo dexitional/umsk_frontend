@@ -2,6 +2,7 @@ import { IconType } from "react-icons";
 import {
   HiOutlineAcademicCap,
   HiOutlineBanknotes,
+  HiOutlineBuildingLibrary,
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineClipboardDocumentCheck,
   HiOutlineKey,
@@ -15,11 +16,12 @@ export const CATEGORY_META: Record<string, { label: string; Icon: IconType; chip
   auth: { label: "Authentication", Icon: HiOutlineKey, chip: "bg-sky-50 text-sky-700 ring-sky-200", dot: "bg-sky-500" },
   students: { label: "Students", Icon: HiOutlineUserGroup, chip: "bg-violet-50 text-violet-700 ring-violet-200", dot: "bg-violet-500" },
   academics: { label: "Academics", Icon: HiOutlineAcademicCap, chip: "bg-emerald-50 text-emerald-700 ring-emerald-200", dot: "bg-emerald-500" },
+  bank: { label: "Bank API", Icon: HiOutlineBuildingLibrary, chip: "bg-teal-50 text-teal-700 ring-teal-200", dot: "bg-teal-500" },
   finance: { label: "Finance", Icon: HiOutlineBanknotes, chip: "bg-amber-50 text-amber-700 ring-amber-200", dot: "bg-amber-500" },
   messaging: { label: "Messaging", Icon: HiOutlineChatBubbleLeftEllipsis, chip: "bg-pink-50 text-pink-700 ring-pink-200", dot: "bg-pink-500" },
   other: { label: "Other", Icon: HiOutlineSquares2X2, chip: "bg-slate-100 text-slate-600 ring-slate-200", dot: "bg-slate-400" },
 };
-export const CATEGORY_ORDER = ["assessment", "auth", "students", "academics", "finance", "messaging", "other"];
+export const CATEGORY_ORDER = ["assessment", "auth", "students", "academics", "finance", "bank", "messaging", "other"];
 
 // Change type for record-level audit entries.
 export const changeType = (action: string): "created" | "updated" | "deleted" | null =>
@@ -44,6 +46,10 @@ const FIELD_LABELS: Record<string, string> = {
   classScore: "Class score", examScore: "Exam score", totalScore: "Total score", status: "Published", semesterNum: "Semester",
   courseId: "Course", sessionId: "Session", schemeId: "Scheme", indexno: "Index no.", credit: "Credit", type: "Type",
   scoreA: "Score A", scoreB: "Score B", scoreC: "Score C", id: "Record ID",
+  narrative: "Narrative", programId: "Programme", bankaccId: "Bank account", residentialStatus: "Residential status", currency: "Currency",
+  amount: "Amount", discount: "Discount", quota: "Quota", mainGroupCode: "Main target group", discountGroupCode: "Discount target group",
+  posted: "Posted", studentId: "Student", transtypeId: "Service type", collectorId: "Collector", reference: "Reference", transtag: "Transaction ref",
+  payType: "Pay type", feeType: "Fee type", createdAt: "Created",
 };
 export const fieldLabel = (f: string) => FIELD_LABELS[f] || f;
 
@@ -55,8 +61,25 @@ export const formatValue = (v: any) => {
 };
 
 // One-line description for the table.
+const TABLE_LABELS: Record<string, string> = { fms_bill: "bill", fms_transaction: "payment" };
+
 export function summarize(log: any): string {
   const m = log?.meta;
+  // Bank API request: method + path, then the outcome the bank was sent.
+  if (m?.request && m?.response && String(log?.action).startsWith("BANK_API_")) {
+    const outcome = m.response.success ? "OK" : "FAILED";
+    return `${m.request.method} ${m.request.path} · ${outcome}${m.response.msg ? `: ${String(m.response.msg).slice(0, 60)}` : ""}`;
+  }
+  // Bill / payment records: what it is, the amount, and changed fields.
+  if (TABLE_LABELS[m?.table] && Array.isArray(m.records)) {
+    const r = m.records[0] || {};
+    const what = r.narrative || r.transtag || r.id || TABLE_LABELS[m.table];
+    if (r.changes) {
+      const fields = Object.keys(r.changes).map(fieldLabel);
+      return `${what} · ${fields.length ? fields.slice(0, 3).join(", ") + (fields.length > 3 ? ` +${fields.length - 3}` : "") : "no field changes"}`;
+    }
+    return `${what}${r.amount != null ? ` · GH₵ ${Number(r.amount).toFixed(2)}` : ""}`;
+  }
   if (m?.table === "ais_assessment" && Array.isArray(m.records)) {
     const n = m.count ?? m.records.length;
     const records = `${n} record${n == 1 ? "" : "s"}`;

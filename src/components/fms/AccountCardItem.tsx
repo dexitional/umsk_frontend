@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/img/logo.webp";
 import Service from "../../utils/fmsService";
 import Helper from "../../utils/aisService";
+import { formatMoney } from "../../utils/util";
 
 const { REACT_APP_API_URL } = import.meta.env;
 
@@ -107,7 +108,7 @@ function AccountCardItem({ data }: Props) {
           >
             {data?.accountNet > 0 ? "DEBT:" : "BAL:"}{" "}
             {data.entryGroup == "INT" ? "USD" : "GH₵"}{" "}
-            {Math.abs(data?.accountNet)}
+            {formatMoney(Math.abs(data?.accountNet || 0))}
           </div>
           <Link
             to={`${encodeURIComponent(data?.id)}`}

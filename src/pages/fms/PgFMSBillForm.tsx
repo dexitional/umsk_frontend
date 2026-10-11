@@ -7,6 +7,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import SubPageTitle from "../../components/ais/SubPageTitle";
+import YearGroupCodeField from "../../components/fms/YearGroupCodeField";
 import Helper from "../../utils/aisService";
 import Service from "../../utils/fmsService";
 
@@ -220,30 +221,19 @@ function PgFMSVcostForm({}: Props) {
                     ))}
                 </select>
               </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Main Target Group Code
-                </span>
-                <input
-                  arial-label="mainGroupCode"
-                  name="mainGroupCode"
-                  type="text"
-                  defaultValue={data?.mainGroupCode}
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                />
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Discount Target Group Code
-                </span>
-                <input
-                  arial-label="discountGroupCode"
-                  name="discountGroupCode"
-                  type="text"
-                  defaultValue={data?.discountGroupCode}
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                />
-              </label>
+              <YearGroupCodeField
+                name="mainGroupCode"
+                label="Main Target Group"
+                defaultValue={data?.mainGroupCode}
+                required
+                hint="The years this bill is charged to."
+              />
+              <YearGroupCodeField
+                name="discountGroupCode"
+                label="Discount Target Group"
+                defaultValue={data?.discountGroupCode}
+                hint="The years that get the discount. Leave all unticked for no discount group."
+              />
 
               <div className="flex items-center">
                 {/* <input type="hidden" name="studentId" defaultValue={data?.id} /> */}

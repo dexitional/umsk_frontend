@@ -46,8 +46,9 @@ function PgAISAdmissionLetterPrint() {
           </h1>
           {!error ? (
             <p className="text-xs text-slate-400">
-              {students.length} letter{students.length === 1 ? "" : "s"} · {bundle?.letter?.title} · {bundle?.session?.year || "no default session"}
-              {!single ? " · Year 1 students" : ""}
+              {students.length} letter{students.length === 1 ? "" : "s"} · {bundle?.letter?.title} ·{" "}
+              {bundle?.letter?.year ? `${bundle.letter.year}/${bundle.letter.year + 1}` : bundle?.session?.year || "no default session"}
+              {!single ? (bundle?.letter?.year ? ` · students admitted in ${bundle.letter.year}` : " · Year 1 students") : ""}
             </p>
           ) : null}
         </div>
@@ -61,7 +62,9 @@ function PgAISAdmissionLetterPrint() {
       {error ? (
         <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-6 text-center text-sm text-amber-800">{error}</p>
       ) : !students.length ? (
-        <p className="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-10 text-center text-sm text-slate-400">No newly admitted first-year students in this programme.</p>
+        <p className="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-10 text-center text-sm text-slate-400">
+          {bundle?.letter?.year ? `No students admitted in ${bundle.letter.year} in this programme.` : "No newly admitted first-year students in this programme."}
+        </p>
       ) : (
         <div ref={printRef} className="space-y-6 print:space-y-0">
           {students.map((s: any) => (

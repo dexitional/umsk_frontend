@@ -1,21 +1,43 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { HiOutlineEye, HiOutlinePencilSquare } from "react-icons/hi2";
+import { HiOutlineChatBubbleBottomCenterText, HiOutlineEye, HiOutlinePencilSquare } from "react-icons/hi2";
 import RichHtmlField from "../../components/ais/RichHtmlField";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import AdmissionLetterSheet from "../../components/ais/admission/AdmissionLetterSheet";
 import Service from "../../utils/aisService";
+import { ADMISSION_SMS_PLACEHOLDERS, DEFAULT_ADMISSION_SMS, renderAdmissionSms, smsParts } from "../../utils/admission";
 import { ADMISSION_PLACEHOLDERS, defaultLetterTemplate } from "../../utils/util";
 
 // Create / edit an admission letter template. Templates are tied to a
 // programme (category UG by default) and use ::tokens filled per student.
+// A failed load shows the server's message instead of the generic error
+// screen -- and, when editing, no form, so a half-loaded letter can't be
+// saved over the real one.
 export async function loader({ params }) {
-  const [programs, sessions, letter] = await Promise.all([
-    Service.fetchProgramList(),
-    Service.fetchSessionList(),
-    params.letterId ? Service.fetchAdmissionLetter(params.letterId) : null,
-  ]);
-  return { programs: Array.isArray(programs) ? programs : [], session: (sessions || []).find((s: any) => s.default) || null, letter };
+  try {
+    const [programs, sessions, letter] = await Promise.all([
+      Service.fetchProgramList(),
+      Service.fetchSessionList(),
+      params.letterId ? Service.fetchAdmissionLetter(params.letterId) : null,
+    ]);
+    return { programs: Array.isArray(programs) ? programs : [], session: (sessions || []).find((s: any) => s.default) || null, letter };
+  } catch (error: any) {
+    return { programs: [], session: null, letter: null, loadError: error?.response?.data?.message || "The admission letter could not be loaded. Please try again." };
+  }
+}
+
+function PgAISAdmissionLetterForm() {
+  const { loadError }: any = useLoaderData();
+  const navigate = useNavigate();
+  if (!loadError) return <AdmissionLetterForm />;
+  return (
+    <div className="md:pl-10 p-4 md:p-6 space-y-4">
+      <p className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{loadError}</p>
+      <button type="button" onClick={() => navigate("/ais/admission-letters")} className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+        Back to admission letters
+      </button>
+    </div>
+  );
 }
 
 const CATEGORIES = [
@@ -25,16 +47,23 @@ const CATEGORIES = [
   { value: "PG", label: "Postgraduate (PG)" },
 ];
 
-function PgAISAdmissionLetterForm() {
+function AdmissionLetterForm() {
   const { programs, session, letter }: any = useLoaderData();
   const navigate = useNavigate();
   const [category, setCategory] = useState(letter?.category || "UG");
   const [programId, setProgramId] = useState(letter?.programId || "");
   const [title, setTitle] = useState(letter?.title || "");
+  // Admission year: drives ::session_year (2026 -> 2026/2027) and which
+  // students a programme's bulk print picks (admitted in this year).
+  const [year, setYear] = useState<string>(letter ? (letter.year ? String(letter.year) : "") : String(new Date().getFullYear()));
   const [status, setStatus] = useState(letter ? !!letter.status : true);
   const [signature, setSignature] = useState(letter?.signature || "");
   const [signatory, setSignatory] = useState(letter?.signatory || "");
   const [template, setTemplate] = useState(letter?.template || "");
+  // Texted by "Activate Admission"; starts from the default wording so
+  // there's something to edit.
+  const [smsTemplate, setSmsTemplate] = useState(letter?.smsTemplate || DEFAULT_ADMISSION_SMS);
+  const smsRef = useRef<HTMLTextAreaElement>(null);
   const [preview, setPreview] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -58,10 +87,29 @@ function PgAISAdmissionLetterForm() {
     if (!programId) return toast.error("Choose a programme.");
     if (!signature) return toast.error("Upload a signature image.");
     setSaving(true);
-    const resp = await Service.saveAdmissionLetter(letter?.id, { category, programId, title, status, signature, signatory, template });
+    const resp = await Service.saveAdmissionLetter(letter?.id, { category, programId, title, year: year || null, status, signature, signatory, template, smsTemplate });
     setSaving(false);
     if (resp) navigate("/ais/admission-letters");
   };
+
+  // Insert at the cursor (or the end) of the SMS template.
+  const insertSmsToken = (t: string) => {
+    const el = smsRef.current;
+    const start = el?.selectionStart ?? smsTemplate.length;
+    const end = el?.selectionEnd ?? smsTemplate.length;
+    setSmsTemplate(smsTemplate.slice(0, start) + t + smsTemplate.slice(end));
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(start + t.length, start + t.length);
+    });
+  };
+  const smsPreview = renderAdmissionSms(
+    smsTemplate,
+    sample,
+    { year: year ? Number(year) : null, program: sample.program },
+    "Username: asmensah@st.example.edu.gh, Password: Xy7#pQ2k",
+    window.location.origin
+  );
 
   const copyToken = (t: string) => {
     navigator.clipboard?.writeText(t);
@@ -84,7 +132,7 @@ function PgAISAdmissionLetterForm() {
 
       {preview ? (
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <AdmissionLetterSheet letter={{ title, signature, signatory, template }} session={session} student={sample} />
+          <AdmissionLetterSheet letter={{ title, year: year ? Number(year) : null, signature, signatory, template }} session={session} student={sample} />
         </div>
       ) : (
         <div className="grid gap-5 xl:grid-cols-3">
@@ -113,7 +161,14 @@ function PgAISAdmissionLetterForm() {
                   ))}
                 </select>
               </label>
-              <label className="space-y-1.5 md:col-span-2">
+              <label className="space-y-1.5">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Admission year</span>
+                <input type="number" min={2000} max={2100} value={year} onChange={(e) => setYear(e.target.value)} placeholder="e.g. 2026" className={field} />
+                <span className="block text-[0.7rem] text-slate-400">
+                  {year ? `Session ${year}/${Number(year) + 1} · prints for students admitted in ${year}` : "Blank: uses the default session and current Year 1 students"}
+                </span>
+              </label>
+              <label className="space-y-1.5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Title</span>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="e.g. 2026/2027 Undergraduate Admission" className={field} />
               </label>
@@ -152,6 +207,44 @@ function PgAISAdmissionLetterForm() {
                   ) : null
                 }
               />
+            </section>
+
+            <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Admission SMS</span>
+                {smsTemplate.trim() !== DEFAULT_ADMISSION_SMS ? (
+                  <button type="button" onClick={() => setSmsTemplate(DEFAULT_ADMISSION_SMS)} className="text-xs font-semibold text-primary hover:underline">
+                    Reset to default
+                  </button>
+                ) : null}
+              </div>
+              <p className="text-xs text-slate-400">
+                Texted to each fresher when admission is activated for this programme. Click a placeholder to insert it. ::login becomes the
+                student's username and password (or a note to use their existing login), and is added at the end if you leave it out.
+              </p>
+              <textarea ref={smsRef} value={smsTemplate} onChange={(e) => setSmsTemplate(e.target.value)} rows={4} className={field} />
+              <div className="flex flex-wrap gap-1.5">
+                {ADMISSION_SMS_PLACEHOLDERS.map(([token, label]) => (
+                  <button
+                    type="button"
+                    key={token}
+                    title={label}
+                    onClick={() => insertSmsToken(token)}
+                    className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-primary hover:bg-primary/5"
+                  >
+                    {token}
+                  </button>
+                ))}
+              </div>
+              <div className="rounded-xl bg-slate-50 p-3 space-y-1.5">
+                <span className="flex items-center gap-1.5 text-[0.7rem] font-semibold uppercase tracking-wider text-slate-400">
+                  <HiOutlineChatBubbleBottomCenterText className="h-4 w-4" /> Preview (sample student)
+                </span>
+                <p className="text-sm text-slate-700 whitespace-pre-line">{smsPreview}</p>
+                <span className="block text-[0.7rem] text-slate-400">
+                  {smsPreview.length} characters · {smsParts(smsPreview)} SMS part{smsParts(smsPreview) === 1 ? "" : "s"} (actual length varies with each student's details)
+                </span>
+              </div>
             </section>
           </div>
 

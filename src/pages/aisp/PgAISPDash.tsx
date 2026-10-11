@@ -9,6 +9,7 @@ import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineClipboardDocumentCheck,
   HiOutlineClipboardDocumentList,
+  HiOutlineDocumentCheck,
   HiOutlineDocumentText,
   HiOutlineExclamationTriangle,
   HiOutlineHandRaised,
@@ -21,6 +22,7 @@ import {
 import { Link, useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { AISPCrest, AISPPhotoBlend } from "../../components/aisp/AISPPhotoBlend";
 import AISPStatusNotice from "../../components/aisp/AISPStatusNotice";
+import { ADMISSION_PATH, hasAdmissionOffer } from "../../utils/admission";
 import { useUserStore } from "../../utils/authService";
 import Service from "../../utils/aisService";
 
@@ -215,6 +217,12 @@ function PgAISPDash({}: Props) {
               <HiOutlineChartBar className="h-4 w-4" />
               View Results
             </Link>
+            {hasAdmissionOffer(student) ? (
+              <Link to={ADMISSION_PATH} className="aisp-btn-glass">
+                <HiOutlineDocumentCheck className="h-4 w-4" />
+                Admission Letter
+              </Link>
+            ) : null}
           </div>
         </div>
       </section>

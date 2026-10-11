@@ -6,6 +6,7 @@ import {
   HiOutlineCurrencyDollar,
   HiOutlineExclamationTriangle,
   HiOutlineCheckBadge,
+  HiOutlineScale,
 } from "react-icons/hi2";
 import ReportCard from "./ReportCard";
 import ReportDateFilter from "./ReportDateFIlter";
@@ -19,10 +20,6 @@ type Props = {
 };
 
 const YEAR_OPTIONS = [1, 2, 3, 4].map((r) => ({ label: `Year ${r}`, value: r }));
-const MODE_OPTIONS = ["M", "E", "W"].map((r) => ({
-  label: r == "E" ? "Evening" : r == "W" ? "Weekend" : "Morning",
-  value: r,
-}));
 
 function ReportListView({ programs, majors, sessions, services }: Props) {
   const navigation = useNavigation();
@@ -91,7 +88,22 @@ function ReportListView({ programs, majors, sessions, services }: Props) {
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
+        </>
+      ),
+    },
+    {
+      // Basic financial report: STUDENT ID, NAME, PROGRAM, YEAR, BALANCE
+      // (accountNet; positive = owing). Leave both blank for every student.
+      type: "balances",
+      title: "Student Balances",
+      description: "Every student's account balance",
+      Icon: HiOutlineScale,
+      gradient: "from-emerald-500 to-green-600",
+      glow: "hover:shadow-emerald-500/20",
+      fields: (
+        <>
+          <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
+          <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
         </>
       ),
     },
@@ -107,7 +119,6 @@ function ReportListView({ programs, majors, sessions, services }: Props) {
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },

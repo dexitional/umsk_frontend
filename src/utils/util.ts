@@ -80,24 +80,33 @@ export const gradeSummaryToExcel = (
   FileSaver.saveAs(data, fileName + fileExtension);
 }
 
-export const excelToJson = (fileName,callback) => {
+// `onError` (optional) is called instead of throwing when the file can't be
+// read or parsed -- without it a corrupt file failed silently and left
+// callers waiting forever.
+export const excelToJson = (fileName,callback,onError?: (error: any) => void) => {
   const reader = new FileReader();
-  var responseData;
   reader.onload = (evt:any) => {
     // evt = on_file_select event
     /* Parse data */
-    const bstr = evt.target.result;
-    const wb = XLSX.read(bstr, { type: "binary" });
-    /* Get first worksheet */
-    const wsname = wb.SheetNames[0];
-    const ws = wb.Sheets[wsname];
-    
-    /* Convert array of arrays */
-    //const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-    const data = XLSX.utils.sheet_to_json(ws);
+    let data;
+    try {
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      /* Get first worksheet */
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+
+      /* Convert array of arrays */
+      //const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+      data = XLSX.utils.sheet_to_json(ws);
+    } catch (error) {
+      if (onError) return onError(error);
+      throw error;
+    }
     return callback(data)
-    
+
   };
+  reader.onerror = () => onError?.(reader.error);
   reader.readAsBinaryString(fileName);
 }
 
@@ -430,7 +439,7 @@ export const ADMISSION_PLACEHOLDERS: [string, string][] = [
   ["::programme_years_words", "Programme length in words, e.g. FOUR"],
   ["::admission_title", "Letter title"],
   ["::start_level", "Starting level, e.g. 100"],
-  ["::session_year", "Academic year"],
+  ["::session_year", "Academic year, e.g. 2026/2027 (from the letter's admission year)"],
   ["::admit_year", "Admission year, e.g. 2026/2027"],
   ["::register_start", "Registration starts"],
   ["::register_end", "Registration ends"],
@@ -477,7 +486,9 @@ export const loadAdmissionPlacerData = (template: string, data: any) => {
     const figure = n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return `${words.convert(n)} (${bill?.currency == "USD" ? "$" : "GH¢"}${figure})`;
   };
-  const year = session?.year || "";
+  // The letter's admission year sets the academic year (2026 -> 2026/2027);
+  // without one, the default session's year is used.
+  const year = letter?.year ? `${letter.year}/${Number(letter.year) + 1}` : session?.year || "";
   const years = Math.max(1, Math.ceil((Number(st.program?.semesterTotal) || 8) / 2));
   const admitYear = st.entryDate ? `${moment(st.entryDate).format("YYYY")}/${moment(st.entryDate).add(1, "years").format("YYYY")}` : year;
   const values: Record<string, string> = {
@@ -520,3 +531,9 @@ export const loadAdmissionPlacerData = (template: string, data: any) => {
   for (const key of Object.keys(values).sort((a, b) => b.length - a.length)) out = out.split(key).join(values[key]);
   return out;
 };
+
+// Money for display: always 2 decimal places with thousands separators
+// (1234.5 -> "1,234.50"). Ledger sums are floats, so raw values can show
+// as 121.19999999999999.
+export const formatMoney = (n: any) =>
+  (Number(n) || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });

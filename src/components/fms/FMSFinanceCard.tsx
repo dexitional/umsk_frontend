@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import SubPageTitle from './SubPageTitle';
+import { formatMoney } from '../../utils/util';
 
 type Props = {
     data?: any;
@@ -49,7 +50,7 @@ function FMSFinanceCard({ data }: Props) {
             </span>
             <span className="flex flex-col space-y-1">
               <span className="px-3 py-0.5 md:hidden flex text-xs font-bold bg-slate-100/50 text-primary-dark">AMOUNT</span>
-              <span className="md:px-0 px-3 font-bold">{row.currency} {Math.abs(row.amount)}</span>
+              <span className="md:px-0 px-3 font-bold">{row.currency} {formatMoney(Math.abs(row.amount))}</span>
             </span>
            
           </div>
@@ -57,7 +58,7 @@ function FMSFinanceCard({ data }: Props) {
           {/* Totals */}
           { data?.length ? (
           <div className="px-3 py-2 border-b grid md:grid-cols-8 font-bold text-sm md:text-xs text-primary-dark/90">
-            <span className="md:pl-4 md:col-span-5 font-bold">NET { sum > 0 ? 'DEBT':'BALANCE'}:&nbsp;&nbsp;&nbsp;{data && data[0]?.currency} { Math.abs(sum) }</span>
+            <span className="md:pl-4 md:col-span-5 font-bold">NET { sum > 0 ? 'DEBT':'BALANCE'}:&nbsp;&nbsp;&nbsp;{data && data[0]?.currency} { formatMoney(Math.abs(sum)) }</span>
             <span>&nbsp;</span>
             <span>&nbsp;</span>
             <span>&nbsp;</span>

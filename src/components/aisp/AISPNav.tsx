@@ -5,6 +5,7 @@ import {
   HiOutlineChartBar,
   HiOutlineChatBubbleLeftRight,
   HiOutlineClipboardDocumentList,
+  HiOutlineDocumentCheck,
   HiOutlineDocumentText,
   HiOutlineHandRaised,
   HiOutlineIdentification,
@@ -12,6 +13,8 @@ import {
   HiOutlineSquares2X2,
   HiOutlineUserGroup,
 } from 'react-icons/hi2';
+import { useRouteLoaderData } from 'react-router-dom';
+import { ADMISSION_PATH, admissionLocked, hasAdmissionOffer, isAdmissionOpenPath } from '../../utils/admission';
 import { useHasRole } from '../../utils/roles';
 import AISPNavItem from './AISPNavItem';
 
@@ -24,6 +27,8 @@ export const AISP_NAV: { label: string; items: AISPNavLink[] }[] = [
     label: 'Overview',
     items: [
       { title: 'Dashboard', url: '/aisp/dash', Icon: HiOutlineSquares2X2 },
+      // Only listed for freshers with an admission offer -- see AISPNav.
+      { title: 'Admission', url: ADMISSION_PATH, Icon: HiOutlineDocumentCheck },
       { title: 'My Profile', url: '/aisp/profile', Icon: HiOutlineIdentification },
     ],
   },
@@ -57,9 +62,18 @@ type Props = {
 
 function AISPNav({ onNavigate }: Props) {
   const canManageRoles = useHasRole('ais', ['hrm::admin']);
+  const { student }: any = useRouteLoaderData('aisp-root') || {};
+  const locked = admissionLocked(student);
+  const offer = hasAdmissionOffer(student);
+  // Hide the Admission item without an offer; while the offer is
+  // unaccepted, hide everything the portal gate wouldn't let them open.
+  const groups = AISP_NAV.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => (item.url !== ADMISSION_PATH || offer) && (!locked || isAdmissionOpenPath(item.url))),
+  })).filter((group) => group.items.length);
   return (
     <nav className="flex flex-col gap-6">
-      {AISP_NAV.map((group) => (
+      {groups.map((group) => (
         <div key={group.label} className="flex flex-col gap-1">
           <span className="px-4 pb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-white/[0.35]">
             {group.label}

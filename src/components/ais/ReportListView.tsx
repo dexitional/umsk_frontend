@@ -36,10 +36,6 @@ type Props = {
 };
 
 const YEAR_OPTIONS = [1, 2, 3, 4].map((r) => ({ label: `Year ${r}`, value: r }));
-const MODE_OPTIONS = ["M", "E", "W"].map((r) => ({
-  label: r == "E" ? "Evening" : r == "W" ? "Weekend" : "Morning",
-  value: r,
-}));
 const STAFF_CATEGORY_OPTIONS = [
   { label: "All Staff", value: "" },
   { label: "Academic Staff", value: "ACADEMIC" },
@@ -69,7 +65,6 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },
@@ -85,7 +80,6 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },
@@ -101,7 +95,6 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },
@@ -117,7 +110,6 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },
@@ -133,7 +125,6 @@ function ReportListView({ programs, majors, sessions, rsessions, gsessions }: Pr
           <ReportDropdown label="PROGRAM" name="program" options={programOptions} />
           <ReportDropdown label="MAJOR" name="major" options={majorOptions} />
           <ReportDropdown label="YEAR" name="year" options={YEAR_OPTIONS} />
-          <ReportDropdown label="MODE" name="mode" options={MODE_OPTIONS} />
         </>
       ),
     },

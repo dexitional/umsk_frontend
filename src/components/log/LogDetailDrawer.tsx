@@ -32,7 +32,7 @@ function RecordCard({ record, kind }: { record: any; kind: "created" | "updated"
     <div className="rounded-2xl ring-1 ring-inset ring-slate-200 bg-white overflow-hidden">
       <div className={`px-4 py-2.5 flex items-center justify-between gap-3 ${style?.row || "bg-slate-50"}`}>
         <span className="text-xs font-semibold text-slate-700 truncate">
-          {[record?.indexno, record?.courseId].filter(Boolean).join(" · ") || "Record"}
+          {[record?.indexno, record?.courseId, record?.narrative, record?.transtag].filter(Boolean).join(" · ") || "Record"}
         </span>
         {record?.id ? <span className="text-[0.65rem] font-mono text-slate-400 truncate">{String(record.id).slice(0, 8)}…</span> : null}
       </div>
@@ -85,7 +85,7 @@ function LogDetailDrawer({ log, onClose }: Props) {
   const cat = CATEGORY_META[log?.category] || CATEGORY_META.other;
   const kind = log ? changeType(log.action) : null;
   const meta = log?.meta;
-  const records: any[] = meta?.table === "ais_assessment" && Array.isArray(meta.records) ? meta.records : [];
+  const records: any[] = meta?.table && Array.isArray(meta.records) ? meta.records.filter(Boolean) : [];
   const request = meta?.request;
   const raw = JSON.stringify(meta, null, 2);
 

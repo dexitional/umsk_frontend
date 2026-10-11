@@ -25,7 +25,7 @@ function FMSRoleNav({ user }: Props) {
         {/* Mobile Navigation Slide */}
         <Menu.Items className="z-20 absolute top-13 left-0 min-h-max w-full border-b-4 border-blue-100/90 bg-blue-100 backdrop-blur-sm backdrop-opacity-70 bg-opacity-70">
           <div className="py-4 px-6 flex-1 flex flex-col space-y-1 md:space-y-4">
-           { fmsRoles?.find((r:any) => ['finreport::admin'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Reports" url="System Reports" Icon={FaChartBar}></Menu.Item>)}
+           { fmsRoles?.find((r:any) => ['finreport::admin'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="System Reports" url="reports" Icon={FaChartBar}></Menu.Item>)}
            { fmsRoles?.find((r:any) => ['dashboard::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="User Dashboard" url="dash" Icon={GrDashboard}></Menu.Item>)} 
            { fmsRoles?.find((r:any) => ['bill::admin','bill::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Student Bills" url="bills" Icon={GrDashboard}></Menu.Item>)} 
            { fmsRoles?.find((r:any) => ['charge::admin','charge::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Student Charges" url="charges" Icon={GrDashboard}></Menu.Item>)}

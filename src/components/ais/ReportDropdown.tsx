@@ -13,7 +13,7 @@ function ReportDropdown({ label, name, options }: Props) {
       <select name={name} className="border-0 bg-transparent text-[0.7rem] font-semibold uppercase text-primary-dark focus:ring-0">
         {/* { (['major'].includes(name)) && (<option value="">NO MAJOR</option>) } */}
         { (['rsession','session'].includes(name)) && (<option value="">----</option>) }
-        { (['mode','year','program','major'].includes(name)) && (<option value="">----</option>) }
+        { (['year','program','major'].includes(name)) && (<option value="">----</option>) }
         {/* { (['rsession'].includes(name)) && (<option value="">NO MAJOR</option>) } */}
         { options.map((r,i) => (<option key={i} value={r.value}>{r.label}</option>))}
       </select>

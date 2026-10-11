@@ -20,7 +20,7 @@ function AdmissionLetterSheet({ letter, session, student }: Props) {
 
   return (
     <article className="admission-letter mx-auto w-full max-w-[210mm] bg-white p-6 md:p-10 rounded-lg border border-slate-200 shadow-sm print:max-w-none print:p-0 print:rounded-none print:border-0 print:shadow-none [&:not(:last-child)]:break-after-page">
-      <PrintHeaderAkatsico ourRef={`ADMISSIONS-${session?.year || ""}`} />
+      <PrintHeaderAkatsico ourRef={`ADMISSIONS-${letter?.year ? `${letter.year}/${Number(letter.year) + 1}` : session?.year || ""}`} />
       {/* One text size for the whole letter body (12pt in print); [&_*] resets
           any size set in the template editor. The letterhead keeps its own. */}
       <main className="w-full mt-4 print:mt-2.5 font-arial-narrow text-[16px] leading-[1.5] print:text-[12pt] print:leading-[1.45] [&_*]:!text-[1em]">

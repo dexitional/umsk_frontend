@@ -14,9 +14,9 @@ type Props = {
   data: any;
 };
 
-// Clone of ChargeCardItem for the opposite-effect Refund module -- same
-// layout, a green accent on the amount footer to signal credit rather than
-// debit.
+// Clone of ChargeCardItem for the Refund module -- same layout, with a green
+// accent on the amount footer to tell refunds apart from charges. (Both add
+// a positive amount to the student's account.)
 function RefundCardItem({ data }: Props) {
   const canManageRefund = useHasRole("fms", ["refund::admin"]);
   return (
