@@ -1,26 +1,26 @@
-import React from 'react'
-import DepartmentListItem from './DepartmentListItem';
+import React from "react";
+import DepartmentCardItem from "./DepartmentCardItem";
 
-type Props = { 
+type Props = {
   data: any;
-}
+};
 
+// Department module: a grid of department cards.
 function DepartmentListView({ data }: Props) {
+  if (!data?.length) {
+    return (
+      <p className="rounded-2xl border border-dashed border-primary/20 bg-white px-4 py-12 text-center text-xs font-semibold uppercase tracking-widest text-primary/40">
+        No departments yet
+      </p>
+    );
+  }
   return (
-    <div className="py-6 grid grid-cols-1 gap-y-4 border bg-slate-50/50 rounded-xl">
-            <div className="px-6 pb-4  hidden md:grid grid-cols-7 place-items-center   border-b border-slate-200 text-xs text-primary-dark/80 font-sans font-semibold uppercase tracking-widest">
-               <div className="col-span-2 place-self-start">Department Name</div>
-               <div className="col-span-2 place-self-start">Faculty Name</div>
-               <div>Programs</div>
-               <div>Staff Capacity</div>
-               <div>Action</div>
-            </div>
-            <div className="grid grid-cols-1 gap-y-4  text-xs text-slate-600 font-roboto font-medium tracking-widest">
-              { data && data?.map((row:any, i: number) => (<DepartmentListItem key={row.id} data={row} count={i} />))}
-              { !data && (<h1 className="w-full text-center text-gray-400 text-[0.65rem] font-semibold tracking-widest uppercase">No Records ...</h1>)}
-            </div>
-         </div>
-  )
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 md:gap-6">
+      {data.map((row: any) => (
+        <DepartmentCardItem key={row.id} data={row} />
+      ))}
+    </div>
+  );
 }
 
-export default DepartmentListView
+export default DepartmentListView;

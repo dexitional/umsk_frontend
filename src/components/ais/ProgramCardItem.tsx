@@ -6,7 +6,6 @@ import { Form, Link } from "react-router-dom";
 import moment from "moment";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import { FaFilePdf, FaTimeline } from "react-icons/fa6";
-import { HiMiniAcademicCap } from "react-icons/hi2";
 import { useHasRole } from "../../utils/roles";
 
 type Props = {
@@ -32,16 +31,6 @@ function ProgramCardItem({ data }: Props) {
         </div>
       </div>
       <div className="space-y-1">
-        <div className="flex items-center space-x-4">
-          <HiMiniAcademicCap className="shrink-0 h-5 w-5 text-primary/70" />
-          <span
-            className={`${
-              data.department?.title ? "text-gray-500" : "text-red-500"
-            } text-xs  font-bold capitalize`}
-          >
-            {data.department?.title || "Not assigned"}
-          </span>
-        </div>
         <div className="flex items-center space-x-4">
           <FaTimeline className="rotate-90 h-4 w-5 text-primary/70" />
           <span className="text-sm text-gray-500">

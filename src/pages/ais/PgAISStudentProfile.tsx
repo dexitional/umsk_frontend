@@ -128,11 +128,6 @@ function PgAISStudentProfile({}: Props) {
           Icon={MdOutlineMarkEmailUnread}
         />
         <AISPBioCard
-          label="Department"
-          value={data?.program?.department?.title || "Not Set"}
-          Icon={FaPhoneAlt}
-        />
-        <AISPBioCard
           label="Institutional Email"
           value={data?.instituteEmail?.toUpperCase() || "Not Set"}
           Icon={FaRegAddressCard}

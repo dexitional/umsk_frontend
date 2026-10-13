@@ -141,10 +141,6 @@ const AISRoute:any =  {
                lazy: () => import('../pages/ais/PgAISProgramStudent').then(m => ({ Component: m.default, loader: m.loader })),
             },
             {
-               path:'change',
-               lazy: () => import('../pages/ais/PgAISProgramChange').then(m => ({ Component: m.default, loader: m.loader })),
-            },
-            {
                path:'statistics',
                lazy: () => import('../pages/ais/PgAISProgramStatistics').then(async m => ({ Component: m.default, loader: (await import('../pages/ais/PgAISProgramStudent')).loader })),
             },
@@ -162,24 +158,6 @@ const AISRoute:any =  {
       {
          path:'programs/:programId/edit',
          lazy: () => import('../pages/ais/PgAISProgramForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-      },
-
-       /* Faculty Module */
-       {
-         path:'faculties',
-         lazy: () => import('../pages/ais/PgAISFaculties').then(m => ({ Component: m.default, loader: m.loader })),
-      },
-      {
-         path:'departments/create',
-         lazy: () => import('../pages/ais/PgAISCourseForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
-      },
-      {
-         path:'departments/:departmentId/destroy',
-         lazy: () => import('../pages/ais/PgAISCourses').then(m => ({ action: m.action })),
-      },
-      {
-         path:'departments/:departmentId/edit',
-         lazy: () => import('../pages/ais/PgAISCourseForm').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
 
       /* Department Module */
@@ -244,6 +222,10 @@ const AISRoute:any =  {
       {
          path:'evaluation-forms',
          lazy: () => import('../pages/ais/PgAISEvaluationForms').then(m => ({ Component: m.default, loader: m.loader })),
+      },
+      {
+         path:'evaluation-forms/rating-scale',
+         lazy: () => import('../pages/ais/PgAISEvaluationScale').then(m => ({ Component: m.default, loader: m.loader, action: m.action })),
       },
       {
          path:'evaluation-forms/create',

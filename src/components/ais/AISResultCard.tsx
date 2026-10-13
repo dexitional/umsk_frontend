@@ -56,7 +56,7 @@ function AISResultCard({ title,data,meta }: Props) {
               </span>
               <span>{row.credit}</span>
               <span>{row.totalScore != null ? `(${row.totalScore})` : null } {row.grade}</span>
-              <span>{isNaN(row.gradepoint * row.credit) ? '--': (row.gradepoint * row.credit).toFixed(1)}</span>
+              <span>{row.grade === 'IC' || isNaN(row.gradepoint * row.credit) ? '--': (row.gradepoint * row.credit).toFixed(1)}</span>
               
               {canManageResults ? (
               <div className="flex flex-col space-y-1">

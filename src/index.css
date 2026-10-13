@@ -33,6 +33,25 @@
   .dash-fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
+/* AIS dashboard v2: marks grow from their baseline, hero background drifts. */
+@keyframes dashGrowY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes dashGrowX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes dashDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(14px, -10px, 0) scale(1.06); }
+}
+@keyframes dashPulseRing {
+  0% { transform: scale(0.85); opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.dash-grow-y { transform-origin: bottom; animation: dashGrowY 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.dash-grow-x { transform-origin: left; animation: dashGrowX 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.dash-drift { animation: dashDrift 9s ease-in-out infinite; }
+.dash-pulse-ring { animation: dashPulseRing 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .dash-grow-y, .dash-grow-x, .dash-drift, .dash-pulse-ring { animation: none !important; transform: none !important; }
+}
+
 /* 3D press button with a per-letter reveal on hover (default label sits on
    an ::before overlay driven by data-label, sliding away on hover to
    uncover the individually-staggered <i class="letter"> children). */

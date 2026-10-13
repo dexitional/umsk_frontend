@@ -4,7 +4,6 @@ import SubPageTitle from "../../components/ais/SubPageTitle";
 import moment from "moment";
 import { BiLoaderCircle } from "react-icons/bi";
 import { FaNewspaper } from "react-icons/fa6";
-import { RiCommunityFill } from "react-icons/ri";
 import { TbEdit } from "react-icons/tb";
 import {
   Link,
@@ -89,16 +88,7 @@ function PgAISProgram({}: Props) {
                     <span className="tracking-wider text-xs md:text-base capitalize">{ data?.category == 'CP' ? 'CERTIFICATE': data?.category == 'DP' ? 'DIPLOMA':'DEGREE' }</span> */}
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
               </div>
-              <div className="flex items-center space-x-2">
-                <RiCommunityFill className="md:h-5 md:w-5 text-primary/70" />
-                <span className="text-xs md:text-base tracking-wider font-medium capitalize">
-                  {data?.department?.title}
-                </span>
-              </div>
             </div>
-            <p className="text-gray-400 md:text-gray-500 text-xs md:text-sm font-noto">
-              {data?.department?.longName}
-            </p>
           </div>
         </section>
 
@@ -111,9 +101,6 @@ function PgAISProgram({}: Props) {
               <SubNavLink title="STUDENTS" url="students" />
             ) : null}
             <SubNavLink title="ID CARDS" url="idcards" />
-            {canViewProgramFull ? (
-              <SubNavLink title="CHANGE REQUESTS" url="change" />
-            ) : null}
             {/* <SubNavLink title="STATISTICS" url="statistics" /> */}
             {/* <SubNavLink title="ACCOUNT & ACTIVITY" url="activity" />*/}
            

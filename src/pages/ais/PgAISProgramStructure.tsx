@@ -2,6 +2,7 @@ import React from "react";
 import { BsActivity } from "react-icons/bs";
 import { useLoaderData } from "react-router-dom";
 import AISStructureCard from "../../components/ais/AISStructureCard";
+import { levelToYear } from "../../utils/util";
 import Service from "../../utils/aisService";
 
 type Props = {};
@@ -24,7 +25,7 @@ function PgAISProgramStructure({}: Props) {
           data?.data &&
           Array.from(data?.data).map(([title, row]: any, i: number) => (
             <div key={title} className="px-2 py-2 space-y-3">
-              <AISStructureCard title={title.toUpperCase()} data={row} />
+              <AISStructureCard title={levelToYear(title)} data={row} />
 
               {meta[title] && (
                 <div className="p-2 border rounded-lg bg-primary/5 flex items-center space-x-3">

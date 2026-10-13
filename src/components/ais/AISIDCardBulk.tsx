@@ -1,142 +1,90 @@
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import moment from "moment";
-import React, { useRef } from "react";
-import { HiUserAdd } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
-import Adinkra from "../../assets/img/adinkra-bullet.png";
-import Logo from "../../assets/img/logo.webp";
-import Back from "../../assets/img/id-back.jpg";
-import { useUserStore } from "../../utils/authService";
-const { REACT_APP_API_URL } = import.meta.env;
+import React, { createRef, useMemo, useState } from "react";
+import { HiOutlineArrowDownTray, HiOutlinePrinter } from "react-icons/hi2";
+import { IDCardBack, IDCardFront, cardsToPdf, openPdf } from "./AISIDCard";
 
 type Props = {
-  data?: any;
+  data?: any[];
+  // The group's heading, e.g. "LEVEL 100" -- used in the PDF title/file name.
+  title?: string;
 };
 
-function AISIDCardBulk({ data }: Props) {
-  const navigate = useNavigate();
-  const pdfRef: any = useRef(null);
-  const user = useUserStore((state) => state.user);
+// A programme level's ID cards, in the same design as the single-student card
+// (AISIDCard): fronts shown as a grid, backs rendered off-screen for the PDF.
+// The PDF has two CR80 pages per student (front, back), for double-sided
+// printing on a PVC card printer. As before, only students with an index
+// number get a card.
+function AISIDCardBulk({ data, title = "" }: Props) {
+  const students = useMemo(() => (data || []).filter((r: any) => r?.indexno), [data]);
+  const refs = useMemo(
+    () => students.map(() => ({ front: createRef<HTMLDivElement>(), back: createRef<HTMLDivElement>() })),
+    [students]
+  );
+  const [busy, setBusy] = useState<"" | "open" | "download">("");
+  const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const skipped = (data || []).length - students.length;
 
-  const handlePrint = useReactToPrint({
-    content: () => pdfRef.current,
-  });
+  const makePdf = async (mode: "open" | "download") => {
+    const cards = refs.map((r) => ({ front: r.front.current!, back: r.back.current! })).filter((c) => c.front && c.back);
+    if (!cards.length) return;
+    setBusy(mode);
+    setProgress({ done: 0, total: cards.length });
+    try {
+      const pdf = await cardsToPdf(cards, { title: `Student ID Cards - ${title}` }, (done, total) => setProgress({ done, total }));
+      if (mode === "download") pdf.save(`AKATSICO-ID-CARDS-${title.replace(/\s+/g, "-") || "batch"}.pdf`);
+      else openPdf(pdf);
+    } finally {
+      setBusy("");
+    }
+  };
 
-  
+  if (!students.length) {
+    return <p className="px-1 text-sm text-slate-400">No students with an index number in this group yet, so there are no ID cards to print.</p>;
+  }
 
   return (
-    <div className="w-full rounded flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6">
-      <section className="relative px-8 py-6 md:w-full print-w-full flex items-center">
-        <button className="py-1 px-4 absolute -top-16 md:-top-20 left-36 md:left-96 bg-primary text-white font-semibold rounded-full tracking-widest" onClick={handlePrint}>PRINT ID CARDS</button>
-        <div ref={pdfRef} className="w-full md:grid md:grid-cols-2 md:gap-x-4 md:gap-y-14">
-          { data?.filter(r => r.indexno).map((row:any, i: number) => (
-            <>
-              {/* Front Cover */}
-              <div className={`w-[85mm] h-[54mm] border ${i != 0 && 'break-before-page'} print:border-0 border-b-4 print:border-b-4 border-b-secondary-accent md:scale-125 bg-white`}>
-                <div className="px-2 py-1 flex items-center">
-                  <img src={Logo} className="w-[50px] h-[50px]" />
-                  <div className="flex-1 flex flex-col space-y-1 items-center font-roboto">
-                    <div className="-space-y-1">
-                      <h1 className="m-0 font-black flex flex-col font-noto text-center leading-[0.1rem]">
-                        <span className="font-black text-lg tracking-wider">AKATSI</span>
-                        <span className="font-semibold text-[0.7rem]">COLLEGE OF EDUCATION</span>
-                      </h1>
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-10 w-full border-secondary-accent flex">
-                  <div className="p-2 w-1/3 h-[8.2rem] bg-secondary-accent rounded-md">
-                    <div className="w-21 h-24 flex justify-center items-center bg-white overflow-hidden rounded-t">
-                      <img
-                        crossOrigin="anonymous"
-                        src={`${REACT_APP_API_URL}/auth/photos/?tag=${row?.id}`}
-                        loading="eager"
-                        className="w-20 h-20 object-cover rounded-t"
-                      />
-                    </div>
-                    <div className="my-1 px-2 py-1 text-[0.5rem] text-white bg-gray-900 rounded-b font-bold text-center tracking-wide">
-                      {[2].includes(row?.stype) ? "POSTGRADUATE" : "UNDERGRADUATE"}
-                    </div>
-                  </div>
+    <div className="w-full space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          onClick={() => makePdf("open")}
+          disabled={!!busy}
+          className="h-10 rounded-full flex items-center gap-2 pl-1.5 pr-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow-sm disabled:opacity-60"
+        >
+          <HiOutlinePrinter className="text-secondary-accent h-7 w-7 p-1 bg-white border-2 border-secondary-accent/20 rounded-full" />
+          <span className="font-semibold text-sm text-secondary-accent">
+            {busy === "open" ? `Preparing ${progress.done} / ${progress.total} ...` : `Open ID Cards PDF (${students.length})`}
+          </span>
+        </button>
+        <button
+          onClick={() => makePdf("download")}
+          disabled={!!busy}
+          className="h-10 rounded-full flex items-center gap-2 pl-1.5 pr-4 bg-white border border-slate-200 shadow-sm disabled:opacity-60"
+        >
+          <HiOutlineArrowDownTray className="text-slate-600 h-7 w-7 p-1 bg-slate-50 border-2 border-slate-200 rounded-full" />
+          <span className="font-semibold text-sm text-slate-600">
+            {busy === "download" ? `Preparing ${progress.done} / ${progress.total} ...` : "Download PDF"}
+          </span>
+        </button>
+        <span className="text-xs text-slate-400">
+          Front + back per student, CR80 card size. Print at 100% / Actual size, double-sided.
+          {skipped > 0 ? ` ${skipped} student${skipped === 1 ? "" : "s"} without an index number left out.` : ""}
+        </span>
+      </div>
 
-                  <div className="w-full flex flex-col bg-white font-roboto">
-                    <div className="-ml-1 w-full font-bold bg-gray-900 rounded-r text-[0.65rem] text-white flex items-center justify-center">
-                      <span className="print:px-2 -print:py-2 px-2 py-0.5 tracking-widest">
-                        STUDENT IDENTIFICATION CARD
-                      </span>
-                    </div>
-                    <div className="px-2 flex-1 flex flex-col justify-between space-y-0 text-black text-[0.6rem] font-roboto">
-                      <div className="w-full space-y-0.5 text-left">
-                        <div className="m-2 mb-1 font-black text-[0.65rem] tracking-loose">
-                          {(
-                            row?.fname +
-                            " " +
-                            (row?.mname ? row?.mname + " " : "") +
-                            row?.lname
-                          ).toUpperCase()}
-                        </div>
-                        <div className="my-1 mx-2 font-semibold tracking-wide leading-3 text-[0.6rem] text-primary-dark ">
-                          {row?.program?.shortName?.toUpperCase()} 
-                        </div>
-                        <div className="m-2 font-semibold text-[0.6rem] tracking-loose">
-                          {row && row?.indexno} | <span className="text-gray-600/90">SID: {row && row?.id}</span>
-                        </div>
-                      </div>
+      <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(86mm,1fr))]">
+        {students.map((s: any, i: number) => (
+          <div key={s.id} className="w-fit rounded-[3mm] overflow-hidden shadow-md shadow-slate-900/10 ring-1 ring-slate-200">
+            <IDCardFront ref={refs[i].front} data={s} />
+          </div>
+        ))}
+      </div>
 
-                      <div
-                        className={`mt-2 relative flex justify-between text-gray-900 bg-ur('${Logo}')`}
-                      >
-                        <img
-                          src={Adinkra}
-                          alt="BG"
-                          className="absolute -right-2 -bottom-1 h-28 opacity-20"
-                        />
-                        <div className="flex flex-col space-y-0">
-                          <p className="m-0 font-bold text-[0.5rem]">
-                            ISSUE DATE
-                          </p>
-                          <p className="my-1 mx-0 font-bold text-[0.5rem]">
-                            {moment(row?.entryDate || new Date())
-                              .format("MMMM YYYY")
-                              .toUpperCase()}
-                          </p>
-                        </div>
-                        <div className="flex flex-col space-y-0">
-                          <p className="m-0 font-bold text-[0.5rem]">NATIONALITY</p>
-                          <p className="my-1 mx-0 font-bold text-[0.5rem]">
-                            {row?.country?.nationality?.toUpperCase()}
-                          </p>
-                        </div>
-                        <div className="flex flex-col space-y-0">
-                          <p className="m-0 font-bold text-[0.5rem]">
-                            EXPIRE DATE
-                          </p>
-                          <p className="my-1 mx-0 font-bold text-[0.5rem]">
-                            OCTOBER{" "}
-                            {moment(row?.entryDate || new Date())
-                              .add(4, "years")
-                              .format("YYYY")
-                              .toUpperCase()}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* Back Cover */}
-              <div className="w-[85mm] h-[54mm] break-before-page hidden print:block ">
-                <img src={Back} alt="ID Back" className="object-contain"/>
-              </div>
-            </>
-          ))}
-         
-        </div>
-       
-      </section>
-     
+      {/* Backs: only needed for the PDF. Off-screen (not display:none, which
+          html2canvas can't capture). */}
+      <div aria-hidden className="pointer-events-none fixed -left-[10000px] top-0">
+        {students.map((s: any, i: number) => (
+          <IDCardBack key={s.id} ref={refs[i].back} data={s} />
+        ))}
+      </div>
     </div>
   );
 }

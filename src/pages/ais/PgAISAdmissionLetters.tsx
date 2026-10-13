@@ -64,7 +64,7 @@ function PgAISAdmissionLetters() {
             <p className="text-[0.7rem] md:text-xs text-white/60">Templates per programme, printed for newly admitted first years</p>
           </div>
           {canEdit ? (
-            <Link to="create" className="flex items-center gap-1.5 rounded-lg bg-white/15 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/25 md:text-sm">
+            <Link to="create" className="flex items-center gap-1.5 rounded-lg bg-white/[0.15] px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/25 md:text-sm">
               <HiOutlinePlus className="h-4 w-4" /> New letter
             </Link>
           ) : null}

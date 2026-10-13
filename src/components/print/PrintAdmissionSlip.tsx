@@ -46,12 +46,6 @@ function PrintAdmissionSlip({}: Props) {
               </span>
             </div>
             <div className="flex space-x-10">
-              <span className="w-20">Department:</span>{" "}
-              <span className="capitalize">
-                {data[0]?.student?.program?.department?.title.toLowerCase()}
-              </span>
-            </div>
-            <div className="flex space-x-10">
               <span className="w-20">Level:</span>{" "}
               <span>
                 {(Math.ceil(data[0]?.student?.semesterNum) / 2) * 100}{" "}

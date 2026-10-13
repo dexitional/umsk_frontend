@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Form,
   redirect,
@@ -45,6 +45,10 @@ export async function loader({ params }) {
 function PgAISStructureForm({}: Props) {
   const navigate = useNavigate();
   const { data, departments, programs, majors, courses }: any = useLoaderData();
+  // "Lock on Registration" applies to electives only, so it's shown only for
+  // category ELECTIVE ("E"). When hidden it isn't submitted and the action
+  // saves lock = false.
+  const [category, setCategory] = useState<string>(data?.type || "");
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -154,6 +158,7 @@ function PgAISStructureForm({}: Props) {
                   arial-label="type"
                   name="type"
                   defaultValue={data?.type}
+                  onChange={(e) => setCategory(e.target.value)}
                   required
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                 >
@@ -214,27 +219,29 @@ function PgAISStructureForm({}: Props) {
                     ))}
                 </select>
               </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Lock on Registration{" "}
-                  <sup className="text-primary/80">
-                    <em>** Electives only</em>
-                  </sup>
-                </span>
-                <select
-                  arial-label="lock"
-                  name="lock"
-                  defaultValue={Number(data?.lock)}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  <option value={0}>NO</option>
-                  <option value={1}>YES</option>
-                </select>
-              </label>
+              {category === "E" ? (
+                <label className="flex flex-col space-y-2">
+                  <span className="text-sm md:text-base text-gray-500 font-medium">
+                    Lock on Registration{" "}
+                    <sup className="text-primary/80">
+                      <em>** Electives only</em>
+                    </sup>
+                  </span>
+                  <select
+                    arial-label="lock"
+                    name="lock"
+                    defaultValue={Number(data?.lock)}
+                    required
+                    className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                  >
+                    <option selected disabled>
+                      -- Choose --
+                    </option>
+                    <option value={0}>NO</option>
+                    <option value={1}>YES</option>
+                  </select>
+                </label>
+              ) : null}
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
                   Status

@@ -69,14 +69,6 @@ function PrintRegisterSlip({}: Props) {
               </span>
             </div>
             <div className="flex space-x-10">
-              <span className="w-32 tracking-widest text-gray-400">
-                Department
-              </span>{" "}
-              <span className="uppercase text-primary/90 font-roboto">
-                {data[0]?.student?.program?.department?.title.toLowerCase()}
-              </span>
-            </div>
-            <div className="flex space-x-10">
               <span className="w-32 tracking-widest text-gray-400">Level</span>{" "}
               <span className="uppercase text-primary/90 font-roboto">
                 {Math.ceil(data[0]?.student?.semesterNum / 2) * 100

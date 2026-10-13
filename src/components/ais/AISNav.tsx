@@ -21,7 +21,6 @@ function AISNav({ user }: Props) {
         { aisRoles?.find((r:any) => ['course::admin','course::clerk'].includes(r?.role)) && (<AISNavItem title="Course Module" url="courses" Icon={HiMiniClipboardDocumentList} />) } 
         { aisRoles?.find((r:any) => ['program::admin','program::clerk','program::idcard'].includes(r?.role)) && (<AISNavItem title="Program Module" url="programs" Icon={FaProjectDiagram} />) } 
         { aisRoles?.find((r:any) => ['program::admin','program::clerk'].includes(r?.role)) && (<AISNavItem title="Department Module" url="departments" Icon={HiOutlineAcademicCap} />) } 
-        { aisRoles?.find((r:any) => ['program::admin','program::clerk'].includes(r?.role)) && (<AISNavItem title="Faculty Module" url="faculties" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['curriculum::admin','curriculum::clerk'].includes(r?.role)) && (<AISNavItem title="Curriculum Module" url="curriculums" Icon={GrDashboard} />) } 
         { aisRoles?.find((r:any) => ['scheme::admin','scheme::clerk'].includes(r?.role)) && (<AISNavItem title="Scheme Module" url="schemes" Icon={GrDashboard} />) } 
         

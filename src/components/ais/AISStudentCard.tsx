@@ -13,7 +13,8 @@ type Props = {
 function AISStudentCard({ title,data,programId }: Props) {
   // Bulk admission letters for the programme's newly admitted first years.
   const canPrintAdmission = useHasRole("ais", ["student::admin", "student::clerk", "student::registry", "sletter::admin", "sletter::clerk"]);
-  const showPrint = !!programId && canPrintAdmission && title == 'LEVEL 100';
+  // First years only -- programme pages label them "YEAR 1" (formerly "LEVEL 100").
+  const showPrint = !!programId && canPrintAdmission && ['YEAR 1', 'LEVEL 100'].includes(String(title));
   return (
     <div className="w-full space-y-3 rounded">
     <h1 className="text-sm font-bold font-roboto tracking-wider text-primary-dark/60 flex flex-col md:flex-row justify-between">

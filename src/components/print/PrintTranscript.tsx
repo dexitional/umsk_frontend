@@ -25,8 +25,9 @@ export async function loader({ params }) {
   data &&
     Array.from(data)?.map(([title, row]: any, i: number) => {
       // Calculate Total Credit Hours, Total Gradepoint
-      credit += row.reduce((sum, cur) => cur.credit + sum, 0);
-      gradepoint += row.reduce(
+      // IC courses (no exam score yet) are left out of GPA/CGPA until completed.
+      credit += row.filter((r: any) => r.grade !== "IC").reduce((sum, cur) => cur.credit + sum, 0);
+      gradepoint += row.filter((r: any) => r.grade !== "IC").reduce(
         (sum, cur) => cur.credit * cur.gradepoint + sum,
         0
       );
@@ -147,7 +148,7 @@ function PrintTranscript({}: Props) {
                       </div>
                       <div className="w-24 text-center text-base">
                         {/* {sc.grade == "I" ? "-" : sc.gradepoint} */}
-                        {isNaN(sc.gradepoint * sc.credit)
+                        {sc.grade === "IC" || isNaN(sc.gradepoint * sc.credit)
                           ? "--"
                           : (sc.gradepoint * sc.credit).toFixed(1)}
                       </div>

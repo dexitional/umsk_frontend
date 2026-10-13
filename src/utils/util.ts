@@ -537,3 +537,11 @@ export const loadAdmissionPlacerData = (template: string, data: any) => {
 // as 121.19999999999999.
 export const formatMoney = (n: any) =>
   (Number(n) || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// The backend groups a programme's students/structure as "LEVEL 100",
+// "LEVEL 200, SEMESTER 1", ...; programme pages show "YEAR 1",
+// "YEAR 2, SEMESTER 1", ... Only the level part changes ("LEVEL 0" stays).
+export const levelToYear = (title: string) =>
+  String(title)
+    .toUpperCase()
+    .replace(/LEVEL\s*(\d+)/g, (m, n) => (Number(n) ? `YEAR ${Number(n) / 100}` : m));

@@ -33,17 +33,16 @@ export async function action({ request, params }) {
 // Load Data of Single
 export async function loader({ params }) {
   let data = { id: 0 };
-  const departments = await Service.fetchDepartments();
   const schemes = await Service.fetchSchemeList();
 
   const id = params?.programId || 0;
   if (id != 0) data = await Service.fetchProgram(id);
-  return { data, departments, schemes };
+  return { data, schemes };
 }
 
 function PgAISProgramForm({}: Props) {
   const navigate = useNavigate();
-  const { data, departments, schemes }: any = useLoaderData();
+  const { data, schemes }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -189,28 +188,6 @@ function PgAISProgramForm({}: Props) {
                   </option>
                   {schemes &&
                     schemes?.map((row: any) => (
-                      <option key={row.id} value={row.id}>
-                        {row.title?.toUpperCase()}
-                      </option>
-                    ))}
-                </select>
-              </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Department
-                </span>
-                <select
-                  arial-label="unitId"
-                  name="unitId"
-                  defaultValue={data?.unitId}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  {departments &&
-                    departments?.map((row: any) => (
                       <option key={row.id} value={row.id}>
                         {row.title?.toUpperCase()}
                       </option>

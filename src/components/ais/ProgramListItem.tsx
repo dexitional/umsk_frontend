@@ -12,7 +12,7 @@ type Props = {
 
 function ProgramListItem({ data }: Props) {
   return (
-    <div className="px-3 md:px-6 pb-4 grid md:grid-cols-7 gap-y-4 md:gap-y-0 md:gap-x-2 md:place-items-center text-gray-500 border-b border-slate-200 hover:bg-slate-50/50 group">
+    <div className="px-3 md:px-6 pb-4 grid md:grid-cols-6 gap-y-4 md:gap-y-0 md:gap-x-2 md:place-items-center text-gray-500 border-b border-slate-200 hover:bg-slate-50/50 group">
       <div className="md:col-span-2 md:place-self-start flex flex-col space-y-2">
         <ListHeading title="Program Name" />
         <div className="px-2 flex items-center space-x-3 md:space-x-4">
@@ -22,10 +22,6 @@ function ProgramListItem({ data }: Props) {
       <div className="capitalize flex flex-col space-y-2">
         <ListHeading title="Code" />
         <span className="px-2">{data?.shortName}</span>
-      </div>
-      <div className="capitalize flex flex-col space-y-2">
-        <ListHeading title="Department" />
-        <span className="px-2">{data?.department?.title}</span>
       </div>
       <div className="capitalize flex flex-col space-y-2">
         <ListHeading title="program Type" />

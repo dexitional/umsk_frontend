@@ -3,6 +3,7 @@ import { BsActivity } from "react-icons/bs";
 import { useLoaderData, useParams } from "react-router-dom";
 import AISStudentCard from "../../components/ais/AISStudentCard";
 import Service from "../../utils/aisService";
+import { levelToYear } from "../../utils/util";
 
 type Props = {};
 
@@ -22,7 +23,7 @@ function PgAISProgramStudent({}: Props) {
           Array.from(data).map(([title, row]: any, i: number) => (
             <AISStudentCard
               key={title}
-              title={title.toUpperCase()}
+              title={levelToYear(title)}
               data={row}
               programId={programId}
             />

@@ -4,7 +4,6 @@ import {
   HiCheckBadge,
   HiOutlineAcademicCap,
   HiOutlineBookOpen,
-  HiOutlineBuildingLibrary,
   HiOutlineCake,
   HiOutlineCalendarDays,
   HiOutlineEnvelope,
@@ -132,7 +131,6 @@ function PgAISPProfile({}: Props) {
             <AISPInfoTile label="Index Number" value={data?.indexno} Icon={HiOutlineHashtag} />
             <AISPInfoTile label="Programme" value={data?.program?.longName} Icon={HiOutlineAcademicCap} className="sm:col-span-2" />
             <AISPInfoTile label="Major" value={data?.major?.longName} Icon={HiOutlineBookOpen} className="sm:col-span-2" />
-            <AISPInfoTile label="Department" value={data?.program?.department?.title} Icon={HiOutlineBuildingLibrary} className="sm:col-span-2" />
             <AISPInfoTile label="Year" value={yearLabel} Icon={HiOutlineSparkles} />
             <AISPInfoTile label="Date of Admission" value={formatDate(data?.entryDate)} Icon={HiOutlineCalendarDays} />
             <AISPInfoTile label="Institutional Email" value={data?.instituteEmail?.toLowerCase()} Icon={HiOutlineAtSymbol} className="sm:col-span-2" />

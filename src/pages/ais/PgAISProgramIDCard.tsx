@@ -4,8 +4,10 @@ import { useLoaderData } from "react-router-dom";
 import AISStudentCard from "../../components/ais/AISStudentCard";
 import Service from "../../utils/aisService";
 import AISIDCardBulk from "../../components/ais/AISIDCardBulk";
+import { levelToYear as yearLabel } from "../../utils/util";
 
 type Props = {};
+
 
 export async function loader({ params }) {
   const data = await Service.fetchProgramStudent(params.programId);
@@ -20,11 +22,11 @@ function PgAISProgramIDCard({}: Props) {
     <div className="flex w-full flex-1 flex-col items-center justify-center space-y-8 md:space-y-8 ">
       <div className="flex w-full flex-1 flex-col space-y-8 md:space-y-10 ">
         {data &&
-          Array.from(data).filter(([r,m]:any) => !['level 0'].includes(r?.toLowerCase()) && m.length )?.map(([title, row]: any, i: number) => (
-          <>
-            <h1 className="px-4 py-2 w-1/3 rounded-lg text-lg text-white font-semibold bg-primary">{title}</h1>
-            <AISIDCardBulk key={title} data={row} />
-          </>
+          Array.from(data).filter(([r,m]:any) => !['level 0'].includes(r?.toLowerCase()) && m.length )?.map(([title, row]: any) => (
+          <section key={title} className="space-y-4">
+            <h1 className="px-4 py-2 w-fit min-w-[12rem] rounded-lg text-lg text-white font-semibold bg-primary">{yearLabel(title)}</h1>
+            <AISIDCardBulk data={row} title={yearLabel(title)} />
+          </section>
           ))}
         {!data.length ? (
           <div className="p-10 border border-primary/10 rounded-xl flex flex-col items-center justify-center space-y-3">

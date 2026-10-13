@@ -33,7 +33,6 @@ function PrintTranscriptAkatsico({}: Props) {
                   <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Programme</span> <span className="uppercase text-primary/90 font-poppins">{data[0]?.student?.program?.longName.toLowerCase()}</span></div>
                   <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Student ID</span> <span className="uppercase text-primary/90 font-poppins">{ data[0]?.student?.id  } </span></div>
                   <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Index Number</span> <span className="uppercase text-primary/90 font-poppins">{ data[0]?.student?.indexno } </span></div>
-                  <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Department</span> <span className="uppercase text-primary/90 font-poppins">{data[0]?.student?.program?.department?.title.toLowerCase()}</span></div>
                   <div className="flex space-x-10"><span className="w-32 tracking-widest text-gray-400">Level</span> <span className="uppercase text-primary/90 font-poppins">{ (Math.ceil(data[0]?.student?.semesterNum / 2 ) * 100) ? (Math.ceil(data[0]?.student?.semesterNum / 2 ) * 100):'COMPLETED' } </span></div>
                 </div> */}
 

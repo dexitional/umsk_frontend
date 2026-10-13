@@ -3753,6 +3753,37 @@ class Service {
         }
     }
 
+    // Every rating-scale option (enabled or not) with its answer count.
+    async fetchEvaluationOptions(){
+        try {
+            const res = await axios.get(`${REACT_APP_API_URL}/eva/evaluation-options`,{
+                headers: { "x-access-token" : token }
+            })
+            if(res.status == 200) return res.data
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
+    // Saves the whole rating scale (shared by every form) in one transaction.
+    async saveEvaluationScale(options){
+        try {
+            const res = await axios.put(`${REACT_APP_API_URL}/eva/evaluation-options`, { options },{
+                headers: { "Content-Type" : "application/json", "x-access-token" : token }
+            })
+            if(res.status == 200){
+               toast.success("Rating scale saved!")
+               return res.data
+            }
+            else throw new(res.data.message)
+
+        } catch (error) {
+           return checkSession(error)
+        }
+    }
+
 
     /* Student Evaluation */
     async fetchAvailableEvaluationForms(){
