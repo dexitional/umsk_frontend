@@ -67,7 +67,7 @@ export async function loader() {
 
 function PgAISPProfileForm({}: Props) {
   const navigate = useNavigate();
-  const { data, countries, regions, religions, titles, majors, halls }: any =
+  const { data, countries, regions, religions, disabilities, titles, majors, halls }: any =
     useLoaderData();
   const dobLocked = !!data?.dobEditedAt;
   const hallLocked = !!data?.affiliateEditedAt;
@@ -147,7 +147,7 @@ function PgAISPProfileForm({}: Props) {
               />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="aisp-label">Email Address</span>
+              <span className="aisp-label">Personal Email Address</span>
               <input
                 arial-label="email"
                 name="email"
@@ -174,6 +174,43 @@ function PgAISPProfileForm({}: Props) {
                 rows={2}
                 className="aisp-input"
               ></textarea>
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Residential Status</span>
+              <select
+                arial-label="residentialStatus"
+                name="residentialStatus"
+                defaultValue={data?.residentialStatus || ""}
+                className="aisp-input"
+              >
+                <option value="" disabled>
+                  -- Choose --
+                </option>
+                <option value="RESIDENTIAL">RESIDENTIAL</option>
+                <option value="NON_RESIDENTIAL">NON-RESIDENTIAL</option>
+              </select>
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Guardian Name</span>
+              <input
+                arial-label="guardianName"
+                name="guardianName"
+                defaultValue={data?.guardianName}
+                maxLength={350}
+                className="aisp-input"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Guardian Phone</span>
+              <input
+                arial-label="guardianPhone"
+                name="guardianPhone"
+                type="tel"
+                minLength={10}
+                maxLength={15}
+                defaultValue={data?.guardianPhone}
+                className="aisp-input"
+              />
             </label>
           </div>
         </div>
@@ -261,6 +298,23 @@ function PgAISPProfileForm({}: Props) {
                 </option>
                 {religions &&
                   religions?.map((row: any) => (
+                    <option key={row.id} value={row.id}>
+                      {row.title}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="aisp-label">Disability</span>
+              <select
+                arial-label="disabilityId"
+                name="disabilityId"
+                defaultValue={data?.disabilityId || "NONE"}
+                className="aisp-input"
+              >
+                <option value="NONE">-- None --</option>
+                {disabilities &&
+                  disabilities?.map((row: any) => (
                     <option key={row.id} value={row.id}>
                       {row.title}
                     </option>

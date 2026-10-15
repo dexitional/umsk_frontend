@@ -268,7 +268,7 @@ export const IDCardBack = forwardRef<HTMLDivElement, { data: any }>(function IDC
             The Registrar, Akatsi College of Education
           </p>
           <p className="text-[5.4px] leading-[1.4] text-slate-600">Akatsi, Volta Region, Ghana · GPS: VX-0021-0401</p>
-          <p className="text-[5.4px] leading-[1.4] text-slate-600">Tel: +233 25 675 4949 / +233 24 538 3769 · info@akatsico.edu.gh</p>
+          <p className="text-[5.4px] leading-[1.4] text-slate-600">Tel: +233 25 675 4949 / +233 24 538 3769 · registrar@akatsico.edu.gh</p>
         </div>
 
       </div>

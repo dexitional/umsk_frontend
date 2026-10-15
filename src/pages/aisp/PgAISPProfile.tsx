@@ -112,7 +112,7 @@ function PgAISPProfile({}: Props) {
             <AISPInfoTile label="Date of Birth" value={formatDate(data?.dob)} Icon={HiOutlineCake} />
             <AISPInfoTile label="Phone Number" value={data?.phone} Icon={HiOutlinePhone} />
             <AISPInfoTile label="Hometown" value={data?.hometown} Icon={HiOutlineHome} />
-            <AISPInfoTile label="Email Address" value={data?.email?.toLowerCase()} Icon={HiOutlineEnvelope} className="sm:col-span-2" />
+            <AISPInfoTile label="Personal Email Address" value={data?.email?.toLowerCase()} Icon={HiOutlineEnvelope} className="sm:col-span-2" />
             <AISPInfoTile label="Residential Address" value={data?.address} Icon={HiOutlineMapPin} className="sm:col-span-2" />
             <AISPInfoTile label="Region" value={data?.region?.title} Icon={HiOutlineMap} />
             <AISPInfoTile label="Country" value={data?.country?.longName} Icon={HiOutlineGlobeAlt} />
@@ -122,6 +122,7 @@ function PgAISPProfile({}: Props) {
             <AISPInfoTile label="Ghana Card Number" value={data?.ghcardNo} Icon={HiOutlineIdentification} className="sm:col-span-2" />
             <AISPInfoTile label="Guardian Name" value={data?.guardianName} Icon={HiOutlineUserGroup} />
             <AISPInfoTile label="Guardian Contact" value={data?.guardianPhone} Icon={HiOutlinePhone} />
+            <AISPInfoTile label="NHIS Number" value={data?.nhisNo} Icon={HiOutlineIdentification} className="sm:col-span-2" />
           </div>
         </AISPPanel>
 
@@ -137,6 +138,8 @@ function PgAISPProfile({}: Props) {
             <AISPInfoTile label="Student Category" value={data?.entryGroup == "GH" ? "Ghanaian" : "International"} Icon={HiOutlineFlag} />
             <AISPInfoTile label="Academic Status" value={data?.completeStatus ? "Completed" : "Active Student"} Icon={HiOutlineShieldCheck} />
             <AISPInfoTile label="Residential Status" value={data?.residentialStatus} Icon={HiOutlineHomeModern} className="sm:col-span-2" />
+            <AISPInfoTile label="Admission Type" value={data?.admitType ? data.admitType.replace("_", " ") : null} Icon={HiOutlineFlag} />
+            <AISPInfoTile label="Scholarship" value={data?.scholar ? `Yes${data?.scholarBody ? ` (${data.scholarBody})` : ""}` : "No"} Icon={HiOutlineSparkles} />
           </div>
         </AISPPanel>
       </div>

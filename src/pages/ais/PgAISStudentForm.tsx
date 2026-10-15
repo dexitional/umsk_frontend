@@ -23,6 +23,7 @@ export async function action({ request, params }) {
   data.completeStatus = data.completeStatus == 1;
   data.deferStatus = data.deferStatus == 1;
   data.graduateStatus = data.graduateStatus == 1;
+  data.scholar = data.scholar == 1;
   console.log(data);
 
   let resp;
@@ -71,6 +72,8 @@ function PgAISStudentForm({}: Props) {
     majors,
   }: any = useLoaderData();
   const [programId, setprogramId] = useState(data.programId);
+  // Scholarship institution is only asked for when the student is on a scholarship.
+  const [scholar, setScholar] = useState<boolean>(!!data?.scholar);
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -515,6 +518,63 @@ function PgAISStudentForm({}: Props) {
                   <option value="NON_RESIDENTIAL">NON-RESIDENTIAL</option>
                 </select>
               </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  NHIS Number
+                </span>
+                <input
+                  arial-label="nhisNo"
+                  name="nhisNo"
+                  defaultValue={data?.nhisNo}
+                  maxLength={50}
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                />
+              </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  Admission Type
+                </span>
+                <select
+                  arial-label="admitType"
+                  name="admitType"
+                  defaultValue={data?.admitType || ""}
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option value="">-- Choose --</option>
+                  <option value="REGULAR">REGULAR</option>
+                  <option value="FEE_PAYING">FEE PAYING</option>
+                </select>
+              </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  Scholarship
+                </span>
+                <select
+                  arial-label="scholar"
+                  name="scholar"
+                  value={scholar ? "1" : "0"}
+                  onChange={(e) => setScholar(e.target.value == "1")}
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option value="0">NO</option>
+                  <option value="1">YES</option>
+                </select>
+              </label>
+              {scholar ? (
+                <label className="flex flex-col space-y-2">
+                  <span className="text-sm md:text-base text-gray-500 font-medium">
+                    Name of Scholarship Institution
+                  </span>
+                  <input
+                    arial-label="scholarBody"
+                    name="scholarBody"
+                    defaultValue={data?.scholarBody}
+                    maxLength={255}
+                    required
+                    className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                  />
+                </label>
+              ) : null}
              
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">

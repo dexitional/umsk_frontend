@@ -81,6 +81,21 @@ function PgAISStudentProfile({}: Props) {
           Icon={BsCalendarRange}
         />
         <AISPBioCard
+          label="NHIS Number"
+          value={data?.nhisNo || "Not Set"}
+          Icon={MdOutlineFiberPin}
+        />
+        <AISPBioCard
+          label="Admission Type"
+          value={data?.admitType ? data.admitType.replace("_", " ") : "Not Set"}
+          Icon={FaRegAddressCard}
+        />
+        <AISPBioCard
+          label="Scholarship"
+          value={data?.scholar ? `YES${data?.scholarBody ? ` — ${data.scholarBody.toUpperCase()}` : ""}` : "NO"}
+          Icon={FaRegAddressCard}
+        />
+        <AISPBioCard
           label="Region"
           value={data?.region?.title || "Not Set"}
           Icon={BiMoneyWithdraw}
