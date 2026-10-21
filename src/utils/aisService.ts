@@ -603,7 +603,7 @@ class Service {
                toast.success("Record updated!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The profile request could not be completed.')
         
         } catch (error) { 
            return checkSession(error)
@@ -3350,9 +3350,9 @@ class Service {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/halls`,{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202)
+            if(res.status == 200 && Array.isArray(res.data))
               return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The profile request could not be completed.')
         
         } catch (error) { 
            return checkSession(error)

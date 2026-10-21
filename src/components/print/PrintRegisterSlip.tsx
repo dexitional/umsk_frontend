@@ -19,7 +19,8 @@ export async function loader({ params }) {
 
 function PrintRegisterSlip({}: Props) {
   const { data, user }: any = useLoaderData();
-  const totalCredit = data.reduce((sum, cur) => sum + cur.course.creditHour, 0);
+  if (!Array.isArray(data) || !data.length) return <p className="p-8">No registered courses are available to print.</p>;
+  const totalCredit = data.reduce((sum, cur) => sum + (cur.course?.creditHour ?? cur.credit ?? 0), 0);
  
   return (
     <div className="w-full flex flex-col justify-center items-center bg-white print:m-0 print:scale-[85%]">
@@ -49,7 +50,7 @@ function PrintRegisterSlip({}: Props) {
                 Programme
               </span>{" "}
               <span className="uppercase text-primary/90 font-roboto">
-                {data[0]?.student?.program?.longName.toLowerCase()}
+                {data[0]?.student?.program?.longName?.toLowerCase()}
               </span>
             </div>
             <div className="flex space-x-10">

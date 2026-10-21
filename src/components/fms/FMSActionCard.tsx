@@ -1,4 +1,6 @@
-import React, { useRef } from "react";
+import toast from "react-hot-toast";
+import { requestError } from "../../utils/requestError";
+import React, { useRef, useState } from "react";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import Service from "../../utils/fmsService";
@@ -10,49 +12,38 @@ type Props = {
 
 function FMSActionCard({ data }: Props) {
   const navigate = useNavigate();
-  const fileRef: any = useRef(null);
+  const inFlight = useRef(false);
+  const [busy, setBusy] = useState(false);
   const canManageBill = useHasRole("fms", ["bill::admin"]);
 
-  const attachStudent = async () => {
-    const inps = window.prompt("Provide Student ID !");
-    if (inps) {
-      const resp = await Service.includeBill(data?.id, {
-        action: "create",
-        tag: inps?.trim(),
-      });
-      if (resp) return navigate(0);
+  const run = async (action: () => Promise<any>) => {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    setBusy(true);
+    try {
+      const response = await action();
+      if (response) navigate(0);
+      else toast.error('The billing action was not completed. Please try again.');
+    } catch (error) {
+      toast.error(requestError(error, 'The billing action failed. Please try again.'));
+    } finally {
+      inFlight.current = false;
+      setBusy(false);
     }
-    return false;
   };
-
-  const revokeStudent = async () => {
-    const inps = window.prompt("Provide Student ID !");
-    if (inps) {
-      const resp = await Service.includeBill(data?.id, {
-        action: "remove",
-        tag: inps?.trim(),
-      });
-      if (resp) return navigate(0);
-    }
-    return false;
+  const attachStudent = () => {
+    const tag = window.prompt('Provide Student ID or index number')?.trim();
+    if (tag) return run(() => Service.includeBill(data.id, { action: 'create', tag }));
   };
-
-  const publishBill = async (e) => {
-    const ok = window.confirm("Publish Bill ?");
-    if (ok) {
-      const resp = await Service.activateBill(data?.id);
-      if (resp) return navigate(0);
-    }
-    return false;
+  const revokeStudent = () => {
+    const tag = window.prompt('Provide Student ID or index number')?.trim();
+    if (tag) return run(() => Service.includeBill(data.id, { action: 'remove', tag }));
   };
-
-  const revokeBill = async (e) => {
-    const ok = window.confirm("Revoke or Un-publish Bill ?");
-    if (ok) {
-      const resp = await Service.revokeBill(data?.id);
-      if (resp) return navigate(0);
-    }
-    return false;
+  const publishBill = () => {
+    if (window.confirm('Publish this bill to the selected year groups?')) return run(() => Service.activateBill(data.id));
+  };
+  const revokeBill = () => {
+    if (window.confirm('Revoke this bill and remove its student account entries?')) return run(() => Service.revokeBill(data.id));
   };
 
   if (!canManageBill) {
@@ -68,8 +59,8 @@ function FMSActionCard({ data }: Props) {
   return (
     <div className="w-full rounded flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6">
       <section className="w-full grid md:grid-cols-3 gap-2 md:gap-4">
-        {data.session.default && data.posted ? (
-          <button
+        {data.session?.default && data.posted ? (
+          <button disabled={busy}
             onClick={revokeBill}
             className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-red-200/10 border border-red-500/20 shadow"
           >
@@ -80,7 +71,7 @@ function FMSActionCard({ data }: Props) {
           </button>
         ) : null}
         {!data.posted ? (
-          <button
+          <button disabled={busy}
             onClick={publishBill}
             className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-green-200/10 border border-green-500/20 shadow"
           >
@@ -91,7 +82,7 @@ function FMSActionCard({ data }: Props) {
           </button>
         ) : null}
 
-        <button
+        <button disabled={busy}
           onClick={revokeStudent}
           className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-red-200/10 border border-red-500/20 shadow"
         >
@@ -101,7 +92,7 @@ function FMSActionCard({ data }: Props) {
           </span>
         </button>
 
-        <button
+        <button disabled={busy}
           onClick={attachStudent}
           className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-green-200/10 border border-green-500/20 shadow"
         >

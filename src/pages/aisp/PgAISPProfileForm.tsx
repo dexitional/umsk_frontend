@@ -1,9 +1,9 @@
+import { requestError } from "../../utils/requestError";
 import moment from "moment";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { HiOutlineGlobeAlt, HiOutlineUser, HiOutlineUserCircle } from "react-icons/hi2";
 import AISPPageHeader from "../../components/aisp/AISPPageHeader";
-import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigate, useActionData, useNavigation } from "react-router-dom";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 
@@ -44,7 +44,7 @@ export async function action({ request, params }) {
     const resp = await Service.updateStudent(id, data);
     if (resp) return redirect(`/aisp/profile`);
   } catch (error: any) {
-    toast.error(error?.response?.data?.message || "Profile update failed");
+    return { error: requestError(error, "Profile update failed") };
   }
   return null;
 }
@@ -67,6 +67,8 @@ export async function loader() {
 
 function PgAISPProfileForm({}: Props) {
   const navigate = useNavigate();
+  const result: any = useActionData();
+  const navigation = useNavigation();
   const { data, countries, regions, religions, disabilities, titles, majors, halls }: any =
     useLoaderData();
   const dobLocked = !!data?.dobEditedAt;
@@ -80,8 +82,8 @@ function PgAISPProfileForm({}: Props) {
     const dob = (form.elements.namedItem("dob") as HTMLInputElement)?.value;
     const hall = (form.elements.namedItem("instituteAffliate") as HTMLSelectElement)?.value;
     if (!dobLocked && dob && dob !== toDateInput(data?.dob)) changed.push("Date of Birth");
-    if (!hallLocked && hall && hall.toUpperCase() !== (data?.instituteAffliate || "").trim().toUpperCase()) changed.push("Hall of Affiliation");
-    if (changed.length && !window.confirm(`${changed.join(" and ")} can only be changed ONCE from the portal. Further corrections will require the College Registry.\n\nSave this change?`)) {
+    if (!hallLocked && hall) changed.push("Hall of Affiliation");
+    if (changed.length && !window.confirm(`${changed.join(" and ")} will be confirmed and locked after this save. Further corrections will require the College Registry.\n\nSave this change?`)) {
       e.preventDefault();
     }
   };
@@ -102,6 +104,10 @@ function PgAISPProfileForm({}: Props) {
         Icon={HiOutlineUserCircle}
       />
 
+      {!hallLocked ? <div role="status" className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+        Select and confirm your Hall of Affiliation below to complete your profile. Every student must confirm once, including students with a pre-filled hall. After saving, corrections must go through the College Registry.
+      </div> : null}
+      {result?.error ? <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">{result.error}</p> : null}
       <Form method="post" onSubmit={confirmOneTimeEdits} className="grid lg:grid-cols-2 gap-6 items-start">
         {/* Record */}
         <div className="aisp-rise aisp-card p-6 md:p-7 space-y-5">
@@ -241,12 +247,14 @@ function PgAISPProfileForm({}: Props) {
               </span>
             </label>
             <label className="flex flex-col gap-2">
-              <span className="aisp-label">Hall of Affiliation</span>
+              <span className="aisp-label">Hall of Affiliation{!hallLocked ? " *" : ""}</span>
+              {!halls?.length && !hallLocked ? <span role="alert" className="text-sm text-red-700">No halls are available. Contact the College Registry to configure the hall list.</span> : null}
               <select
                 arial-label="instituteAffliate"
                 name="instituteAffliate"
                 defaultValue={data?.instituteAffliate?.trim() || ""}
                 disabled={hallLocked}
+                required={!hallLocked}
                 className="aisp-input disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <option value="" disabled>
@@ -261,8 +269,8 @@ function PgAISPProfileForm({}: Props) {
               </select>
               <span className="text-xs text-slate-500">
                 {hallLocked
-                  ? `Changed on ${moment(data?.affiliateEditedAt).format("MMM D, YYYY")}. Contact the College Registry for further corrections.`
-                  : "You can change this only once."}
+                  ? `Confirmed on ${moment(data?.affiliateEditedAt).format("MMM D, YYYY")}. Contact the College Registry for further corrections.`
+                  : "Select your hall carefully. This selection is permanent after confirmation."}
               </span>
             </label>
             <label className="flex flex-col gap-2">
@@ -389,13 +397,13 @@ function PgAISPProfileForm({}: Props) {
             ) : null}
 
             <div className="flex items-center gap-3 pt-2">
-              <button
+              <button disabled={navigation.state === "submitting"}
                 className="aisp-btn-primary flex-1"
                 type="submit"
               >
                 Save
               </button>
-              <button
+              <button disabled={navigation.state === "submitting"}
                 onClick={() => {
                   if (confirm("Cancel")) navigate(-1);
                 }}

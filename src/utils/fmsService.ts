@@ -476,7 +476,7 @@ class FmsService {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/bills?keyword=${encodeURIComponent(keyword)}&page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(limit)}`)
             if(res.status == 200 || res.status == 204)
               return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)
@@ -488,7 +488,7 @@ class FmsService {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/bills/list`)
             if(res.status == 200 || res.status == 204)
               return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)
@@ -498,9 +498,9 @@ class FmsService {
     async billReceivers(id){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/bills/${encodeURIComponent(id)}/receipients`)
-            if(res.status == 200 || res.status == 204)
-               return res.data
-            else throw new(res.data.message)
+            if (res.status === 204) return [];
+            if (res.status === 200 && Array.isArray(res.data)) return res.data;
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -512,7 +512,7 @@ class FmsService {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/bills/${encodeURIComponent(id)}/activity`)
             if(res.status == 200 || res.status == 204)
               return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)
@@ -525,11 +525,11 @@ class FmsService {
                 headers: { "Content-Type" : "application/json" }
             })
             if(res.status == 200){
-                toast.success(`Student added to Bill Inclusion List !`)
+                toast.success(data.action === 'create' ? 'Student added to the bill.' : 'Student removed from the bill.')
                 return res.data
              } else if(res.status == 204){
                 return res.data
-             } else throw new(res.data.message)
+             } else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -542,11 +542,11 @@ class FmsService {
                 headers: { "Content-Type" : "application/json" }
             })
             if(res.status == 200){
-                toast.success(`Student added to Bill Exclusion List !`)
+                toast.success(data.action === 'create' ? 'Student excluded from the bill.' : 'Student exclusion removed.')
                 return res.data
              } else if(res.status == 204){
                 return res.data
-             } else throw new(res.data.message)
+             } else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -559,9 +559,7 @@ class FmsService {
             if(res.status == 200){
                 toast.success(`Bill Published !`)
                 return res.data;
-             } else if(res.status == 204){
-                return res.data;
-             } else throw new(res.data.message)
+             } else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -576,7 +574,7 @@ class FmsService {
                return res.data
             } else if(res.status == 204){
                return res.data
-            } else throw new(res.data.message)
+            } else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -586,9 +584,8 @@ class FmsService {
     async fetchBill(id){
         try {
             const res = await axios.get(`${REACT_APP_API_URL}/fms/bills/${encodeURIComponent(id)}`)
-            if(res.status == 200 || res.status == 204)
-               return res.data
-            else throw new(res.data.message)
+            if(res.status == 200 && res.data?.id) return res.data;
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) {
             return checkSession(error)
@@ -604,7 +601,7 @@ class FmsService {
                toast.success("Record saved!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)
@@ -620,7 +617,7 @@ class FmsService {
                toast.success("Record saved!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)
@@ -634,7 +631,7 @@ class FmsService {
                toast.success("Record deleted!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The billing request could not be completed. Please try again.')
         
         } catch (error) { 
             return checkSession(error)

@@ -10,7 +10,7 @@ function PrintHeader({}: Props) {
   const location = useLocation();
   const { pathname } = location;
    
-  if(pathname.includes('/print/transwift/'))
+  if(pathname.includes('/print/transwift/') || /^\/print\/registration(?:\/|$)/.test(pathname))
     return (
       <div className="print:mt-2 print:mb-4">
         <div className="block print:block"><PrintHeaderAkatsico /></div>

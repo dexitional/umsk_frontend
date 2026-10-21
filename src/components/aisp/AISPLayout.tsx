@@ -1,3 +1,4 @@
+import { needsHallConfirmation, hallConfirmationPath } from "../../utils/studentHall";
 import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { Navigate, Outlet, useLoaderData, useLocation, useNavigation } from "react-router-dom";
@@ -38,6 +39,10 @@ function AISPLayout({ children }: Props) {
   // A fresher who hasn't accepted their admission offer only gets the
   // admission page, profile, fees and password change.
   if (admissionLocked(student) && !isAdmissionOpenPath(pathname)) return <Navigate to={ADMISSION_PATH} replace />;
+  // The existing confirmation timestamp is persistent across sessions/devices.
+  if (needsHallConfirmation(student) && pathname.replace(/\/$/, '') !== hallConfirmationPath(student)) {
+    return <Navigate to={hallConfirmationPath(student)} replace />;
+  }
 
   const signout = async () => {
     if (window.confirm("Log Out?")) {

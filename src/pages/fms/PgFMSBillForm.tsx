@@ -1,8 +1,10 @@
+import { requestError } from "../../utils/requestError";
 import React from "react";
 import {
   Form,
   redirect,
   useLoaderData,
+  useActionData,
   useNavigate,
   useNavigation,
 } from "react-router-dom";
@@ -18,16 +20,16 @@ export async function action({ request, params }) {
   const id = params?.billId || 0;
   const formData = await request.formData();
   let data = Object.fromEntries(formData);
-  data.amount = parseFloat(data.amount);
-  data.discount = parseFloat(data.discount);
-  data.quota = parseFloat(data.quota);
+  data.amount = Number(data.amount);
+  data.discount = data.discount === "" ? 0 : Number(data.discount);
+  data.quota = data.quota === "" ? null : Number(data.quota);
 
-  let resp;
-  if (id != 0) resp = await Service.updateBill(id, data);
-  else resp = await Service.postBill(data);
-
-  if (resp) {
-    return redirect(`/fms/bills`);
+  try {
+    const resp = id != 0 ? await Service.updateBill(id, data) : await Service.postBill(data);
+    if (resp) return redirect(`/fms/bills`);
+    return { error: 'The bill was not saved. Please try again.' };
+  } catch (error) {
+    return { error: requestError(error, 'The bill could not be saved.') };
   }
 }
 // Load Data of Single
@@ -49,6 +51,7 @@ function PgFMSVcostForm({}: Props) {
   const navigate = useNavigate();
   const { data, programs, sessions, banks }: any = useLoaderData();
   const navigation = useNavigation();
+  const result: any = useActionData();
   const loading = navigation?.state;
 
   return (
@@ -71,6 +74,7 @@ function PgFMSVcostForm({}: Props) {
           </div>
         </section>
 
+        {result?.error ? <p role="alert" className="rounded-lg bg-red-50 p-3 text-red-700">{result.error}</p> : null}
         <Form
           method="post"
           className="grid md:grid-cols-2 gap-y-2 md:gap-y-0 md:gap-x-4"
@@ -100,6 +104,7 @@ function PgFMSVcostForm({}: Props) {
                 <input
                   arial-label="mname"
                   name="amount"
+                  type="number" min="0.01" step="0.01"
                   defaultValue={data?.amount}
                   required
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
@@ -112,6 +117,7 @@ function PgFMSVcostForm({}: Props) {
                 <input
                   arial-label="lname"
                   name="discount"
+                  type="number" min="0" step="0.01"
                   defaultValue={data?.discount}
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                 />
@@ -123,6 +129,7 @@ function PgFMSVcostForm({}: Props) {
                 <select
                   arial-label="type"
                   name="type"
+                  required
                   defaultValue={data?.type}
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
                 >
@@ -141,6 +148,7 @@ function PgFMSVcostForm({}: Props) {
                 <input
                   arial-label="quota"
                   name="quota"
+                  min="0" max="100" step="0.01"
                   type="number"
                   defaultValue={data?.quota}
                   className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
@@ -226,7 +234,7 @@ function PgFMSVcostForm({}: Props) {
                 label="Main Target Group"
                 defaultValue={data?.mainGroupCode}
                 required
-                hint="The years this bill is charged to."
+                hint="The selected current year groups will be billed (both semesters in each year)."
               />
               <YearGroupCodeField
                 name="discountGroupCode"
