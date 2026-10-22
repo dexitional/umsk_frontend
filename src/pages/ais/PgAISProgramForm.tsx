@@ -33,16 +33,15 @@ export async function action({ request, params }) {
 // Load Data of Single
 export async function loader({ params }) {
   let data = { id: 0 };
-  const schemes = await Service.fetchSchemeList();
 
   const id = params?.programId || 0;
   if (id != 0) data = await Service.fetchProgram(id);
-  return { data, schemes };
+  return { data };
 }
 
 function PgAISProgramForm({}: Props) {
   const navigate = useNavigate();
-  const { data, schemes }: any = useLoaderData();
+  const { data }: any = useLoaderData();
   const navigation = useNavigation();
   const loading = navigation?.state;
 
@@ -172,28 +171,7 @@ function PgAISProgramForm({}: Props) {
                   <option value="PG">POSTGRAD</option>
                 </select>
               </label>
-              <label className="flex flex-col space-y-2">
-                <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Grading Scheme
-                </span>
-                <select
-                  arial-label="schemeId"
-                  name="schemeId"
-                  defaultValue={data?.schemeId}
-                  required
-                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
-                >
-                  <option selected disabled>
-                    -- Choose --
-                  </option>
-                  {schemes &&
-                    schemes?.map((row: any) => (
-                      <option key={row.id} value={row.id}>
-                        {row.title?.toUpperCase()}
-                      </option>
-                    ))}
-                </select>
-              </label>
+
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
                   Show for Admissions?

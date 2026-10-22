@@ -17,6 +17,7 @@ const AISRoute:any =  {
    errorElement: <Error />,
    //action: chosenAction,
    children: [
+      { path: 'sts', lazy: () => import('../pages/aisp/PgAISPSTS').then(m => ({ Component: m.default })) },
       {  id: 'aisp-student',
          element: <AISPPager />,
          loader: aispPagerLoader,

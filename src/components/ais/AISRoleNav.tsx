@@ -33,6 +33,7 @@ function AISRoleNav({ user }: Props) {
             <Menu.Item as={AISNavItem} title="User Dashboard" url="dash" Icon={GrDashboard}></Menu.Item>
             { aisRoles?.find((r:any) => ['acareport::admin'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Reports" url="System Reports" Icon={FaChartBar}></Menu.Item>)}
             { aisRoles?.find((r:any) => ['student::admin','student::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Student Module" url="students" Icon={BsPeople}></Menu.Item>) }
+        { aisRoles?.find((r:any) => ['sts::admin','sts::mentor','student::admin','student::registry'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="STS Module" url="sts" Icon={GrDashboard} />) }
             { aisRoles?.find((r:any) => ['course::admin','course::clerk'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Course Module" url="courses" Icon={HiMiniClipboardDocumentList}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['program::admin','program::clerk','program::idcard'].includes(r?.role)) &&  (<Menu.Item as={AISNavItem} title="Program Module" url="programs" Icon={FaProjectDiagram}></Menu.Item>) }
             { aisRoles?.find((r:any) => ['program::admin','program::clerk'].includes(r?.role)) && (<Menu.Item as={AISNavItem} title="Department Module" url="departments" Icon={HiOutlineAcademicCap}></Menu.Item>) }

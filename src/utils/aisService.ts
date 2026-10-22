@@ -920,7 +920,7 @@ class Service {
                toast.success("Record created!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Could not save curriculum.')
         
         } catch (error) { 
            return checkSession(error)
@@ -936,7 +936,7 @@ class Service {
                toast.success("Record updated!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Could not save curriculum.')
         
         } catch (error) { 
            return checkSession(error)
@@ -952,7 +952,7 @@ class Service {
                toast.success("Record deleted!")
                return res.data
             } 
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Could not save curriculum.')
         
         } catch (error) { 
            return checkSession(error)
@@ -2540,10 +2540,10 @@ class Service {
             })
             if(res.status == 200 || res.status == 202)
                return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Could not load registration courses.')
         
         } catch (error) {
-           return checkSession(error)
+           return checkSession(new Error(error?.response?.data?.message || error?.message || "Could not load registration courses."))
         }
      }
 

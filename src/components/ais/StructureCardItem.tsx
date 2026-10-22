@@ -82,6 +82,8 @@ function StructureCardItem({ data }: Props) {
           </Chip>
         </div>
 
+        <p className="text-xs text-primary-dark/70">Grading scheme: <strong>{data?.scheme?.title || "Not assigned"}</strong></p>
+
         {/* Programme (+ major) */}
         <div className="mt-auto flex items-start gap-2.5 rounded-xl bg-gradient-to-br from-primary/[0.06] to-white p-3 ring-1 ring-inset ring-primary/10">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-secondary via-primary to-secondary-accent text-white">

@@ -36,6 +36,7 @@ export const AISP_NAV: { label: string; items: AISPNavLink[] }[] = [
     label: 'Academics',
     items: [
       { title: 'Course Registration', url: '/aisp/registration', Icon: HiOutlineClipboardDocumentList },
+      { title: 'STS Module', url: '/aisp/sts', Icon: HiOutlineUserGroup },
       { title: 'Academic Results', url: '/aisp/results', Icon: HiOutlineChartBar },
       { title: 'Evaluations', url: '/aisp/evaluation', Icon: HiOutlineChatBubbleLeftRight },
     ],

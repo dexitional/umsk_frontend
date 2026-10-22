@@ -12,8 +12,9 @@ type Props = {};
 
 export async function loader() {
   const user = useUserStore.getState().user;
-  const data = await Service.fetchRegistrationMount(user?.user?.tag);
   const slip = await Service.fetchRegistration(user?.user?.tag);
+  // A saved slip uses its recorded assessments even if the current curriculum changes.
+  const data = slip?.length ? { session: slip[0]?.session?.title } : await Service.fetchRegistrationMount(user?.user?.tag);
   const student = await Service.fetchStudent(user?.user?.tag);
   const fees = await Service.fetchStudentFinance(user?.user?.tag);
 

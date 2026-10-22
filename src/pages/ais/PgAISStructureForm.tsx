@@ -3,11 +3,13 @@ import {
   Form,
   redirect,
   useLoaderData,
+  useActionData,
   useNavigate,
   useNavigation,
 } from "react-router-dom";
 import SubPageTitle from "../../components/ais/SubPageTitle";
 import Service from "../../utils/aisService";
+import { requestError } from "../../utils/requestError";
 
 type Props = {};
 
@@ -20,31 +22,37 @@ export async function action({ request, params }) {
   data.lock = data.lock == 1;
   data.status = data.status == 1;
 
-  let resp;
-  if (id != 0) resp = await Service.updateCurriculum(id, data);
-  else resp = await Service.postCurriculum(data);
+  try {
+    let resp;
+    if (id != 0) resp = await Service.updateCurriculum(id, data);
+    else resp = await Service.postCurriculum(data);
 
-  if (resp) {
-    // return redirect(`/ais/programs/${encodeURIComponent(resp.programId)}/curriculum`)
-    return redirect(`/ais/curriculums`);
-  }
+    if (resp) {
+      return redirect(`/ais/curriculums`);
+    }
+    return { error: "The curriculum could not be saved." };
+  } catch (error) { return { error: requestError(error) }; }
 }
 // Load Data of Single
 export async function loader({ params }) {
-  let data = { id: 0 };
+  let data: any = { id: 0 };
   const departments = await Service.fetchDepartments();
   const programs = await Service.fetchProgramList();
   const majors = await Service.fetchMajorList();
   const courses = await Service.fetchCourseList();
+  const schemes = await Service.fetchSchemeList();
 
   const id = params?.curriculumId || 0;
   if (id != 0) data = await Service.fetchCurriculum(id);
-  return { data, departments, programs, majors, courses };
+  const choices = Array.isArray(schemes) ? [...schemes] : [];
+  if (data?.scheme && !choices.some(s => s.id === data.scheme.id)) choices.push(data.scheme);
+  return { data, departments, programs, majors, courses, schemes: choices };
 }
 
 function PgAISStructureForm({}: Props) {
   const navigate = useNavigate();
-  const { data, departments, programs, majors, courses }: any = useLoaderData();
+  const actionData: any = useActionData();
+  const { data, departments, programs, majors, courses, schemes }: any = useLoaderData();
   // "Lock on Registration" applies to electives only, so it's shown only for
   // category ELECTIVE ("E"). When hidden it isn't submitted and the action
   // saves lock = false.
@@ -72,6 +80,7 @@ function PgAISStructureForm({}: Props) {
           </div>
         </section>
 
+        {actionData?.error && <p role="alert" className="rounded bg-red-50 p-3 text-sm text-red-700">{actionData.error}</p>}
         <Form
           method="post"
           className="grid md:grid-cols-2 gap-y-2 md:gap-y-0 md:gap-x-4"
@@ -219,6 +228,29 @@ function PgAISStructureForm({}: Props) {
                     ))}
                 </select>
               </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-sm md:text-base text-gray-500 font-medium">
+                  Grading Scheme
+                </span>
+                <select
+                  aria-label="schemeId"
+                  name="schemeId"
+                  defaultValue={data?.schemeId || ""}
+                  required
+                  className="focus:ring-0 border focus:border-slate-300  border-primary-dark/10 bg-primary-dark/5 text-sm md:text-base text-gray-500 rounded-md"
+                >
+                  <option value="" disabled>
+                    -- Choose --
+                  </option>
+                  {schemes &&
+                    schemes?.map((row: any) => (
+                      <option key={row.id} value={row.id}>
+                        {row.title?.toUpperCase()}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <p className="text-xs text-slate-500">Used for new registrations of this curriculum course. Existing results keep their recorded grading scheme.</p>
               {category === "E" ? (
                 <label className="flex flex-col space-y-2">
                   <span className="text-sm md:text-base text-gray-500 font-medium">

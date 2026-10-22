@@ -25,6 +25,7 @@ function StructureListItem({ data }: Props) {
         <ListHeading title="Course" />
         <span className="px-2 md:px-0">
           {data?.course?.title?.toUpperCase()}
+          <small className="block normal-case">Scheme: {data?.scheme?.title || "Not assigned"}</small>
         </span>
       </div>
       <div className="capitalize flex flex-col space-y-2">
