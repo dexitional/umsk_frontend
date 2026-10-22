@@ -1,3 +1,4 @@
+import AcademicSummary from "../../components/aisp/AcademicSummary";
 import React from "react";
 import { BsInfoCircle } from "react-icons/bs";
 import { useLoaderData } from "react-router-dom";
@@ -27,6 +28,7 @@ function PgAISStudentTranscript({}: Props) {
     );
   return (
     <div className="flex w-full flex-1 flex-col space-y-8 md:space-y-10 ">
+      <AcademicSummary data={data} />
       <div className="w-full flex items-start space-x-3 p-3 md:p-4 bg-primary/5 border border-primary/20 rounded-xl">
         <BsInfoCircle className="h-4 w-4 md:h-5 md:w-5 text-primary/60 shrink-0 mt-0.5" />
         <p className="text-xs md:text-sm text-primary-dark/70 font-noto">
@@ -36,7 +38,7 @@ function PgAISStudentTranscript({}: Props) {
       {data &&
         Array.from(data)?.map(([title, row, meta]: any) => (
           <AISResultCard
-            key={title}
+            key={row?.[0]?.sessionId || title}
             title={title.toUpperCase()}
             data={row}
             meta={meta}

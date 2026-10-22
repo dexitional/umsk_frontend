@@ -1,3 +1,4 @@
+import { visibleGrade, visiblePoints } from "../../utils/academic";
 import React from 'react';
 import ListHeading from './ListHeading';
 
@@ -6,14 +7,14 @@ type Props = {
 }
 
 function ResultListItem({ row }: Props) {
-  // Distinguish "Incomplete" from "graded but not yet published" -- both used
-  // to collapse to '--'. The backend grades a course "IC" when its exam score
-  // is missing (see isIncomplete in util/helper.ts).
-  const grade = row.grade === 'IC' ? 'IC' : (!!row?.status ? row.grade : '--');
+  // Distinguish "Incomplete" (no score yet) from "graded but not yet
+  // published" — both used to collapse to '--', leaving no way for a
+  // student to see which of their courses is actually an IC.
+  const grade = visibleGrade(row);
   const isFail = grade === 'F';
-  const isIncomplete = grade === 'IC';
+  const isIncomplete = grade === 'I' || grade === 'Invalid';
   const gradeStyle =
-    grade === '--' ? 'bg-slate-50 text-slate-400 ring-slate-100'
+    grade === 'Unpublished' ? 'bg-slate-50 text-slate-400 ring-slate-100'
     : isIncomplete ? 'bg-amber-50 text-amber-700 ring-amber-200'
     : isFail ? 'bg-rose-50 text-rose-600 ring-rose-200'
     : 'bg-emerald-50 text-emerald-700 ring-emerald-200';
@@ -38,7 +39,7 @@ function ResultListItem({ row }: Props) {
         </div>
         <div className="flex flex-col gap-1">
           <ListHeading title="Grade Point" />
-          <span className="text-sm font-bold text-slate-900 tabular-nums">{row.totalScore && (!!row?.status) && !isIncomplete ? isNaN(row.gradepoint * row.credit) ? '--':(row.gradepoint * row.credit).toFixed(1) : '--' }</span>
+          <span className="text-sm font-bold text-slate-900 tabular-nums">{visiblePoints(row)}</span>
         </div>
     </div>
   )

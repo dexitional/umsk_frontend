@@ -314,7 +314,7 @@ class Service {
             if(res.status == 200 || res.status == 202)
               return res.data
         } catch (error) {
-           console.log(error.toJson())
+           throw error;
          //return checkSession(error)
         }
     }

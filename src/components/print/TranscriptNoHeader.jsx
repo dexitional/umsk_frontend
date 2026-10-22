@@ -1,8 +1,9 @@
+import { formatGpa } from "../../utils/academic";
 import moment from 'moment'
 import React from 'react'
 import Logo from '../../assets/img/logo.webp';
 
-function TranscriptNoHeader({ user,fgpa }) {
+function TranscriptNoHeader({ user,cgpa }) {
   return (
   <header className="flex flex-col space-y-10">
       <section className="block print:hidden">
@@ -58,10 +59,7 @@ function TranscriptNoHeader({ user,fgpa }) {
           <div>Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style={{ fontSize:'18px' }}>{user.lname && user.lname.toUpperCase()}, {`${user.fname} ${user.mname || ''}`}</b></div>
           <div>Programme: &nbsp;<b style={{ fontSize:'18px' }}>{user?.program?.shortName?.toUpperCase()}</b></div>
           { user?.major && <div>Major: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style={{ fontSize:'18px' }}>{ user?.major?.longName  || ' -- NONE --'}</b></div>}
-          { user?.category == 'PG' 
-            ? <div>CGPA: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style={{ fontSize:'18px' }}>{!isNaN(fgpa) ? parseFloat(fgpa)?.toFixed(2) : '0.00'}</b></div>
-            : <div>FGPA: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style={{ fontSize:'18px' }}>{!isNaN(fgpa) ? parseFloat(fgpa)?.toFixed(2) : '0.00'}</b></div>
-          }
+          <div>CGPA: &nbsp;<b style={{ fontSize:'18px' }}>{formatGpa(cgpa)}</b></div>
         </div>
         {/* <pre>{JSON.stringify(user,0,null)}</pre> */}
         <div className="title-group2 font-extrabold tracking-widest -space-y-1 print:-space-y-2">

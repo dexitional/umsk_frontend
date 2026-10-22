@@ -72,7 +72,8 @@ function PgAISPProfileForm({}: Props) {
   const { data, countries, regions, religions, disabilities, titles, majors, halls }: any =
     useLoaderData();
   const dobLocked = !!data?.dobEditedAt;
-  const hallLocked = !!data?.affiliateEditedAt;
+  const hallLocked = !!data?.affiliateEditedAt || (!data?.originalHallId && data?.semesterNum !== 1);
+  const hallOptions = data?.originalHallId ? [data.instituteAffliate || data.originalHall?.name].filter(Boolean) : halls;
 
   // Date of Birth and Hall of Affiliation can each be changed only once --
   // confirm before a save that would use that up.
@@ -247,8 +248,8 @@ function PgAISPProfileForm({}: Props) {
               </span>
             </label>
             <label className="flex flex-col gap-2">
-              <span className="aisp-label">Hall of Affiliation{!hallLocked ? " *" : ""}</span>
-              {!halls?.length && !hallLocked ? <span role="alert" className="text-sm text-red-700">No halls are available. Contact the College Registry to configure the hall list.</span> : null}
+              <span className="aisp-label">Original Hall of Affiliation{!hallLocked ? " *" : ""}</span>
+              {!hallOptions?.length && !hallLocked ? <span role="alert" className="text-sm text-red-700">No halls are available. Contact the College Registry to configure the hall list.</span> : null}
               <select
                 arial-label="instituteAffliate"
                 name="instituteAffliate"
@@ -260,8 +261,8 @@ function PgAISPProfileForm({}: Props) {
                 <option value="" disabled>
                   -- Choose --
                 </option>
-                {halls &&
-                  halls?.map((hall: string) => (
+                {hallOptions &&
+                  hallOptions?.map((hall: string) => (
                     <option key={hall} value={hall}>
                       {hall}
                     </option>
@@ -269,8 +270,8 @@ function PgAISPProfileForm({}: Props) {
               </select>
               <span className="text-xs text-slate-500">
                 {hallLocked
-                  ? `Confirmed on ${moment(data?.affiliateEditedAt).format("MMM D, YYYY")}. Contact the College Registry for further corrections.`
-                  : "Select your hall carefully. This selection is permanent after confirmation."}
+                  ? data?.affiliateEditedAt ? `Confirmed on ${moment(data.affiliateEditedAt).format("MMM D, YYYY")}. Room transfers are managed by the hall office.` : "Contact the College Registry to record your original hall from your admission records."
+                  : data?.originalHallId ? "Confirm the original hall already recorded for you. It is preserved when you move to another hall." : "Select your original hall carefully. It is preserved throughout your studies."}
               </span>
             </label>
             <label className="flex flex-col gap-2">

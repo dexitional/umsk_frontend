@@ -1,4 +1,5 @@
-import React from 'react';
+import { formatGpa, visiblePoints } from "../../utils/academic";
+import React, { useState } from 'react';
 import Service from "../../utils/aisService";
 import { useNavigate } from 'react-router';
 import { useHasRole } from '../../utils/roles';
@@ -12,6 +13,7 @@ type Props = {
 function AISResultCard({ title,data,meta }: Props) {
 
   const navigate = useNavigate();
+  const [publishing, setPublishing] = useState(false);
   const canManageResults = useHasRole("ais", ["sheet::admin"]);
 
   const deleteRecord = async (id) => {
@@ -24,13 +26,18 @@ function AISResultCard({ title,data,meta }: Props) {
   }
 
   const publishRecord = async (id) => {
-    if(window.confirm(`Publish Score for this course?`)){
-      if(window.prompt(`Enter Authorization Pin`) == new Date().getFullYear().toString()){
-        const resp = await Service.publishStudentTranscript(id);
-        if(resp) navigate(0);
-      }
+    if (!window.confirm('Publish score for this course?')) return;
+    if (window.prompt('Enter Authorization Pin') !== new Date().getFullYear().toString()) return;
+    setPublishing(true);
+    try {
+      const resp = await Service.publishStudentTranscript(id);
+      if (resp) navigate(0);
+    } catch (error: any) {
+      window.alert(error?.response?.data?.message || 'The score could not be published. Please try again.');
+    } finally {
+      setPublishing(false);
     }
-}
+  };
   
   return (
     <div className="w-full space-y-3 rounded">
@@ -48,27 +55,27 @@ function AISResultCard({ title,data,meta }: Props) {
             <span>&nbsp;</span>
           </div>
           { data.map((row:any) => (
-            <div className="px-3 py-2 border-b grid grid-cols-9 font-medium text-xs text-primary/80">
+            <div key={row.id} className="px-3 py-2 border-b grid grid-cols-9 font-medium text-xs text-primary/80">
               <span className="font-bold">{row.courseId}</span>
               <span className="col-span-4 font-medium flex flex-col">
                 <span className="font-semibold">{row.course?.title}</span>
                 {canManageResults ? (<span className="text-primary-dark">{row.session?.title} <br/>( Session ID:  {row.sessionId} )</span>) : null }
               </span>
-              <span>{row.credit}</span>
+              <span>{row.credit}{row.exclusionReason ? <small className="block">Excluded: {row.exclusionReason}</small> : null}</span>
               <span>{row.totalScore != null ? `(${row.totalScore})` : null } {row.grade}</span>
-              <span>{row.grade === 'IC' || isNaN(row.gradepoint * row.credit) ? '--': (row.gradepoint * row.credit).toFixed(1)}</span>
+              <span>{visiblePoints(row)}</span>
               
               {canManageResults ? (
               <div className="flex flex-col space-y-1">
-                { !row.status ?
-                  <button className="px-3 rounded-full shadow border border-red-300/50 text-red-400/50">
-                    Unpublish
-                  </button>
-                  :
-                  <button className="px-3 rounded-full shadow border border-green-400/50 text-green-500/50" onClick={() => row.totalScore ? publishRecord(row.id) : alert(`Incomplete score cannot be published.`) }>
+                {row.status ? (
+                  <span className="px-3 rounded-full border border-green-400/50 text-green-700">Published</span>
+                ) : (
+                  <button type="button" disabled={publishing || !row.validGrade}
+                    className="px-3 rounded-full shadow border border-green-400/50 text-green-700 disabled:opacity-40"
+                    onClick={() => publishRecord(row.id)}>
                     Publish
                   </button>
-                }
+                )}
                
                  <button className="px-3 rounded-full shadow border border-red-300/50 text-red-400/50" onClick={() => deleteRecord(row.id) }>
                    Delete
@@ -80,8 +87,8 @@ function AISResultCard({ title,data,meta }: Props) {
           {/* Totals */}
           <div className="px-3 py-2 border-b grid grid-cols-8 font-bold text-xs text-secondary-accent/80">
             <span>&nbsp;</span>
-            <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{ meta?.cgpa == null ? '--' : meta.cgpa }</span>
-            <span>GPA:&nbsp;&nbsp;&nbsp;{ meta?.gpa == null ? '--' : meta.gpa }</span>
+            <span className="col-span-4 font-bold">CGPA:&nbsp;&nbsp;&nbsp;{formatGpa(meta?.cgpa)}</span>
+            <span>GPA:&nbsp;&nbsp;&nbsp;{formatGpa(meta?.gpa)}</span>
             <span>TCH:&nbsp;&nbsp;&nbsp;{ meta?.credit == null ? '--' : meta.credit.toFixed(1) }</span>
             <span>TGP:&nbsp;&nbsp;&nbsp;{ meta?.gradepoint == null ? '--' : meta.gradepoint.toFixed(1) }</span>
           </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-type Point = { title: string; label: string; gpa: number | null; cgpa: number | null; credit: number };
+type Point = { id: string; title: string; label: string; gpa: number | null; cgpa: number | null; credit: number };
 
 type Props = {
   points: Point[];
@@ -43,7 +43,7 @@ function AISPGpaChart({ points }: Props) {
               const height = p.gpa != null ? (p.gpa / top) * 100 : 0;
               return (
                 <div
-                  key={p.title}
+                  key={p.id}
                   tabIndex={0}
                   className="group relative h-full flex-1 flex items-end justify-center outline-none"
                 >
@@ -82,7 +82,7 @@ function AISPGpaChart({ points }: Props) {
         {/* X axis */}
         <div className="mt-2 flex">
           {points.map((p) => (
-            <span key={p.title} className="flex-1 text-center text-[0.65rem] font-medium text-slate-400 truncate">
+            <span key={p.id} className="flex-1 text-center text-[0.65rem] font-medium text-slate-400 truncate">
               {p.label}
             </span>
           ))}

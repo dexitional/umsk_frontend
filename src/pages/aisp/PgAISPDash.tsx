@@ -1,3 +1,9 @@
+import AISPHallCard from "../../components/aisp/AISPHallCard";
+import { residenceService } from "../../utils/residenceService";
+import AISPSTSCard from "../../components/aisp/AISPSTSCard";
+import { stsService } from "../../utils/stsService";
+import AcademicSummary from "../../components/aisp/AcademicSummary";
+import { resitNotice as getResitNotice } from "../../utils/academic";
 import moment from "moment";
 import React from "react";
 import { IconType } from "react-icons";
@@ -36,13 +42,16 @@ export async function loader({ params }) {
   // have their own endpoints (used by the Registration and Evaluation
   // pages) — reused here rather than re-derived. Only resit/fine summary is
   // genuinely new (fetchStudentNoticeSummary).
-  const [mount, slip, noticeSummary, evaluation] = await Promise.all([
-    Service.fetchRegistrationMount(tag),
-    Service.fetchRegistration(tag),
-    Service.fetchStudentNoticeSummary(tag),
-    Service.fetchEvaluationStatus(tag),
+  const [mount, slip, noticeSummary, evaluation, transcript, sts, residence] = await Promise.all([
+    Service.fetchRegistrationMount(tag).catch(() => null),
+    Service.fetchRegistration(tag).catch(() => null),
+    Service.fetchStudentNoticeSummary(tag).catch(() => null),
+    Service.fetchEvaluationStatus(tag).catch(() => null),
+    Service.fetchStudentTranscript(tag).catch(() => null),
+    stsService.current().catch(() => null),
+    residenceService.mine().catch(() => null),
   ]);
-  return { mount, slip, noticeSummary, evaluation };
+  return { mount, slip, noticeSummary, evaluation, transcript, sts, residence };
 }
 
 const QUICK_LINKS: { title: string; caption: string; url: string; Icon: IconType; tint: string }[] = [
@@ -97,8 +106,12 @@ function buildNotices({ mount, slip, noticeSummary, evaluation }: any) {
 
   // Registration
   let registration: any;
-  if (!mount?.session) {
+  if (!mount) {
+    registration = { tone: "neutral", badge: "UNAVAILABLE", title: "Registration Status", message: "Registration status could not be loaded. Please try again." };
+  } else if (!mount.session) {
     registration = { tone: "neutral", badge: "N/A", title: "Registration Status", message: "No active registration period at this time." };
+  } else if (!Array.isArray(slip)) {
+    registration = { tone: "neutral", badge: "UNAVAILABLE", title: "Registration Status", message: "Registration status could not be loaded. Please try again." };
   } else if (registered) {
     registration = { tone: "good", badge: "REGISTERED", title: "Registration Status", message: `You are registered for ${mount.session}.` };
   } else if (registerEnd && now.isBefore(registerEnd)) {
@@ -112,7 +125,9 @@ function buildNotices({ mount, slip, noticeSummary, evaluation }: any) {
   // Late fine
   const fine = noticeSummary?.fine;
   let fineNotice: any;
-  if (fine?.charged) {
+  if (!fine) {
+    fineNotice = { tone: "neutral", badge: "UNAVAILABLE", title: "Late Fine", message: "Fine status could not be loaded. Please try again." };
+  } else if (fine.charged) {
     fineNotice = { tone: "urgent", badge: "FINE CHARGED", title: "Late Fine", message: `A late fee of ${fine.amount} ${fine.currency} has been added to your account for late registration.` };
   } else if (!registered && isPastDeadline && fine?.configuredAmount) {
     fineNotice = { tone: "warning", badge: "AT RISK", title: "Late Fine", message: `Registering after the deadline may attract a late fee of ${fine.configuredAmount} ${fine.configuredCurrency}.` };
@@ -120,16 +135,7 @@ function buildNotices({ mount, slip, noticeSummary, evaluation }: any) {
     fineNotice = { tone: "good", badge: "NONE", title: "Late Fine", message: "No late fees on your account." };
   }
 
-  // Resit
-  const resit = noticeSummary?.resit;
-  let resitNotice: any;
-  if (resit?.count > 0) {
-    const listed = resit.items.slice(0, 2).map((r: any) => `${r.courseId} (${r.trailSessionTitle || "period unknown"})`).join(", ");
-    const more = resit.count > 2 ? `, and ${resit.count - 2} more` : "";
-    resitNotice = { tone: "warning", badge: `${resit.count} OUTSTANDING`, title: "Resit Status", message: `You have outstanding resit(s): ${listed}${more}. Pay and register promptly.` };
-  } else {
-    resitNotice = { tone: "good", badge: "CLEAR", title: "Resit Status", message: "No outstanding resits." };
-  }
+  const resitNotice = getResitNotice(noticeSummary);
 
   // Evaluation
   let evalNotice: any;
@@ -140,7 +146,7 @@ function buildNotices({ mount, slip, noticeSummary, evaluation }: any) {
   } else if (evaluation?.status === "not started") {
     evalNotice = { tone: "neutral", badge: "NOT OPEN", title: "Course Evaluation", message: "Course evaluation for this semester has not opened yet." };
   } else {
-    evalNotice = { tone: "neutral", badge: "N/A", title: "Course Evaluation", message: "No course evaluation available for this semester." };
+    evalNotice = { tone: "neutral", badge: "UNAVAILABLE", title: "Course Evaluation", message: "Evaluation status could not be loaded. Please try again." };
   }
 
   return [registration, fineNotice, resitNotice, evalNotice];
@@ -226,6 +232,10 @@ function PgAISPDash({}: Props) {
           </div>
         </div>
       </section>
+
+      <AcademicSummary data={loaderData.transcript} />
+      <AISPSTSCard data={loaderData.sts} />
+      <AISPHallCard data={loaderData.residence} />
 
       {/* Status notices */}
       <section className="space-y-4">

@@ -1,3 +1,4 @@
+import { studentStatus } from "../../utils/academic";
 import React from "react";
 import { HiCheckBadge, HiOutlinePencilSquare, HiOutlinePrinter } from "react-icons/hi2";
 import { Link } from "react-router-dom";
@@ -40,7 +41,7 @@ function AISPProfileCard({ data }: Props) {
             </div>
           </div>
           <span className="px-2.5 py-1 rounded-full bg-emerald-400/[0.15] text-emerald-200 ring-1 ring-inset ring-emerald-300/30 text-[0.6rem] font-bold uppercase tracking-wider">
-            {data?.completeStatus ? "Completed" : "Active"}
+            {studentStatus(data)}
           </span>
         </div>
       </div>
@@ -71,7 +72,7 @@ function AISPProfileCard({ data }: Props) {
         <dl className="grid grid-cols-2 gap-2.5">
           {[
             { label: "Student No.", value: user?.user?.tag },
-            { label: "Level", value: year ? `Year ${year}` : "Completed" },
+            { label: "Level", value: Number.isFinite(year) && year > 0 ? `Year ${year}` : data?.completeStatus ? "Completed" : "Not set" },
             { label: "Index No.", value: data?.indexno || "Not Set", wide: true },
           ].map((item) => (
             <div key={item.label} className={`p-3 rounded-2xl bg-slate-50 ring-1 ring-inset ring-slate-100 ${item.wide ? "col-span-2" : ""}`}>

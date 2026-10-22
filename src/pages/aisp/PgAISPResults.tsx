@@ -1,3 +1,5 @@
+import { transcriptSummary } from "../../utils/academic";
+import AcademicSummary from "../../components/aisp/AcademicSummary";
 import React from "react";
 import {
   HiOutlineChartBar,
@@ -34,12 +36,13 @@ function PgAISPResults({}: Props) {
   const sum = fees?.reduce((sum: any, cur: any) => cur.amount + sum, 0);
   // Groups arrive oldest-first, each carrying its running CGPA, so the
   // current CGPA is the last group's that has one.
-  const groups: any[] = Array.isArray(data) ? data : [];
-  const metas = groups.map(([, , meta]: any) => meta);
-  const cgpa = [...metas].reverse().find((m: any) => m?.cgpa != null)?.cgpa ?? null;
-  const credits = metas.reduce((total: number, m: any) => total + (m?.credit || 0), 0);
+  const summary = transcriptSummary(data);
+  const groups: any[] = summary.groups;
+  const cgpa = summary.cgpa;
+  const credits = summary.credit;
   const points = groups.map(([title, rows, meta]: any, i: number) => ({
     title,
+    id: rows?.[0]?.sessionId || title,
     label: rows?.[0]?.semesterNum ? `S${rows[0].semesterNum}` : `S${i + 1}`,
     gpa: meta?.gpa ?? null,
     cgpa: meta?.cgpa ?? null,
@@ -54,6 +57,8 @@ function PgAISPResults({}: Props) {
         subtitle="Your academic transcript by semester, with GPA and running CGPA."
         Icon={HiOutlineChartBar}
       />
+
+      <AcademicSummary data={data} />
 
       {groups.length ? (
         <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
@@ -120,7 +125,7 @@ function PgAISPResults({}: Props) {
 
       <div className="space-y-6">
         {groups.map(([title, row, meta]: any) => (
-          <ResultListView key={title} title={title.toUpperCase()} data={row} meta={meta} />
+          <ResultListView key={row?.[0]?.sessionId || title} title={title.toUpperCase()} data={row} meta={meta} />
         ))}
       </div>
 

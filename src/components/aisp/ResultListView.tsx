@@ -1,3 +1,4 @@
+import { formatGpa } from "../../utils/academic";
 import React from 'react';
 import { HiOutlineBookOpen } from 'react-icons/hi2';
 import AISPEmpty from './AISPEmpty';
@@ -11,8 +12,8 @@ type Props = {
 
 function ResultListView({ title, data, meta }: Props) {
   const stats = [
-    { label: 'GPA', value: meta?.gpa == null ? '--' : meta.gpa },
-    { label: 'CGPA', value: meta?.cgpa == null ? '--' : meta.cgpa },
+    { label: 'GPA', value: formatGpa(meta?.gpa) },
+    { label: 'CGPA', value: formatGpa(meta?.cgpa) },
     { label: 'Credits', value: meta?.credit == null ? '--' : meta.credit.toFixed(1) },
     { label: 'Grade Pts', value: meta?.gradepoint == null ? '--' : meta.gradepoint.toFixed(1) },
   ];

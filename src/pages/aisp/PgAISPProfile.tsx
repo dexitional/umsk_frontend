@@ -118,7 +118,8 @@ function PgAISPProfile({}: Props) {
             <AISPInfoTile label="Country" value={data?.country?.longName} Icon={HiOutlineGlobeAlt} />
             <AISPInfoTile label="Religion" value={data?.religion?.title} Icon={HiOutlineStar} />
             <AISPInfoTile label="Disability" value={data?.disability?.title || "None"} Icon={HiOutlineHeart} />
-            <AISPInfoTile label="Hall of Affiliation" value={data?.instituteAffliate} Icon={HiOutlineHomeModern} className="sm:col-span-2" />
+            <AISPInfoTile label="Original Hall of Affiliation" value={data?.instituteAffliate} Icon={HiOutlineHomeModern} className="sm:col-span-2" />
+            <AISPInfoTile label="Current Hall" value={data?.currentHall?.name} Icon={HiOutlineHomeModern} className="sm:col-span-2" />
             <AISPInfoTile label="Ghana Card Number" value={data?.ghcardNo} Icon={HiOutlineIdentification} className="sm:col-span-2" />
             <AISPInfoTile label="Guardian Name" value={data?.guardianName} Icon={HiOutlineUserGroup} />
             <AISPInfoTile label="Guardian Contact" value={data?.guardianPhone} Icon={HiOutlinePhone} />

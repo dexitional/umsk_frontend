@@ -1,3 +1,4 @@
+import { formatGpa, transcriptSummary, visibleGrade, visiblePoints } from "../../utils/academic";
 import React, { useRef } from "react";
 import { useLoaderData } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
@@ -11,61 +12,16 @@ export async function loader({ params }) {
   if (ts) {
     data = await Service.fetchStudentTranscript(ts?.studentId);
   }
-  // Calculate CPA, CGPA, GPT , CRT
-  let credit = 0;
-  let gradepoint = 0;
-  let classObtained;
-  let isFgpa = false;
-  let fgpa: any = 0.0;
-  let mgpa: any = 0.0;
-  const cgpa: any = [];
-  const gpa: any = [];
-  const crt: any = [];
-  const gpt: any = [];
+  const summary = transcriptSummary(data);
+  if (!summary.available) throw new Error('Academic results could not be loaded.');
+  return { data: summary.groups, cgpa: summary.cgpas, gpt: summary.points,
+    crt: summary.credits, currentCgpa: summary.cgpa };
 
-  data &&
-    Array.from(data)?.map(([title, row]: any, i: number) => {
-      // Calculate Total Credit Hours, Total Gradepoint
-      // IC courses (no exam score yet) are left out of GPA/CGPA until completed.
-      credit += row.filter((r: any) => r.grade !== "IC").reduce((sum, cur) => cur.credit + sum, 0);
-      gradepoint += row.filter((r: any) => r.grade !== "IC").reduce(
-        (sum, cur) => cur.credit * cur.gradepoint + sum,
-        0
-      );
-      let gpa = gradepoint / credit;
-      // Calculate Class
-      classObtained = row[0].classes?.find(
-        (r: any) => parseFloat(r.min) <= gpa && gpa <= parseFloat(r.max)
-      );
-
-      // FGPA Algorithm
-      console.log(row, row[0].semesterNum);
-      if (i % row[0].semesterNum == 1 || i % row[0].semesterNum == 3)
-        fgpa += (1 / 6) * gpa;
-      if (i % row[0].semesterNum == 5 || i % row[0].semesterNum == 7)
-        fgpa += (2 / 6) * gpa;
-      if (["UG"].includes(row[0]?.student?.program?.category)) isFgpa = true; // FGPA Applies instead of CGPA if Program is UG not PG
-
-      // Return variables
-      cgpa.push(gpa?.toFixed(3));
-      gpt.push(gradepoint);
-      crt.push(credit);
-      //mgpa = gpa;
-    });
-
-  return {
-    data,
-    cgpa,
-    gpt,
-    crt,
-    classObtained: classObtained?.class,
-    fgpa: isFgpa ? fgpa : cgpa,
-  };
 }
 
 const PaperTranscriptView = () => {
   const printRef: any = useRef();
-  const { data, cgpa, gpt, crt, fgpa, classObtained }: any = useLoaderData();
+  const { data, cgpa, gpt, crt, currentCgpa }: any = useLoaderData();
 
   // Student Bio Profile
   const student = data && data[0] && data[0][1] && data[0][1][0]?.student;
@@ -85,17 +41,9 @@ const PaperTranscriptView = () => {
       {/* <PrintHeader /> */}
       <main className="print" ref={printRef}>
         <section className="cover1 space-y-20">
-          {/* <TranscriptHeader user={student} fgpa={fgpa} /> */}
 
-          {data?.map(([_, mdata]: any, i: number) => {
-            const credit = mdata.reduce((sum, cur) => cur.credit + sum, 0);
-            const gradepoint = mdata.reduce(
-              (sum, cur) => cur.credit * cur.gradepoint + sum,
-              0
-            );
-            const gpa = isNaN(gradepoint / credit)
-              ? "0.0"
-              : (gradepoint / credit)?.toFixed(2);
+          {data?.map(([_, mdata, meta]: any, i: number) => {
+            const gpa = formatGpa(meta.gpa);
             const gpt_ = gpt[i];
             const crt_ = crt[i];
             const cgpa_ = cgpa[i];
@@ -110,7 +58,7 @@ const PaperTranscriptView = () => {
                     className="md:block print:block"
                     style={{ pageBreakBefore: "left" }}
                   >
-                    <TranscriptNoHeader user={student} fgpa={fgpa} />
+                    <TranscriptNoHeader user={student} cgpa={currentCgpa} />
                   </div>
                 )}
                 <div
@@ -147,7 +95,7 @@ const PaperTranscriptView = () => {
                               className="h2title page-mono"
                               style={{ textTransform: "uppercase" }}
                             >
-                              {mdata[0]?.session?.year == "SEM1"
+                              {mdata[0]?.session?.semester == "SEM1"
                                 ? "FIRST"
                                 : "SECOND"}{" "}
                               SEMESTER
@@ -241,7 +189,7 @@ const PaperTranscriptView = () => {
                               align="left"
                               colSpan={2}
                             >
-                              {sc.course?.title?.toUpperCase()}
+                              {sc.course?.title?.toUpperCase()}{sc.exclusionReason ? ` — ${sc.exclusionReason} (excluded)` : ""}
                             </td>
                             <td className="page-mono p5" align="center">
                               {sc.credit}
@@ -251,13 +199,11 @@ const PaperTranscriptView = () => {
                               align="left"
                               style={{ textIndent: "15px" }}
                             >
-                              {sc.grade}
+                              {visibleGrade(sc)}
                             </td>
                             <td className="page-mono p5" align="left">
                               <span>
-                                {sc.grade === "IC" || isNaN(sc.gradepoint * sc.credit)
-                                  ? "--"
-                                  : (sc.gradepoint * sc.credit)?.toFixed(1)}
+                                {visiblePoints(sc)}
                               </span>
                               {/* <span>{sc.grade == 'I' ? '-' : sc.gradepoint }</span> */}
                               &nbsp;

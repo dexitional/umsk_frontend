@@ -1,3 +1,4 @@
+import { studentStatus } from "../../utils/academic";
 import moment from "moment";
 import React from "react";
 import { BiMoneyWithdraw } from "react-icons/bi";
@@ -142,6 +143,8 @@ function PgAISStudentProfile({}: Props) {
           value={ Math.ceil(data?.semesterNum / 2) ? (Math.ceil(data?.semesterNum / 2)).toString() : "COMPLETED"}
           Icon={MdOutlineMarkEmailUnread}
         />
+        <AISPBioCard label="Original Hall" value={data?.instituteAffliate || "Not recorded"} Icon={FaRegAddressCard} />
+        <AISPBioCard label="Current Hall" value={data?.currentHall?.name || "Not recorded"} Icon={FaRegAddressCard} />
         <AISPBioCard
           label="Institutional Email"
           value={data?.instituteEmail?.toUpperCase() || "Not Set"}
@@ -168,7 +171,7 @@ function PgAISStudentProfile({}: Props) {
         />
         <AISPBioCard
           label="Academic Status"
-          value={data?.completeStatus ? "COMPLETED" : "ACTIVE STUDENT"}
+          value={studentStatus(data).toUpperCase()}
           Icon={MdOutlineFiberPin}
         />
       </div>

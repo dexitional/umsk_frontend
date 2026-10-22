@@ -11,6 +11,7 @@ export const stsService = {
   assignments: (params: any) => request('get', '/assignments', undefined, params),
   students: (search: string) => request('get', '/students', undefined, { search }),
   mine: () => request('get', '/mine'),
+  current: () => request('get', '/mine/current'),
   history: (id: string) => request('get', `/assignments/${encodeURIComponent(id)}/history`),
   save: (type: string, data: any, id?: string) => request(id ? 'patch' : 'post', `/${type}${id ? '/' + encodeURIComponent(id) : ''}`, data),
   remove: (type: string, id: string) => request('delete', `/${type}/${encodeURIComponent(id)}`),

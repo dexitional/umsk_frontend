@@ -1,3 +1,4 @@
+import { formatGpa, transcriptSummary, visibleGrade, visiblePoints } from "../../utils/academic";
 import moment from "moment";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
@@ -13,40 +14,15 @@ export async function loader({ params }) {
   const data = await Service.fetchStudentTranscript(
     params?.studentId || user?.user?.tag
   );
-  // Calculate CPA, CGPA, GPT , CRT
-  let credit = 0;
-  let gradepoint = 0;
-  let classObtained;
-  const cgpa: any = [];
-  const gpa: any = [];
-  const crt: any = [];
-  const gpt: any = [];
+  const summary = transcriptSummary(data);
+  if (!summary.available) throw new Error('Academic results could not be loaded.');
+  return { data: summary.groups, cgpa: summary.cgpas, gpt: summary.points,
+    crt: summary.credits, currentCgpa: summary.cgpa };
 
-  data &&
-    Array.from(data)?.map(([title, row]: any, i: number) => {
-      // Calculate Total Credit Hours, Total Gradepoint
-      // IC courses (no exam score yet) are left out of GPA/CGPA until completed.
-      credit += row.filter((r: any) => r.grade !== "IC").reduce((sum, cur) => cur.credit + sum, 0);
-      gradepoint += row.filter((r: any) => r.grade !== "IC").reduce(
-        (sum, cur) => cur.credit * cur.gradepoint + sum,
-        0
-      );
-      let gpa = gradepoint / credit;
-      // Calculate Class
-      classObtained = row[0].classes?.find(
-        (r: any) => parseFloat(r.min) <= gpa && gpa <= parseFloat(r.max)
-      );
-      // Return variables
-      cgpa.push(gpa.toFixed(3));
-      gpt.push(gradepoint);
-      crt.push(credit);
-    });
-
-  return { data, cgpa, gpt, crt, classObtained: classObtained?.class };
 }
 
 function PrintTranscript({}: Props) {
-  const { data, cgpa, gpt, crt, classObtained }: any = useLoaderData();
+  const { data, cgpa, gpt, crt }: any = useLoaderData();
 
   // Check If No Data
   if (!data?.length)
@@ -89,7 +65,6 @@ function PrintTranscript({}: Props) {
               </p>
             </div>
             <div className="flex-1">
-              {/* <p>CLASS:&nbsp;&nbsp;<strong> {classObtained?.toUpperCase()}</strong></p> */}
               <p>
                 DATE PRINTED:&nbsp;&nbsp;
                 <strong>{moment().format("DD/MM/YYYY")} </strong>
@@ -99,20 +74,15 @@ function PrintTranscript({}: Props) {
         </div>
 
         <div className="my-6 mx-auto max-w-4xl w-full flex flex-col space-y-8 font-[times]">
-          {data?.map(([_, mdata]: any, i: number) => {
+          {data?.map(([_, mdata, meta]: any, i: number) => {
             const title = `YEAR ${Math.ceil(
               mdata[0]?.semesterNum / 2
             )}, SEMESTER ${mdata[0]?.semesterNum % 2 == 0 ? 2 : 1}`;
 
             const sess = `${mdata[0]?.session.title}`;
-            const credit = mdata.reduce((sum, cur) => cur.credit + sum, 0);
-            const gradepoint = mdata.reduce(
-              (sum, cur) => cur.credit * cur.gradepoint + sum,
-              0
-            );
-            const gpa = isNaN(gradepoint / credit)
-              ? "0.0"
-              : (gradepoint / credit).toFixed(2);
+            const credit = meta.credit;
+            const gradepoint = meta.gradepoint;
+            const gpa = formatGpa(meta.gpa);
             const gpt_ = gpt[i];
             const crt_ = crt[i];
             const cgpa_ = cgpa[i];
@@ -138,19 +108,17 @@ function PrintTranscript({}: Props) {
                     >
                       <div className="w-32 text-base">{sc.courseId}</div>
                       <div className="flex-1">
-                        {sc.course?.title?.toUpperCase()}
+                        {sc.course?.title?.toUpperCase()}{sc.exclusionReason ? ` — ${sc.exclusionReason} (excluded)` : ""}
                       </div>
                       <div className="w-24 text-center text-base">
                         {sc.credit}
                       </div>
                       <div className="w-24 text-center text-base">
-                        {sc.grade}
+                        {visibleGrade(sc)}
                       </div>
                       <div className="w-24 text-center text-base">
                         {/* {sc.grade == "I" ? "-" : sc.gradepoint} */}
-                        {sc.grade === "IC" || isNaN(sc.gradepoint * sc.credit)
-                          ? "--"
-                          : (sc.gradepoint * sc.credit).toFixed(1)}
+                        {visiblePoints(sc)}
                       </div>
                     </div>
                   ))}
