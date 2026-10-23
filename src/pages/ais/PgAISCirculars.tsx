@@ -6,15 +6,18 @@ import CircularShimCard from "../../components/shims/CircularShimCard";
 import Service from "../../utils/aisService";
 import { useUserStore } from "../../utils/authService";
 import { useHasRole } from "../../utils/roles";
+import toast from 'react-hot-toast';
+import { requestError } from '../../utils/requestError';
 
 type Props = {};
 
 export async function action({ request, params }) {
   const url = new URL(request.url);
   const pathname = url.pathname;
-  console.log(url);
-  if (pathname.endsWith("send")) await Service.sendNotice(params.noticeId);
-  else await Service.deleteNotice(params.noticeId);
+  try {
+    if (pathname.endsWith("send")) await Service.sendNotice(params.noticeId);
+    else await Service.deleteNotice(params.noticeId);
+  } catch (error) { toast.error(requestError(error, 'The circular request failed.')); }
 
   return redirect("/ais/notices");
 }

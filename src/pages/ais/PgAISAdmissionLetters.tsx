@@ -45,6 +45,7 @@ function PgAISAdmissionLetters() {
       if (resp?.errors?.length) {
         toast.error(`Not activated (retry later): ${resp.errors.map((e: any) => `${e.id} - ${e.reason}`).join("; ")}`, { duration: 10000 });
       }
+      if (resp?.smsFailures?.length) toast.error(`Admission SMS not confirmed for ${resp.smsFailures.length} student(s): ${resp.smsFailures.map((e: any) => `${e.id} - ${e.reason}`).join('; ')}`, { duration: 15000 });
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Admission not activated!");
     } finally {

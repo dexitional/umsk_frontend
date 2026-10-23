@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { residenceService } from '../../utils/residenceService';
+import { residenceService, studentGender, hallMatchesStudent } from '../../utils/residenceService';
 import { requestError } from '../../utils/requestError';
 export const input = 'w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm disabled:bg-slate-100';
 export const button = 'rounded bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-50';
@@ -27,6 +27,8 @@ export function StudentPicker({ selected, onSelect, disabled = false }: any) {
 }
 export function RecordForm({ type, record, options, busy, save, cancel }: any) {
   const isRoom = type === 'rooms';
+  const [selectedHallId, setSelectedHallId] = useState(record?.hallId || '');
+  const selectedHall = options.halls.find((h: any) => h.id === selectedHallId);
   return <form className="rounded border bg-slate-50 p-4 space-y-4" onSubmit={e => {
     e.preventDefault(); const data: any = Object.fromEntries(new FormData(e.currentTarget)); data.active = data.active === 'on';
     if (isRoom) data.capacity = Number(data.capacity);
@@ -35,14 +37,15 @@ export function RecordForm({ type, record, options, busy, save, cancel }: any) {
   }}>
     <h2 className="font-bold">{record ? 'Edit' : 'Add'} {isRoom ? 'room' : 'hall'}</h2>
     <fieldset disabled={busy} className="grid gap-3 sm:grid-cols-2">
-      {isRoom && <Field title="Hall"><select className={input} name="hallId" required defaultValue={record?.hallId || ''}><option value="">Choose hall</option>{options.halls.map((h: any) => <option key={h.id} value={h.id}>{h.name}{h.active ? '' : ' (inactive)'}</option>)}</select></Field>}
+      {isRoom && <Field title="Hall"><select className={input} name="hallId" required value={selectedHallId} onChange={e => setSelectedHallId(e.target.value)}><option value="">Choose hall</option>{options.halls.filter((h: any) => h.gender).map((h: any) => <option key={h.id} value={h.id}>{h.name}{h.active ? '' : ' (inactive)'}</option>)}</select></Field>}
       <Field title={isRoom ? 'Room number' : 'Hall code'}><input className={input} name="code" maxLength={50} required defaultValue={record?.code || ''} /></Field>
       {!isRoom && <Field title="Hall name"><input className={input} name="name" maxLength={350} required defaultValue={record?.name || ''} /></Field>}
-      {isRoom && <><Field title="Gender"><select className={input} name="gender" required defaultValue={record?.gender || ''}><option value="">Choose gender</option><option value="M">Male</option><option value="F">Female</option></select></Field><Field title="Capacity"><input className={input} type="number" name="capacity" min={1} max={10000} step={1} required defaultValue={record?.capacity || ''} /></Field></>}
+      {!isRoom ? <Field title="Hall gender"><select className={input} name="gender" required defaultValue={record?.gender || ''}><option value="">Choose gender</option><option value="M">Male</option><option value="F">Female</option></select></Field>
+        : <><Field title="Gender (from hall)"><input className={input} readOnly value={selectedHall?.gender === 'M' ? 'Male' : selectedHall?.gender === 'F' ? 'Female' : 'Choose a hall with a configured gender'} /><input type="hidden" name="gender" value={selectedHall?.gender || ''} /></Field><Field title="Capacity"><input className={input} type="number" name="capacity" min={1} max={10000} step={1} required defaultValue={record?.capacity || ''} /></Field></>}
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={record?.active ?? true} />Active</label>
     </fieldset>
     <p className="text-xs text-slate-600">Records used in placements must be deactivated instead of deleted. Historical placement details are preserved.</p>
-    <div className="flex gap-3"><button className={button} disabled={busy}>Save</button><button type="button" disabled={busy} onClick={cancel}>Cancel</button></div>
+    <div className="flex gap-3"><button className={button} disabled={busy || (isRoom && !selectedHall?.gender)}>Save</button><button type="button" disabled={busy} onClick={cancel}>Cancel</button></div>
   </form>;
 }
 export function AssignmentForm({ record, options, occupancy, current, busy, save, cancel }: any) {
@@ -56,8 +59,8 @@ export function AssignmentForm({ record, options, occupancy, current, busy, save
     return () => { live = false; };
   }, [record]);
   const crossHall = student?.currentHallId && student.currentHallId !== hallId;
-  const gender = ['M', 'MALE'].includes(student?.gender?.toUpperCase()) ? 'M' : ['F', 'FEMALE'].includes(student?.gender?.toUpperCase()) ? 'F' : null;
-  const rooms = options.rooms.filter((r: any) => r.hallId === hallId && r.active && r.gender === gender);
+  const gender = studentGender(student?.gender);
+  const rooms = options.rooms.filter((r: any) => r.hallId === hallId && r.active && r.gender === gender && options.halls.some((h: any) => h.id === hallId && hallMatchesStudent(h, student)));
   const missingOriginal = student && !student.originalHallId && (student.semesterNum !== 1 || student.instituteAffliate);
   return <form className="rounded border bg-slate-50 p-4 space-y-4" onSubmit={e => {
     e.preventDefault(); const data: any = Object.fromEntries(new FormData(e.currentTarget));
@@ -65,12 +68,12 @@ export function AssignmentForm({ record, options, occupancy, current, busy, save
       expectedHallId: student?.currentHallId ?? null, reaffiliate: data.reaffiliate === 'on' }, record?.id);
   }}>
     <h2 className="font-bold">{record ? 'Reassign room' : 'Assign room'} — {current?.title || 'No current semester'}</h2>
-    {!record ? <StudentPicker selected={student} disabled={busy} onSelect={(s: any) => { setStudent(s); setHallId(s.currentHallId || ''); }} /> : <p className="text-sm">{record.studentName} · {record.studentId}</p>}
+    {!record ? <StudentPicker selected={student} disabled={busy} onSelect={(s: any) => { setStudent(s); setHallId(options.halls.some((h: any) => h.id === s.currentHallId && hallMatchesStudent(h, s)) ? s.currentHallId : ''); }} /> : <p className="text-sm">{record.studentName} · {record.studentId}</p>}
     {error && <p role="alert" className="text-red-700">{error}</p>}
     {missingOriginal && <p role="alert" className="text-amber-800">Record this student's original hall in Affiliations before assigning a room.</p>}
     {student && <p className="text-sm">Original: {student.instituteAffliate || 'Will be recorded with first assignment'} · Current: {student.currentHall?.name || 'Not recorded'}</p>}
     <fieldset disabled={busy || !student || !!missingOriginal} className="grid gap-3 sm:grid-cols-2">
-      <Field title="Assigned hall"><select className={input} required value={hallId} onChange={e => setHallId(e.target.value)}><option value="">Choose hall</option>{options.halls.filter((h: any) => h.active).map((h: any) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></Field>
+      <Field title="Assigned hall"><select className={input} required value={hallId} onChange={e => setHallId(e.target.value)}><option value="">Choose hall</option>{options.halls.filter((h: any) => hallMatchesStudent(h, student)).map((h: any) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></Field>
       <Field title="Room"><select key={hallId + (student?.id || '')} className={input} name="roomId" required defaultValue={record?.hallId === hallId ? record.roomId : ''}><option value="">Choose room</option>{rooms.map((r: any) => { const used = occupancy?.find((o: any) => o.id === r.id); const available = used ? used.available + (record?.roomId === r.id && record?.status === 'ACTIVE' ? 1 : 0) : null; return <option key={r.id} value={r.id} disabled={available === 0}>{r.code} · {r.gender === 'M' ? 'Male' : 'Female'} · {available == null ? 'capacity ' + r.capacity : available + ' spaces available'}</option>; })}</select></Field>
       {!gender && <p className="text-sm text-amber-800">Record the student's gender before choosing a room.</p>}
       {crossHall && <label className="sm:col-span-2 flex gap-2 text-sm"><input type="checkbox" name="reaffiliate" required />Change the current hall to this room's hall. The original hall will remain unchanged.</label>}
@@ -83,8 +86,8 @@ export function AssignmentForm({ record, options, occupancy, current, busy, save
 export function OriginalForm({ student, halls, busy, save }: any) {
   return <form className="rounded border p-4 space-y-3" onSubmit={e => { e.preventDefault(); save(student.id, Object.fromEntries(new FormData(e.currentTarget))); }}>
     <h2 className="font-semibold">Record original hall</h2>
-    <p className="text-sm">Record the hall at admission. For continuing students, verify it from admission records. This becomes permanent; later transfers change only the current hall.</p>
-    <fieldset disabled={busy} className="grid gap-3 sm:grid-cols-2"><Field title="Original hall"><select className={input} name="hallId" required defaultValue=""><option value="">Choose hall</option>{halls.filter((h: any) => h.active).map((h: any) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></Field><Field title="Reason / source of affiliation"><textarea className={input} name="reason" maxLength={1000} required /></Field></fieldset>
+    <p className="text-sm">Only halls matching the student’s gender are available. Record the hall at admission. For continuing students, verify it from admission records. This becomes permanent; later transfers change only the current hall.</p>
+    <fieldset disabled={busy} className="grid gap-3 sm:grid-cols-2"><Field title="Original hall"><select className={input} name="hallId" required defaultValue=""><option value="">Choose hall</option>{halls.filter((h: any) => hallMatchesStudent(h, student)).map((h: any) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></Field><Field title="Reason / source of affiliation"><textarea className={input} name="reason" maxLength={1000} required /></Field></fieldset>
     <button disabled={busy} className={button}>Record affiliation</button>
   </form>;
 }

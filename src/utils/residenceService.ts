@@ -30,3 +30,7 @@ export const residenceService = {
   },
 };
 export const yearKey = (year: string) => year?.trim().replace(/\s*[-/]\s*/, '/') || '';
+
+export const studentGender = (value: unknown) => ['M', 'MALE'].includes(String(value || '').trim().toUpperCase()) ? 'M'
+  : ['F', 'FEMALE'].includes(String(value || '').trim().toUpperCase()) ? 'F' : null;
+export const hallMatchesStudent = (hall: any, student: any) => !!hall?.active && !!studentGender(student?.gender) && hall.gender === studentGender(student?.gender);

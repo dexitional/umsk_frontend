@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import { IoPeople } from "react-icons/io5";
 import { MdEditDocument } from "react-icons/md";
 // @ts-ignore
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigation } from "react-router-dom";
 import { useHasRole } from "../../utils/roles";
 
 type Props = {
@@ -14,6 +14,8 @@ type Props = {
 
 function CircularCardItem({ data }: Props) {
   const canManageCircular = useHasRole("ais", ["circular::admin"]);
+  const navigation = useNavigation();
+  const submitting = navigation.state !== 'idle';
 
   return (
     <div className="p-4 md:p-6 min-h-max border border-primary/20 rounded-xl bg-slate-50/50 hover:bg-slate-100 space-y-4 md:group font-roboto">
@@ -43,11 +45,11 @@ function CircularCardItem({ data }: Props) {
                 method="post"
                 action={`${encodeURIComponent(data?.id)}/send`}
                 onSubmit={(e) => {
-                  if (!confirm("Send circulars ?")) e.preventDefault();
+                  if (submitting || !confirm("Send this circular by SMS?")) e.preventDefault();
                   return false;
                 }}
               >
-                <fieldset className="py-0.5 px-2 cursor-pointer rounded flex items-center space-x-1.5 bg-primary/60">
+                <fieldset disabled={submitting} className="py-0.5 px-2 cursor-pointer rounded flex items-center space-x-1.5 bg-primary/60 disabled:opacity-50">
                   <BiSolidSend className="h-4 w-4 text-white" />
                   <button
                     type="submit"

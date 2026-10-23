@@ -51,12 +51,13 @@ export default function PgAISHalls() {
   if (!allowed) return <p role="alert" className="p-6">You do not have access to hall management.</p>;
   return <div className="p-4 md:p-6 space-y-5">
     <SubPageTitle title="Hall Module" page="Academics" />
-    <p className="text-sm text-slate-600">Manage halls, gender-based rooms and annual placements. A student's original affiliation is preserved when their current hall changes.</p>
+    <p className="text-sm text-slate-600">Manage gender-based halls, their rooms and annual placements. A student's original affiliation is preserved when their current hall changes.</p>
     <div className="flex flex-wrap gap-2" role="tablist" aria-label="Hall management sections">{['placements', 'halls', 'rooms', 'affiliations'].map(t => <button type="button" key={t} role="tab" aria-selected={tab === t} disabled={busy} onClick={() => { setTab(t); setForm(null); setHistory(null); }} className={`rounded px-4 py-2 text-sm capitalize ${tab === t ? 'bg-primary text-white' : 'bg-slate-100'}`}>{t === 'placements' ? 'Placements & reports' : t}</button>)}</div>
     {error && <p role="alert" className="rounded bg-red-50 p-3 text-sm text-red-800">{error} <button disabled={busy || loading} className="underline" onClick={() => setRevision(n => n + 1)}>Retry loading</button></p>}
     {success && <p role="status" className="rounded bg-green-50 p-3 text-sm text-green-800">{success}</p>}
     {loading && <p role="status">Loading hall records…</p>}
     {options && <>
+      {options.halls.some((h: any) => !h.gender) && <p role="status" className="rounded bg-amber-50 p-3 text-sm">Set Male or Female for each existing hall in the Halls tab. Halls without a configured gender cannot receive new affiliations or room assignments.</p>}
       {!canAssign && <p className="rounded bg-amber-50 p-3 text-sm">Assignments and reassignments require an active first semester in Academic Calendar. Existing placements remain valid through the academic year.</p>}
       <div ref={formRef}>
         {['halls', 'rooms'].includes(form?.type) && <RecordForm key={`${form.type}-${form.record?.id || 'new'}`} {...form} options={options} busy={busy} save={save} cancel={() => setForm(null)} />}
@@ -84,7 +85,7 @@ export default function PgAISHalls() {
       </>}
       {tab === 'halls' && <>
         <button className={button} disabled={busy || loading} onClick={() => setForm({ type: 'halls' })}>Add hall</button>
-        <div className="grid gap-3 sm:grid-cols-2">{options.halls.map((h: any) => <article key={h.id} className="rounded border p-4 space-y-2"><h2 className="font-semibold">{h.name}</h2><p className="text-sm">{h.code} · {h.active ? 'Active' : 'Inactive'}</p><p className="text-xs">{h._count.rooms} rooms · {h._count.originalStudents} original affiliations · {h._count.currentStudents} current affiliations</p><div className="flex gap-3 text-sm"><button disabled={busy} className="text-primary underline" onClick={() => setForm({ type: 'halls', record: h })}>Edit</button><button disabled={busy} className="text-red-700 underline" onClick={() => remove('halls', h)}>Delete</button></div></article>)}</div>
+        <div className="grid gap-3 sm:grid-cols-2">{options.halls.map((h: any) => <article key={h.id} className="rounded border p-4 space-y-2"><h2 className="font-semibold">{h.name}</h2><p className="text-sm">{h.code} · {h.gender === 'M' ? 'Male' : h.gender === 'F' ? 'Female' : 'Gender not configured'} · {h.active ? 'Active' : 'Inactive'}</p>{(h.genderConflicts > 0 || h.roomGenderConflicts > 0) && <p role="alert" className="text-sm text-amber-800">Review existing records: {h.genderConflicts} current affiliations have a different or missing student gender; {h.roomGenderConflicts} rooms have a different gender. Historical affiliations are preserved.</p>}<p className="text-xs">{h._count.rooms} rooms · {h._count.originalStudents} original affiliations · {h._count.currentStudents} current affiliations</p><div className="flex gap-3 text-sm"><button disabled={busy} className="text-primary underline" onClick={() => setForm({ type: 'halls', record: h })}>Edit</button><button disabled={busy} className="text-red-700 underline" onClick={() => remove('halls', h)}>Delete</button></div></article>)}</div>
         {!options.halls.length && <p>Add a hall to begin creating rooms.</p>}
       </>}
       {tab === 'rooms' && <>

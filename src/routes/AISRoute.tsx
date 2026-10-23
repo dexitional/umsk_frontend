@@ -14,6 +14,8 @@ const AISRoute:any =  {
    errorElement: <Error />,
    // action: chosenAction,
    children: [
+      { path: 'utilities', lazy: () => import('../pages/ais/PgAISUtilities').then(m => ({ Component: m.default })) },
+      { path: 'utilities/:module', lazy: () => import('../pages/ais/PgAISUtilities').then(m => ({ Component: m.default })) },
       { path: 'halls', lazy: () => import('../pages/ais/PgAISHalls').then(m => ({ Component: m.default })) },
       { path: 'sts', lazy: () => import('../pages/ais/PgAISSTS').then(m => ({ Component: m.default })) },
       {  path:'dash',

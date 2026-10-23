@@ -5,6 +5,7 @@ import AISNavItem from './AISNavItem'
 import { BsPeople } from 'react-icons/bs'
 import { HiMiniClipboardDocumentList } from 'react-icons/hi2'
 import { HiOutlineAcademicCap } from 'react-icons/hi'
+import { utilityRoles } from '../../utils/utilitiesService';
 
 type Props = {
   user:any
@@ -16,6 +17,7 @@ function AISNav({ user }: Props) {
   return (
     <div className="py-2 px-2 flex flex-col space-y-1 md:space-y-2 h-[75vh] overflow-y-scroll scrollbar-hide">
         <AISNavItem title="User Dashboard" url="dash" Icon={GrDashboard} /> 
+        { aisRoles?.some((r:any) => utilityRoles.includes(r?.role)) && <AISNavItem title="Utilities Module" url="utilities" Icon={GrDashboard} /> }
         { aisRoles?.find((r:any) => ['acareport::admin'].includes(r?.role)) && (<AISNavItem title="System Reports" url="reports" Icon={FaChartBar} />) }
         { aisRoles?.find((r:any) => ['student::admin','student::clerk','student::registry','student::finance'].includes(r?.role)) && (<AISNavItem title="Student Module" url="students" Icon={BsPeople} />) }
         { aisRoles?.find((r:any) => ['sts::admin','sts::mentor','student::admin','student::registry'].includes(r?.role)) && (<AISNavItem title="STS Module" url="sts" Icon={HiOutlineAcademicCap} />) }

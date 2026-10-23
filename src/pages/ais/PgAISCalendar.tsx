@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { requestError } from "../../utils/requestError";
 import SubPageTitle from "../../components/ais/SubPageTitle";
 // @ts-ignore
 import moment from "moment";
@@ -85,28 +87,29 @@ function PgAISCalendar({}: Props) {
   const [sendingReg, setSendingReg] = useState(false);
   const [sendingResit, setSendingResit] = useState(false);
 
+  const smsLock = useRef(false);
   const remindRegistration = async () => {
-    const resp = await Service.fetchRegistrationReminderCount(params?.calendarId);
-    if (!resp?.count) return window.alert("No unregistered students found.");
-    const ok = window.confirm(
-      `Send registration reminder to ${resp.count} student(s)?`
-    );
-    if (!ok) return;
-    setSendingReg(true);
-    await Service.sendRegistrationReminder(params?.calendarId);
-    setSendingReg(false);
+    if (smsLock.current) return;
+    smsLock.current = true; setSendingReg(true);
+    try {
+      const resp = await Service.fetchRegistrationReminderCount(params?.calendarId);
+      if (!resp?.count) return window.alert("No unregistered students found.");
+      if (!window.confirm(`Send registration reminder to ${resp.count} student(s)?`)) return;
+      await Service.sendRegistrationReminder(params?.calendarId);
+    } catch (error) { toast.error(requestError(error, 'Registration reminders could not be sent.')); }
+    finally { smsLock.current = false; setSendingReg(false); }
   };
 
   const remindResit = async () => {
-    const resp = await Service.fetchResitReminderCount(params?.calendarId);
-    if (!resp?.count) return window.alert("No students with outstanding resits found.");
-    const ok = window.confirm(
-      `Send resit reminder to ${resp.count} student(s)?`
-    );
-    if (!ok) return;
-    setSendingResit(true);
-    await Service.sendResitReminder(params?.calendarId);
-    setSendingResit(false);
+    if (smsLock.current) return;
+    smsLock.current = true; setSendingResit(true);
+    try {
+      const resp = await Service.fetchResitReminderCount(params?.calendarId);
+      if (!resp?.count) return window.alert("No students with outstanding resits found.");
+      if (!window.confirm(`Send resit reminder to ${resp.count} student(s)?`)) return;
+      await Service.sendResitReminder(params?.calendarId);
+    } catch (error) { toast.error(requestError(error, 'Resit reminders could not be sent.')); }
+    finally { smsLock.current = false; setSendingResit(false); }
   };
 
   return (

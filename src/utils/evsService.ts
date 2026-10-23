@@ -1,6 +1,7 @@
 import axios from './axios';
 import { setupCache } from 'axios-cache-interceptor';
 import toast from 'react-hot-toast';
+import { notifySmsSummary } from './smsFeedback';
 import { useUserStore } from './authService';
 const { REACT_APP_API_URL } = import.meta.env;
 
@@ -94,10 +95,10 @@ class EvsService {
         try {
             const res = await axios.post(`${REACT_APP_API_URL}/evs/elections/${encodeURIComponent(electionId)}/pins`)
             if(res.status == 200){
-              toast.success("Pins Sent!",{ className:'font-bold text-lg text-green-600'})
+              notifySmsSummary(res.data)
               return res.data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
             return checkSession(error)
@@ -109,10 +110,10 @@ class EvsService {
         try {
             const res = await axios.post(`${REACT_APP_API_URL}/evs/elections/${encodeURIComponent(electionId)}/reminder`)
             if(res.status == 200){
-              toast.success("Reminder Sent!",{ className:'font-bold text-lg text-green-600'})
+              notifySmsSummary(res.data)
               return res.data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
             return checkSession(error)

@@ -126,7 +126,7 @@ export const useUserStore = create<StoreState>()(
             }
             
           } catch (err) {
-            toast.success(err)
+            toast.error(err?.response?.data?.message || err?.message || 'Password reset failed. Please contact the registry.')
             set({ loading: false, tag: null })
             
           }
@@ -201,7 +201,6 @@ export const useUserStore = create<StoreState>()(
     },
   ),
 )
-
 
 
 

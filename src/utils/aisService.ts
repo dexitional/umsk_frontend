@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import * as FileSaver from 'file-saver';
 import { useUserStore } from './authService';
 import axios from './axios';
+import { notifySmsSummary, notifySmsWarning } from './smsFeedback';
 
 const token = useUserStore.getState().token;
 
@@ -160,9 +161,9 @@ class Service {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/sessions/${encodeURIComponent(sessionId)}/registration-reminder-count`,{
                 headers: { "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202)
+            if(res.status == 200)
                return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
            return checkSession(error)
@@ -175,10 +176,10 @@ class Service {
                headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
             if(res.status == 200){
-               toast.success("Registration reminder sent!")
+               notifySmsSummary(res.data)
                return res.data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
            return checkSession(error)
@@ -190,9 +191,9 @@ class Service {
             const res = await axios.get(`${REACT_APP_API_URL}/ais/sessions/${encodeURIComponent(sessionId)}/resit-reminder-count`,{
                 headers: { "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202)
+            if(res.status == 200)
                return res.data
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
            return checkSession(error)
@@ -205,10 +206,10 @@ class Service {
                headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
             if(res.status == 200){
-               toast.success("Resit reminder sent!")
+               notifySmsSummary(res.data)
                return res.data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'The SMS request failed.')
 
         } catch (error) {
            return checkSession(error)
@@ -403,11 +404,12 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/students/stage`,{ studentId },{
                 headers: { "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202){
+            if(res.status == 200){
                 toast.success("Student portal access staged!")
+                notifySmsWarning(res.data)
                 return res.data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Account staging failed.')
 
         } catch (error) {
             // Passing the raw response object (not its .message string) to
@@ -426,12 +428,13 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/students/reset`,{ studentId },{
                 headers: { "x-access-token" : token }
             })
-            if(res.status == 200 || res.status == 202){
+            if(res.status == 200){
                 const data = res?.data
-                console.log(data)
-                toast(`Password changed to: \t${data?.password} for ${email}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                notifySmsWarning(data)
+                toast(`Username: ${data?.username || email || studentId}, Password: ${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                return data
             }
-            else throw new(res.data.message)
+            else throw new Error(res.data?.message || 'Password reset failed.')
 
         } catch (error) {
            // checkSession re-throws (for an expired-session logout), but
@@ -486,6 +489,7 @@ class Service {
              })
             if(res.status == 200){
                toast.success("Index number generated!")
+               notifySmsWarning(res.data)
                return res.data
             }
             else throw new(res.data.message)
@@ -504,6 +508,7 @@ class Service {
           if(res.status == 200){
              const data = res.data;
              toast.success(`Email generated: ${data?.instituteEmail}`);
+             notifySmsWarning(data);
              return data;
           }
           else throw new(res.data.message)
@@ -520,6 +525,7 @@ class Service {
            })
           if(res.status == 200){
              toast.success(`Google Workspace account synced!`);
+             notifySmsWarning(res.data);
              return res.data;
           }
           else throw new(res.data.message)
@@ -2218,11 +2224,11 @@ class Service {
          const res = await axios.post(`${REACT_APP_API_URL}/ais/notices/send`, { noticeId } ,{
             headers: { "Content-Type" : "application/json", "x-access-token" : token }
          })
-         if(res.status == 200 || res.status == 202){
-            toast.success("Circular Sent!")
+         if(res.status == 200){
+            notifySmsSummary(res.data)
             return res.data
          }
-         else throw new(res.data.message)
+         else throw new Error(res.data?.message || 'The SMS request failed.')
       } catch (error) {
          return checkSession(error)
       }
@@ -3238,7 +3244,7 @@ class Service {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/staff/stage`,{ staffId },{
                 headers: { "Content-Type" : "application/json", "x-access-token" : token }
             })
-            if(res.status == 200) return res.data
+            if(res.status == 200) { notifySmsWarning(res.data); return res.data; }
             throw new Error(res.data?.message || "Account staging failed")
         
         } catch (error) {
@@ -3255,6 +3261,7 @@ class Service {
             if(res.status == 200){
                 const data = res?.data
                 toast(`Username: ${data?.username}, Password: ${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                notifySmsWarning(data)
                 return data
             }
             throw new Error(res.data?.message || "Password reset failed")

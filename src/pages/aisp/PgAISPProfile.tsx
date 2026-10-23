@@ -1,3 +1,7 @@
+import AISPHallCard from "../../components/aisp/AISPHallCard";
+import AISPSTSCard from "../../components/aisp/AISPSTSCard";
+import { residenceService } from "../../utils/residenceService";
+import { stsService } from "../../utils/stsService";
 import moment from "moment";
 import React from "react";
 import {
@@ -39,12 +43,16 @@ type Props = {};
 // Load Data of Single
 export async function loader({ params }) {
   const user = useUserStore.getState().user;
-  const data = await Service.fetchStudent(user?.user?.tag);
-  return { data, user };
+  const [data, residence, sts] = await Promise.all([
+    Service.fetchStudent(user?.user?.tag),
+    residenceService.mine().catch(() => null),
+    stsService.current().catch(() => null),
+  ]);
+  return { data, user, residence, sts };
 }
 
 function PgAISPProfile({}: Props) {
-  const { data, user }: any = useLoaderData();
+  const { data, user, residence, sts }: any = useLoaderData();
   const fullName = `${data?.fname ?? ""} ${data?.mname ? data?.mname + " " : ""}${data?.lname ?? ""}`.trim();
   const year = Math.ceil(data?.semesterNum / 2);
   const yearLabel = year ? `Year ${year}` : "Completed";
@@ -103,6 +111,11 @@ function PgAISPProfile({}: Props) {
           </div>
         </div>
       </section>
+
+      <div className="grid xl:grid-cols-2 gap-6 md:gap-8 items-start">
+        <AISPHallCard data={residence} />
+        <AISPSTSCard data={sts} />
+      </div>
 
       <div className="grid xl:grid-cols-2 gap-6 md:gap-8 items-start">
         <AISPPanel title="Personal Information" subtitle="Your bio and contact details" Icon={HiOutlineUser}>
