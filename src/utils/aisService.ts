@@ -535,6 +535,34 @@ class Service {
       }
   }
 
+    // Bulk actions run a page at a time: pass the previous response's
+    // `next` as `after` until it comes back null. The caller shows results.
+    async sendStudentCredentials(body){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/credentials/send`, body,{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          if(res.status == 200) return res.data;
+          else throw new Error(res.data?.message || 'Sending credentials failed.')
+
+      } catch (error) {
+         return checkSession(error)
+      }
+    }
+
+    async generateStudentEmails(body){
+      try {
+          const res = await axios.post(`${REACT_APP_API_URL}/ais/students/mailgen/bulk`, body,{
+              headers: { "Content-Type" : "application/json", "x-access-token" : token }
+           })
+          if(res.status == 200) return res.data;
+          else throw new Error(res.data?.message || 'Email generation failed.')
+
+      } catch (error) {
+         return checkSession(error)
+      }
+    }
+
     async pardonStudent(studentId){
         try {
             const res = await axios.post(`${REACT_APP_API_URL}/ais/students/pardon`, { studentId },{

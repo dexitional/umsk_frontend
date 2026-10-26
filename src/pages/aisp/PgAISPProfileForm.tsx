@@ -89,12 +89,11 @@ function PgAISPProfileForm({}: Props) {
     }
   };
   const [programId, setprogramId] = useState(data?.programId);
-  // Major is only relevant/collected for: final-year (semester 5) UG/DP/CP
-  // students, or first-semester (semester 1) PG students.
-  const category = data?.program?.category;
-  const canSeeMajor =
-    (data?.semesterNum == 5 && ["UG", "DP", "CP"].includes(category)) ||
-    (data?.semesterNum == 1 && category == "PG");
+  // Students choose their major only in Year 2, Semester 1 (semesterNum 3),
+  // and only when their programme offers majors -- the server enforces the
+  // same rule; other changes go through the College Registry.
+  const programMajors = (majors || []).filter((row: any) => row.programId == programId);
+  const canSeeMajor = data?.semesterNum == 3 && programMajors.length > 0;
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -383,17 +382,13 @@ function PgAISPProfileForm({}: Props) {
                   <option selected value="NONE">
                     -- NONE --
                   </option>
-                  {majors &&
-                    majors?.map((row: any) => {
-                      if (programId == row.programId)
-                        return (
-                          <option key={row.id} value={row.id}>
-                            {row.longName}
-                          </option>
-                        );
-                      return null;
-                    })}
+                  {programMajors.map((row: any) => (
+                    <option key={row.id} value={row.id}>
+                      {row.longName}
+                    </option>
+                  ))}
                 </select>
+                <span className="text-xs text-slate-500">You can choose your major in Year 2, Semester 1 only.</span>
               </label>
             ) : null}
 

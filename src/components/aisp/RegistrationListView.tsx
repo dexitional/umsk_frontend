@@ -2,6 +2,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import {
   HiOutlineArrowPath,
+  HiOutlineBanknotes,
   HiOutlineExclamationTriangle,
   HiOutlinePencilSquare,
   HiOutlineBookOpen,
@@ -23,7 +24,16 @@ type Props = {
 // The mount endpoint returns condition:false plus a terse reason when the
 // student's record isn't ready for registration — turn it into something a
 // student can act on.
-function blockedReason(message?: string) {
+function blockedReason(message?: string, fees?: any) {
+  if (fees && fees.ok === false) {
+    const ghc = (n: any) => `GHC ${Number(n || 0).toFixed(2)}`;
+    return {
+      title: "Pay your fees quota to register",
+      body: `This semester you must pay at least ${ghc(fees.required)} of the ${ghc(fees.billed)} billed (plus any arrears) before registering. Pay ${ghc(fees.shortfall)} more, then return here. If you've already paid, allow time for the payment to reflect or contact the Finance office.`,
+      fixProfile: false,
+      payFees: true,
+    };
+  }
   if (/index/i.test(message || "")) {
     return {
       title: "Your index number hasn't been issued yet",
@@ -48,7 +58,7 @@ function blockedReason(message?: string) {
 function RegistrationListView({ title, data }: Props) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
-  const blocked = data?.condition === false ? blockedReason(data?.message) : null;
+  const blocked: any = data?.condition === false ? blockedReason(data?.message, data?.fees) : null;
 
   const courses = useUserStore((state) => state.courses);
 
@@ -96,6 +106,12 @@ function RegistrationListView({ title, data }: Props) {
             <Link to={`/aisp/profile/${encodeURIComponent(user?.user?.tag)}/edit`} className="aisp-btn-soft w-fit">
               <HiOutlinePencilSquare className="h-4 w-4" />
               Update Profile
+            </Link>
+          ) : null}
+          {blocked.payFees ? (
+            <Link to="/aisp/fees" className="aisp-btn-soft w-fit">
+              <HiOutlineBanknotes className="h-4 w-4" />
+              View Fees
             </Link>
           ) : null}
         </div>

@@ -8,6 +8,14 @@ import { StoreState } from "./typings";
 
 const { REACT_APP_API_URL } = import.meta.env;
 
+// A sign-in that never answers would otherwise leave "Authenticating..." up
+// indefinitely; give up after this long and show an error instead.
+const AUTH_TIMEOUT = 30000;
+const authError = (err: any) =>
+  err?.code === 'ECONNABORTED' ? 'The server took too long to respond. Please try again.'
+  : !err?.response ? 'Could not reach the server. Check your connection and try again.'
+  : err.response.data?.message || err.message;
+
 export const useUserStore = create<StoreState>()(
   persist(
     (set, get) => ({
@@ -66,7 +74,7 @@ export const useUserStore = create<StoreState>()(
               const res = await axios.post(`${REACT_APP_API_URL}/auth/credential`, {
                 username: username,
                 password: password,
-              });
+              }, { timeout: AUTH_TIMEOUT });
               const resp = res.data
               if(resp.success){
                 const token = await resp?.token;
@@ -78,7 +86,7 @@ export const useUserStore = create<StoreState>()(
               }
               
             } catch (err) {
-              set({ message:err.message, loading: false })
+              set({ message:authError(err), loading: false })
               setTimeout( async() => set({ message:null }), 3000)
             }
         },
@@ -90,7 +98,7 @@ export const useUserStore = create<StoreState>()(
             const res = await axios.post(`${REACT_APP_API_URL}/auth/google`, {
               providerId,
               email,
-            });
+            }, { timeout: AUTH_TIMEOUT });
             
             const resp = res.data
             if(resp.success){
@@ -105,16 +113,16 @@ export const useUserStore = create<StoreState>()(
             }
             
           } catch (err) {
-            set({ message:err.message, loading: false })
+            set({ message:authError(err), loading: false })
             setTimeout(() => set({ message:null }), 4000)
-            toast.error(err)
+            toast.error(authError(err))
           }
         },
 
         forgetPassword : async (tag, phone) => {
           try {
             set({ message:null, loading: true })
-            const res = await axios.post(`${REACT_APP_API_URL}/auth/forget`, { tag,phone });
+            const res = await axios.post(`${REACT_APP_API_URL}/auth/forget`, { tag,phone }, { timeout: AUTH_TIMEOUT });
             const resp = res.data;
             if(resp.success){
               toast.success("Password Reset Successful!")
@@ -126,7 +134,7 @@ export const useUserStore = create<StoreState>()(
             }
             
           } catch (err) {
-            toast.error(err?.response?.data?.message || err?.message || 'Password reset failed. Please contact the registry.')
+            toast.error(authError(err) || 'Password reset failed. Please contact the registry.')
             set({ loading: false, tag: null })
             
           }
@@ -198,6 +206,12 @@ export const useUserStore = create<StoreState>()(
     {
       name: '@Auth', // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage),
+      // loading / message describe a request in flight, not the session --
+      // persisting them meant a refresh (or tab close) mid-sign-in saved
+      // loading: true and every later visit was stuck on "Authenticating...".
+      // partialize stops saving them; merge also drops values already saved.
+      partialize: ({ loading, message, ...rest }: any) => rest,
+      merge: (persisted: any, current) => ({ ...current, ...persisted, loading: false, message: null }),
     },
   ),
 )

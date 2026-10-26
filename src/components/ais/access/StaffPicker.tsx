@@ -95,13 +95,13 @@ function StaffPicker({ placeholder = "Search staff by name or staff no…", onPi
 }
 
 // Photo with an initials fallback.
-export function Avatar({ tag, name, size = "md" }: { tag?: string; name?: string; size?: "sm" | "md" | "lg" }) {
+export function Avatar({ tag, name, size = "md", rounded = "rounded-full" }: { tag?: string; name?: string; size?: "sm" | "md" | "lg"; rounded?: string }) {
   const [failed, setFailed] = useState(false);
   const dim = size === "lg" ? "h-14 w-14 text-base" : size === "sm" ? "h-7 w-7 text-[0.6rem]" : "h-10 w-10 text-xs";
   return failed || !tag ? (
-    <span className={`${dim} flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary`}>{initials(name, tag)}</span>
+    <span className={`${dim} flex shrink-0 items-center justify-center ${rounded} bg-primary/10 font-semibold text-primary`}>{initials(name, tag)}</span>
   ) : (
-    <img crossOrigin="anonymous" src={photoUrl(tag)} onError={() => setFailed(true)} className={`${dim} shrink-0 rounded-full border border-slate-200 bg-slate-100 object-cover`} alt="" />
+    <img crossOrigin="anonymous" src={photoUrl(tag)} onError={() => setFailed(true)} className={`${dim} shrink-0 ${rounded} border border-slate-200 bg-slate-100 object-cover`} alt="" />
   );
 }
 

@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { PageHero, PageHeroHeading, PageHeroBadge } from "../../components/PageHero";
 import {
   HiArrowLongRight,
   HiOutlineAcademicCap,
@@ -16,7 +17,6 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi2";
 import { Link, useLoaderData } from "react-router-dom";
-import Torch from "../../assets/img/torch.png";
 import {
   CountUp,
   DashCard,
@@ -91,28 +91,19 @@ function PgAISDash() {
   return (
     <main className="md:my-6 md:px-6 p-3 space-y-5 md:space-y-6 font-inter">
       {/* Hero */}
-      <section className="dash-fade-up relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-secondary via-primary to-secondary-accent p-6 text-white shadow-xl shadow-primary/25 md:p-8">
-        <div className="pointer-events-none absolute inset-0 aisp-grid opacity-40 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
-        <div className="dash-drift pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full bg-sky-400/25 blur-3xl" />
-        <div className="dash-drift pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl" style={{ animationDelay: "-4s" }} />
-        <img src={Torch} alt="" className="pointer-events-none absolute -bottom-6 right-[28%] hidden h-56 opacity-[0.08] lg:block" />
-
-        <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-5">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-[0.7rem] font-semibold text-sky-100 ring-1 ring-inset ring-white/[0.15] backdrop-blur">
-              <HiOutlineSparkles className="h-3.5 w-3.5" />
-              {current?.label ? current.label : "Academic Information System"}
-            </span>
-            <div>
-              <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl font-poppins">
-                {greeting()}
-                {user?.user?.fname ? <span className="capitalize">, {String(user.user.fname).toLowerCase()}</span> : null}
-              </h1>
-              <p className="mt-1 text-sm text-sky-100/80">Here's how the college is doing today.</p>
-            </div>
+      <PageHero className="dash-fade-up">
+        <PageHeroHeading
+          eyebrow="Academic system"
+          title={<>{greeting()}{user?.user?.fname ? <span className="capitalize">, {String(user.user.fname).toLowerCase()}</span> : null}</>}
+          description="Here's how the college is doing today."
+          Icon={HiOutlineAcademicCap}
+          action={<PageHeroBadge Icon={HiOutlineCalendarDays}>{current?.label || "Academic dashboard"}</PageHeroBadge>}
+        />
+        <div className="flex flex-col gap-6 border-t border-blue-200/60 pt-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0 space-y-5">
             <div className="flex items-end gap-4">
               <CountUp value={active} className="text-5xl font-extrabold leading-none md:text-6xl" />
-              <span className="pb-1.5 text-sm font-medium text-sky-100/80">students on roll</span>
+              <span className="pb-1.5 text-sm font-medium text-slate-600">students on roll</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {[
@@ -120,8 +111,8 @@ function PgAISDash() {
                 { Icon: HiOutlineBuildingLibrary, label: `${fmt(departments.length)} departments` },
                 { Icon: HiOutlineCalendarDays, label: `${fmt(academic.length)} active session${academic.length === 1 ? "" : "s"}` },
               ].map(({ Icon, label }) => (
-                <span key={label} className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold ring-1 ring-inset ring-white/[0.15]">
-                  <Icon className="h-4 w-4 text-sky-200" />
+                <span key={label} className="inline-flex items-center gap-1.5 rounded-xl bg-white/70 px-3 py-1.5 text-xs font-semibold ring-1 ring-inset ring-blue-200/70">
+                  <Icon className="h-4 w-4 text-primary" />
                   {label}
                 </span>
               ))}
@@ -129,26 +120,26 @@ function PgAISDash() {
           </div>
 
           {current ? (
-            <div className="flex flex-col items-center gap-5 rounded-3xl bg-white/10 p-5 text-center ring-1 ring-inset ring-white/[0.15] backdrop-blur sm:flex-row sm:text-left">
+            <div className="flex flex-col items-center gap-5 rounded-2xl bg-white/70 p-5 text-center ring-1 ring-inset ring-blue-200/70 backdrop-blur sm:flex-row sm:text-left">
               <div className="relative">
-                <span className="dash-pulse-ring pointer-events-none absolute inset-3 rounded-full ring-2 ring-sky-200/50" />
-                <RadialMeter value={current.register || 0} total={currentTotal} size={148} stroke={12} color="#ffffff" track="rgba(255,255,255,0.18)" label="Registered" invert />
+                <span className="dash-pulse-ring pointer-events-none absolute inset-3 rounded-full ring-2 ring-primary/10" />
+                <RadialMeter value={current.register || 0} total={currentTotal} size={148} stroke={12} color="currentColor" track="rgba(30,58,138,0.10)" label="Registered" />
               </div>
               <div className="space-y-2">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-wider text-sky-100/70">Course registration</p>
+                <p className="text-[0.7rem] font-semibold uppercase tracking-wider text-slate-600">Course registration</p>
                 <p className="text-sm font-bold">{current.label}</p>
-                <p className="text-xs text-sky-100/80">
-                  <span className="font-bold text-white">{fmt(current.register)}</span> registered ·{" "}
-                  <span className="font-bold text-white">{fmt(current.unregister)}</span> yet to register
+                <p className="text-xs text-slate-600">
+                  <span className="font-bold text-primary">{fmt(current.register)}</span> registered ·{" "}
+                  <span className="font-bold text-primary">{fmt(current.unregister)}</span> yet to register
                 </p>
-                <Link to="/ais/registrations" className="inline-flex items-center gap-1 text-xs font-semibold text-white hover:underline">
+                <Link to="/ais/registrations" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
                   View registrations <HiArrowLongRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
           ) : null}
         </div>
-      </section>
+      </PageHero>
 
       {/* KPI row */}
       <div className="grid grid-cols-2 gap-3 md:gap-5 xl:grid-cols-4">

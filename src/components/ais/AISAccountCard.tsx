@@ -139,6 +139,24 @@ function AISAccountCard({ data }: Props) {
     }
   };
 
+  // Texts the stored credentials; without one, Reset Student Access
+  // issues (and texts) a new password instead.
+  const sendCredentials = async () => {
+    const ok = window.confirm("Send Student Credentials by SMS ?");
+    if (!ok) return;
+    setPending("credentials");
+    try {
+      const resp: any = await Service.sendStudentCredentials({ studentIds: [data?.id] });
+      const problem = resp?.skipped?.[0] || resp?.failed?.[0];
+      if (resp?.sent) toast.success("Credentials sent by SMS!");
+      else toast.error(problem?.reason ? `${problem.reason}${/stored password/i.test(problem.reason) ? " Use Reset Student Access to issue a new one." : ""}` : "Credentials were not sent.", { duration: 8000 });
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to send credentials");
+    } finally {
+      setPending(null);
+    }
+  };
+
   const retryGsuiteSync = async () => {
     const ok = window.confirm("Retry Google Workspace Sync ?");
     if (!ok) return;
@@ -218,6 +236,19 @@ function AISAccountCard({ data }: Props) {
             <GoPasskeyFill className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
             <span className={`font-semibold text-sm md:text-base text-secondary-accent font-noto ${pending === "reset" ? "animate-pulse" : ""}`}>
               {pending === "reset" ? "Resetting..." : "Reset Student Access"}
+            </span>
+          </button>
+        ) : null}
+        {/* Send Credentials */}
+        {canAdminAccount ? (
+          <button
+            onClick={sendCredentials}
+            disabled={!!pending}
+            className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <GoPasskeyFill className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
+            <span className={`font-semibold text-sm md:text-base text-secondary-accent font-noto ${pending === "credentials" ? "animate-pulse" : ""}`}>
+              {pending === "credentials" ? "Sending..." : "Send Credentials"}
             </span>
           </button>
         ) : null}
@@ -335,13 +366,27 @@ function AISAccountCard({ data }: Props) {
         {/* Generate Institutional Email  */}
         {canAdminAccount ? (
           <button
-            onClick={generateEmail}
-            disabled={!!pending}
-            className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={!data?.instituteEmail ? generateEmail : undefined}
+            disabled={!!pending || !!data?.instituteEmail}
+            className={`p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 ${
+              data?.instituteEmail
+                ? "bg-primary/5 border-primary/20 cursor-not-allowed"
+                : "bg-secondary-accent/5 border-secondary-accent/20"
+            } border shadow disabled:opacity-50`}
           >
-            <GoPasskeyFill className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
-            <span className={`font-semibold text-sm md:text-base text-secondary-accent font-noto ${pending === "email" ? "animate-pulse" : ""}`}>
-              {pending === "email" ? "Generating Email..." : "Generate Student Email"}
+            <GoPasskeyFill
+              className={`${
+                data?.instituteEmail
+                  ? "text-primary/60 border-primary/20"
+                  : "text-secondary-accent border-secondary-accent/20"
+              } h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 rounded-full`}
+            />
+            <span
+              className={`font-semibold text-sm md:text-base ${
+                data?.instituteEmail ? "text-primary/50" : "text-secondary-accent"
+              } font-noto ${pending === "email" ? "animate-pulse" : ""}`}
+            >
+              {pending === "email" ? "Generating Email..." : data?.instituteEmail ? "Student Email Generated" : "Generate Student Email"}
             </span>
           </button>
         ) : null}

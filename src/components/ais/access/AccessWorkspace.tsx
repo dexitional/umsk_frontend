@@ -9,6 +9,7 @@ import {
   HiOutlineShieldCheck,
 } from "react-icons/hi2";
 import Service from "../../../utils/aisService";
+import { PageHero } from "../../PageHero";
 import StaffPicker, { Avatar } from "./StaffPicker";
 import { AccessPerson, CatalogModule, indexCatalog, Overview, STUDENT_GROUP, titleCase } from "./accessUtil";
 
@@ -141,24 +142,33 @@ function AccessWorkspace({ overview, person, canEdit, onSaved }: Props) {
 
   return (
     <div className="space-y-4 pb-24">
-      {/* Person */}
-      <section className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:p-5">
-        <Avatar tag={person.tag} name={person.name} size="lg" />
-        <div className="min-w-0 flex-1">
-          <h2 className="truncate text-base font-semibold text-slate-800 md:text-lg">{person.name || person.tag}</h2>
-          <p className="truncate text-xs text-slate-500 md:text-sm">
-            {person.tag}
-            {person.detail ? ` · ${person.detail}` : ""}
-            {person.unit ? ` · ${person.unit}` : ""}
-          </p>
+      {/* Person -- same hero as the module pages, with their photo in
+          place of the module icon. */}
+      <PageHero>
+        <div className="flex flex-wrap items-center justify-between gap-5">
+          <div className="flex w-full min-w-0 items-center gap-4 sm:w-auto sm:flex-1">
+            <div className="flex shrink-0 items-center justify-center rounded-2xl border border-blue-200/60 bg-gradient-to-br from-white to-blue-100 p-1.5">
+              {/* Inner radius = container's rounded-2xl (16px) minus its p-1.5 (6px). */}
+              <Avatar tag={person.tag} name={person.name} size="lg" rounded="rounded-[10px]" />
+            </div>
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-primary">Access Control</p>
+              <h1 className="break-words text-2xl font-bold tracking-tight text-primary sm:text-3xl">{person.name || person.tag}</h1>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
+                {person.tag}
+                {person.detail ? ` · ${person.detail}` : ""}
+                {person.unit ? ` · ${person.unit}` : ""}
+              </p>
+            </div>
+          </div>
+          <div className="flex max-w-full flex-wrap gap-2">
+            <Stat label="Roles" value={totalHeld} />
+            {apps.map((a) => (
+              <Stat key={a.tag} label={a.tag.toUpperCase()} value={countFor(a.tag, draft)} muted />
+            ))}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Stat label="Roles" value={totalHeld} />
-          {apps.map((a) => (
-            <Stat key={a.tag} label={a.tag.toUpperCase()} value={countFor(a.tag, draft)} muted />
-          ))}
-        </div>
-      </section>
+      </PageHero>
 
       {person.hasAccount === false ? (
         <Banner tone="amber">This person has no portal account yet, so roles can't be assigned. Stage their account first.</Banner>
@@ -380,7 +390,7 @@ function RoleChip({ label, title, selected, wasSaved, disabled, muted, onClick }
 
 function Stat({ label, value, muted }: { label: string; value: number; muted?: boolean }) {
   return (
-    <span className={`flex flex-col items-center rounded-xl px-3 py-1.5 ${muted ? "bg-slate-50" : "bg-primary/5"}`}>
+    <span className={`flex min-w-[3.5rem] flex-col items-center rounded-xl border px-3 py-1.5 ${muted ? "border-blue-100 bg-white/60" : "border-blue-200 bg-white/90"}`}>
       <span className={`text-base font-semibold ${muted ? "text-slate-600" : "text-primary"}`}>{value}</span>
       <span className="text-[0.6rem] font-semibold uppercase tracking-wider text-slate-400">{label}</span>
     </span>

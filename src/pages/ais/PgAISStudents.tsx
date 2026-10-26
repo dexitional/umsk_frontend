@@ -1,8 +1,8 @@
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { FaFileExcel, FaUpload, FaUserPlus } from "react-icons/fa6";
-import { HiOutlineBellAlert } from "react-icons/hi2";
+import { FaEnvelopeCircleCheck, FaFileExcel, FaKey, FaUpload, FaUserPlus } from "react-icons/fa6";
+import { HiOutlineBellAlert, HiOutlineChevronDown } from "react-icons/hi2";
 import {
   redirect,
   useLoaderData,
@@ -11,6 +11,7 @@ import {
   useRevalidator,
 } from "react-router-dom";
 import PageTitle from "../../components/ais/PageTitle";
+import StudentBulkActionDialog, { BulkMode } from "../../components/ais/StudentBulkActionDialog";
 import StudentCardItem from "../../components/ais/StudentCardItem";
 import StudentListView from "../../components/ais/StudentListView";
 import StudentShimCard from "../../components/shims/StudentShimCard";
@@ -70,6 +71,27 @@ const downloadFresherSample = () =>
     `FRESHERS_UPLOAD_SAMPLE`
   );
 
+type MenuKey = "sample" | "upload" | "freshers" | "credentials" | "emails";
+const STUDENT_MENU: { label: string; Icon: any; items: { key: MenuKey; label: string; hint: string; Icon: any }[] }[] = [
+  {
+    label: "Import",
+    Icon: FaUpload,
+    items: [
+      { key: "sample", label: "Download Sample", hint: "Sheet layout for student uploads", Icon: FaFileExcel },
+      { key: "upload", label: "Upload Students", hint: "Add a batch of continuing students", Icon: FaUpload },
+      { key: "freshers", label: "Upload Freshers", hint: "Add newly admitted applicants", Icon: FaUserPlus },
+    ],
+  },
+  {
+    label: "Accounts",
+    Icon: FaKey,
+    items: [
+      { key: "credentials", label: "Send Credentials", hint: "Text portal logins in bulk", Icon: FaKey },
+      { key: "emails", label: "Generate Emails", hint: "Institutional email + Google accounts", Icon: FaEnvelopeCircleCheck },
+    ],
+  },
+];
+
 export async function action({ params }) {
   await Service.deleteStudent(params.studentId);
   return redirect("/ais/students");
@@ -93,6 +115,18 @@ function PgAISStudents({}: Props) {
   const navigate = useNavigate();
   const loading = navigation.state === "loading";
   const canCreateStudent = useHasRole("ais", ["student::admin"]);
+
+  const [bulkMode, setBulkMode] = useState<BulkMode | null>(null);
+  const closeBulk = (changed: boolean) => {
+    setBulkMode(null);
+    if (changed) revalidator.revalidate();
+  };
+
+  const runMenuAction = (key: MenuKey) => {
+    if (key === "sample") navigate(`/ais/students/sample`);
+    else if (key === "upload" || key === "freshers") openUploadModal(key === "upload" ? "students" : "freshers");
+    else setBulkMode(key);
+  };
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadMode, setUploadMode] = useState<"students" | "freshers">("students");
@@ -145,15 +179,14 @@ function PgAISStudents({}: Props) {
       }
       try {
         const resp = isFresherUpload ? await Service.uploadFresher(rows) : await Service.uploadStudent(rows);
-        // Student rows themselves are created all-or-nothing, but email
-        // generation + portal/GSuite staging runs per-student right after
-        // and can fail independently (e.g. a transient GSuite hiccup) --
-        // surface those so staff know who still needs manual "Generate
-        // Email"/"Stage Account" on their Account tab.
+        // Student rows themselves are created all-or-nothing, but portal
+        // staging runs per-student right after and can fail independently
+        // -- surface those so staff know who still needs a manual "Stage
+        // Student Access" on their Account tab.
         if (resp?.provisionErrors?.length) {
           notify(
             "warning",
-            `Uploaded, but email/access setup failed for: ${resp.provisionErrors.map((e: any) => e.id).join(', ')}. Use each student's Account tab to finish setup.`,
+            `Uploaded, but portal access setup failed for: ${resp.provisionErrors.map((e: any) => `${e.id} (${e.reason})`).join(', ')}. Use each student's Account tab to finish setup.`,
             10000
           );
         }
@@ -161,7 +194,7 @@ function PgAISStudents({}: Props) {
           "success",
           isFresherUpload
             ? `${resp?.count ?? rows.length} fresher(s) added. Next: Activate Admission for their programme under Admission Letters.`
-            : `${resp?.count ?? rows.length} student(s) uploaded.`
+            : `${resp?.count ?? rows.length} student(s) uploaded with portal access. Next: Send Credentials, and Generate Emails when ready.`
         );
         savedRef.current = true;
         // Freshers already in the system were skipped and the rest saved:
@@ -199,32 +232,42 @@ function PgAISStudents({}: Props) {
         setView={setView}
         view={view}
       >
-        {canCreateStudent ? (
-          <>
-            <button
-              onClick={() => navigate(`/ais/students/sample`)}
-              className="py-0 md:py-2 px-3 md:px-4 h-9 md:h-10 rounded-md border bg-primary/90 flex items-center space-x-3"
-            >
-              <FaFileExcel className="text-white h-3 w-3 md:h-4 md:w-4" />
-              <span className="flex text-white text-sm md:text-base font-medium">Sample</span>
-            </button>
-            <button
-              onClick={() => openUploadModal("students")}
-              className="py-0 md:py-2 px-3 md:px-4 h-9 md:h-10 rounded-md border bg-primary/90 flex items-center space-x-3"
-            >
-              <FaUpload className="text-white h-3 w-3 md:h-4 md:w-4" />
-              <span className="flex text-white text-sm md:text-base font-medium">Upload</span>
-            </button>
-            <button
-              onClick={() => openUploadModal("freshers")}
-              className="py-0 md:py-2 px-3 md:px-4 h-9 md:h-10 rounded-md border bg-primary/90 flex items-center space-x-3"
-            >
-              <FaUserPlus className="text-white h-3 w-3 md:h-4 md:w-4" />
-              <span className="flex text-white text-sm md:text-base font-medium">Freshers</span>
-            </button>
-          </>
-        ) : null}
+        {/* Grouped dropdowns beside "New" so the header row fits alongside
+            the pager and search. */}
+        {canCreateStudent
+          ? STUDENT_MENU.map((group) => (
+              <Menu key={group.label}>
+                <MenuButton className="py-0 md:py-2 px-3 md:px-4 h-9 md:h-10 rounded-md border bg-primary/90 flex items-center space-x-2 data-[open]:bg-primary">
+                  <group.Icon className="text-white h-3 w-3 md:h-4 md:w-4" />
+                  <span className="flex text-white text-sm md:text-base font-medium">{group.label}</span>
+                  <HiOutlineChevronDown className="text-white/80 h-3 w-3 md:h-4 md:w-4 transition-transform [[data-open]_&]:rotate-180" />
+                </MenuButton>
+                <MenuItems
+                  anchor="bottom end"
+                  className="z-40 w-64 rounded-xl border border-slate-100 bg-white p-1.5 shadow-lg shadow-slate-900/10 [--anchor-gap:6px] focus:outline-none"
+                >
+                  {group.items.map(({ key, label, hint, Icon }) => (
+                    <MenuItem key={key}>
+                      <button
+                        type="button"
+                        onClick={() => runMenuAction(key)}
+                        className="group flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left data-[focus]:bg-primary/5"
+                      >
+                        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary/60 group-data-[focus]:text-primary" />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-medium text-slate-700 group-data-[focus]:text-primary">{label}</span>
+                          <span className="block text-xs text-slate-400">{hint}</span>
+                        </span>
+                      </button>
+                    </MenuItem>
+                  ))}
+                </MenuItems>
+              </Menu>
+            ))
+          : null}
       </PageTitle>
+
+      <StudentBulkActionDialog mode={bulkMode} onClose={closeBulk} />
 
       <Dialog open={showUploadModal} onClose={closeUploadModal} className="relative z-50">
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
@@ -245,8 +288,8 @@ function PgAISStudents({}: Props) {
             )}
             <p className="text-xs md:text-sm text-gray-500">
               {isFresherUpload
-                ? "Portal accounts and institute emails are created when admission is activated for the programme under Admission Letters."
-                : "Institute email and portal/Google account access are generated automatically for every student in the sheet."}
+                ? "Portal accounts are created when admission is activated for the programme under Admission Letters. Institutional emails are generated separately."
+                : "Portal access is staged for every student in the sheet (no SMS). Send credentials and generate institutional emails from the Students page when ready."}
             </p>
             <label className="flex flex-col space-y-2">
               <span className="text-sm text-gray-500 font-medium">Sheet File</span>

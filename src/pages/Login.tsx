@@ -62,7 +62,10 @@ function Login() {
       e.preventDefault();
       const { username, password } = form;
       await withCredential(username, password);
-      if (await isAuthenticated) window.location.reload();
+      // Reload only on success -- `isAuthenticated` is a function, so testing
+      // it directly was always true and a failed sign-in reloaded too,
+      // wiping its error message before it could be read.
+      if (useUserStore.getState().isAuthenticated()) window.location.reload();
     } catch (error) {
       console.log(error);
     }

@@ -143,7 +143,10 @@ function PgFMSVcostForm({}: Props) {
 
               <label className="flex flex-col space-y-2">
                 <span className="text-sm md:text-base text-gray-500 font-medium">
-                  Payment Quota Allowed in Percentage (%)
+                  Registration Quota: Minimum Payment (% of bill)
+                </span>
+                <span className="text-xs text-gray-400">
+                  Students must pay at least this share of the session's posted bills (and clear arrears) before registering courses. Leave empty for no requirement.
                 </span>
                 <input
                   arial-label="quota"

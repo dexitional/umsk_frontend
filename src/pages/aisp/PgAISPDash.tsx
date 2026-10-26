@@ -6,6 +6,7 @@ import AcademicSummary from "../../components/aisp/AcademicSummary";
 import { resitNotice as getResitNotice } from "../../utils/academic";
 import moment from "moment";
 import React from "react";
+import { PageHero, PageHeroHeading, PageHeroBadge } from "../../components/PageHero";
 import { IconType } from "react-icons";
 import {
   HiArrowUpRight,
@@ -23,10 +24,9 @@ import {
   HiOutlineKey,
   HiOutlinePrinter,
   HiOutlineReceiptPercent,
-  HiOutlineSparkles,
+  HiOutlineAcademicCap,
 } from "react-icons/hi2";
 import { Link, useLoaderData, useRouteLoaderData } from "react-router-dom";
-import { AISPCrest, AISPPhotoBlend } from "../../components/aisp/AISPPhotoBlend";
 import AISPStatusNotice from "../../components/aisp/AISPStatusNotice";
 import { ADMISSION_PATH, hasAdmissionOffer } from "../../utils/admission";
 import { useUserStore } from "../../utils/authService";
@@ -165,73 +165,58 @@ function PgAISPDash({}: Props) {
   return (
     <div className="xl:col-span-2 min-w-0 space-y-6 md:space-y-8">
       {/* Hero */}
-      <section className="aisp-rise relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-secondary via-primary to-sky-700 text-white shadow-2xl shadow-primary/25">
-        <AISPPhotoBlend photo="students" className="opacity-60" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/50 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 aisp-grid [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
-        <div className="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full bg-sky-400/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-28 left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl" />
-        <AISPCrest className="hidden md:block right-8 bottom-8 h-28 opacity-[0.22] mix-blend-luminosity" />
-
-        <div className="relative p-6 md:p-9 space-y-6">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 ring-1 ring-inset ring-white/[0.15] backdrop-blur text-[0.7rem] font-semibold tracking-wide text-sky-100">
-            <HiOutlineSparkles className="h-3.5 w-3.5" />
-            {mount?.session || "Welcome back"}
-          </span>
-
-          <div className="space-y-2 max-w-xl">
-            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight">
-              {greeting()},{" "}
-              <span className="capitalize bg-gradient-to-r from-white to-sky-200 bg-clip-text text-transparent">
-                {user?.user?.fname?.toLowerCase()}
-              </span>
-            </h1>
-            <p className="text-sm md:text-base text-sky-100/80 capitalize">{programme?.toLowerCase()}</p>
-          </div>
-
+      <PageHero className="aisp-rise">
+        <PageHeroHeading
+          eyebrow="Student portal"
+          title={<>{greeting()}{user?.user?.fname ? <span className="capitalize">, {user.user.fname.toLowerCase()}</span> : null}</>}
+          description={<span className="capitalize">{programme?.toLowerCase()}</span>}
+          Icon={HiOutlineAcademicCap}
+          action={<PageHeroBadge Icon={HiOutlineCalendarDays}>{mount?.session || "Welcome back"}</PageHeroBadge>}
+        />
+        <div className="space-y-6 border-t border-blue-200/60 pt-6">
           {regWindow ? (
             <div className="max-w-md space-y-2">
               <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="text-sky-100/90">Registration window</span>
-                <span className="text-white">
+                <span className="text-slate-600">Registration window</span>
+                <span className="text-primary">
                   {regWindow.daysLeft > 0 ? `${regWindow.daysLeft} day${regWindow.daysLeft == 1 ? "" : "s"} left` : "Closes today"}
                 </span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.15] overflow-hidden">
+              <div className="h-2 rounded-full bg-primary/10 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-sky-300 via-white to-amber-200 shadow-[0_0_12px_rgba(255,255,255,0.6)]"
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-secondary-accent"
                   style={{ width: `${regWindow.progress}%` }}
                 />
               </div>
-              <p className="text-[0.7rem] text-sky-100/70">Closes {regWindow.end.format("dddd, MMMM D YYYY")}</p>
+              <p className="text-[0.7rem] text-slate-600">Closes {regWindow.end.format("dddd, MMMM D YYYY")}</p>
             </div>
           ) : null}
 
           <div className="flex flex-wrap gap-2.5 pt-1">
             {registered ? (
-              <Link to="/print/registration" className="aisp-btn-light">
+              <Link to="/print/registration" className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <HiOutlinePrinter className="h-4 w-4" />
                 Print Registration Slip
               </Link>
             ) : (
-              <Link to="/aisp/registration" className="aisp-btn-light">
+              <Link to="/aisp/registration" className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <HiOutlineClipboardDocumentList className="h-4 w-4" />
                 {mount?.session ? "Register Courses" : "Course Registration"}
               </Link>
             )}
-            <Link to="/aisp/results" className="aisp-btn-glass">
+            <Link to="/aisp/results" className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
               <HiOutlineChartBar className="h-4 w-4" />
               View Results
             </Link>
             {hasAdmissionOffer(student) ? (
-              <Link to={ADMISSION_PATH} className="aisp-btn-glass">
+              <Link to={ADMISSION_PATH} className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <HiOutlineDocumentCheck className="h-4 w-4" />
                 Admission Letter
               </Link>
             ) : null}
           </div>
         </div>
-      </section>
+      </PageHero>
 
       <AcademicSummary data={loaderData.transcript} />
       <AISPSTSCard data={loaderData.sts} />

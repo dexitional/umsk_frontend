@@ -1,8 +1,9 @@
 import moment from "moment";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { HiOutlineDocumentText, HiOutlinePencilSquare, HiOutlinePlus, HiOutlinePrinter, HiOutlineRocketLaunch, HiOutlineTrash } from "react-icons/hi2";
+import { HiOutlineCheckBadge, HiOutlineDocumentText, HiOutlinePencilSquare, HiOutlinePlus, HiOutlinePrinter, HiOutlineRocketLaunch, HiOutlineTrash } from "react-icons/hi2";
 import { Link, useLoaderData, useRevalidator } from "react-router-dom";
+import { PageHero, PageHeroBadge, PageHeroHeading } from "../../components/PageHero";
 import Service from "../../utils/aisService";
 import { useHasRole } from "../../utils/roles";
 
@@ -55,22 +56,26 @@ function PgAISAdmissionLetters() {
 
   return (
     <div className="md:pl-10 p-4 md:p-6 space-y-5 animate-fade-in-up">
-      <div className="relative overflow-hidden rounded-xl bg-primary/90 px-5 py-3.5 md:px-7 md:py-4 shadow-md shadow-slate-500/10">
-        <div className="relative flex items-center gap-3">
-          <span className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white/90">
-            <HiOutlineDocumentText className="h-5 w-5" />
-          </span>
-          <div className="flex-1">
-            <h1 className="text-base md:text-lg font-semibold tracking-wide text-white">Admission Letters</h1>
-            <p className="text-[0.7rem] md:text-xs text-white/60">Templates per programme, printed for newly admitted first years</p>
-          </div>
-          {canEdit ? (
-            <Link to="create" className="flex items-center gap-1.5 rounded-lg bg-white/[0.15] px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/25 md:text-sm">
-              <HiOutlinePlus className="h-4 w-4" /> New letter
-            </Link>
-          ) : null}
-        </div>
-      </div>
+      <PageHero>
+        <PageHeroHeading
+          eyebrow="Academic system"
+          title="Admission Letters"
+          description="Letter templates per programme and admission year. Print them for newly admitted first years and activate admission to notify freshers."
+          Icon={HiOutlineDocumentText}
+          action={
+            <div className="flex flex-wrap items-center gap-2">
+              <PageHeroBadge Icon={HiOutlineCheckBadge}>
+                {letters.filter((l: any) => l.status).length} active letter{letters.filter((l: any) => l.status).length === 1 ? "" : "s"}
+              </PageHeroBadge>
+              {canEdit ? (
+                <Link to="create" className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-blue-900/20 hover:bg-primary/90">
+                  <HiOutlinePlus className="h-4 w-4" /> New letter
+                </Link>
+              ) : null}
+            </div>
+          }
+        />
+      </PageHero>
 
       {loadError ? (
         <p className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{loadError}</p>
