@@ -5,6 +5,7 @@ const Home = lazy(() => import('./pages/Home2'));
 const Guide = lazy(() => import('./pages/Guide'));
 const MobileLanding = lazy(() => import('./pages/mobile/MobileLanding'));
 const PrivacyPolicy = lazy(() => import('./pages/mobile/PrivacyPolicy'));
+const ProfileUpdate = lazy(() => import('./pages/PgProfileUpdate'));
 
 import { Toaster } from 'react-hot-toast';
 import Loader from './components/Loader';
@@ -37,6 +38,8 @@ const App = memo(() => {
     { path: "/", element: <Navigate to={{ pathname: '/dash' }} replace />,  },
     { path: "/mobile", element: <Suspense fallback={<Loader/>}><MobileLanding /></Suspense> },
     { path: "/mobile/privacy", element: <Suspense fallback={<Loader/>}><PrivacyPolicy /></Suspense> },
+    // Public profile update exercise -- no sign-in (see PgProfileUpdate).
+    { path: "/profile-update", element: <Suspense fallback={<Loader/>}><ProfileUpdate /></Suspense> },
     // { path: "/login", element: isAuthenticated() ? user?.user?.group_id == 1 ? <Navigate to={{ pathname:'/evs/dash'}} replace /> : user?.user?.group_id == 3 ? <Navigate to={{ pathname:'/amsp/dash' }} replace /> : <Navigate to={{ pathname:'/dash'}} replace /> : <Login /> },
 
     /*

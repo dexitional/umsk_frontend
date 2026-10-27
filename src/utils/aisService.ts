@@ -1,3 +1,4 @@
+import React from 'react';
 import toast from 'react-hot-toast';
 import * as FileSaver from 'file-saver';
 import { useUserStore } from './authService';
@@ -12,6 +13,19 @@ const token = useUserStore.getState().token;
 const { REACT_APP_API_URL } = import.meta.env;
 
 const logout = useUserStore.getState().logout;
+
+// New credentials after an admin reset. If the SMS wasn't accepted the person
+// never received them, so keep them on screen until dismissed -- the admin is
+// the only one who has the new password.
+const showResetCredentials = (username, password, data) => {
+   const smsFailed = data?.sms?.accepted === false;
+   const text = `${smsFailed ? "SMS NOT SENT -- give these to the user. " : ""}Username: ${username}, Password: ${password}`
+   toast((t) => React.createElement('span', { role: 'button', title: 'Click to dismiss', className: 'cursor-pointer select-all', onClick: () => toast.dismiss(t.id) }, text), {
+      className: `rounded-full shadow border-4 border-white text-base text-primary-dark font-semibold ${smsFailed ? "bg-amber-100" : "bg-green-100"}`,
+      duration: smsFailed ? Infinity : 15000,
+   })
+   if (smsFailed) toast.error(`SMS failed: ${data.sms.message || "not confirmed"}. The password WAS changed. Click the credentials message to dismiss it once noted.`, { duration: 15000 })
+}
 
 const checkSession = (r) => {
    const status = r?.response?.status;
@@ -430,8 +444,7 @@ class Service {
             })
             if(res.status == 200){
                 const data = res?.data
-                notifySmsWarning(data)
-                toast(`Username: ${data?.username || email || studentId}, Password: ${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
+                showResetCredentials(data?.username || email || studentId, data?.password, data)
                 return data
             }
             else throw new Error(res.data?.message || 'Password reset failed.')
@@ -3288,8 +3301,7 @@ class Service {
             })
             if(res.status == 200){
                 const data = res?.data
-                toast(`Username: ${data?.username}, Password: ${data?.password}`,{ className:'rounded-full bg-green-100 shadow border-4 border-white text-base text-primary-dark font-semibold', duration: 15000 })
-                notifySmsWarning(data)
+                showResetCredentials(data?.username, data?.password, data)
                 return data
             }
             throw new Error(res.data?.message || "Password reset failed")

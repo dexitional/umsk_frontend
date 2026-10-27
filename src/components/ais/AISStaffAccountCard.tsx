@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { GoPasskeyFill } from "react-icons/go";
 import { HiUserAdd } from "react-icons/hi";
@@ -36,10 +36,16 @@ function AISStaffAccountCard({ data, isUser }: Props) {
     }
   };
 
+  // One reset at a time: a double click would issue two passwords, and the
+  // text that arrives last may carry the one that no longer works.
+  const [resetting, setResetting] = useState(false);
   const resetAccess = async () => {
+    if (resetting) return;
     const ok = window.confirm("Reset User Account Password ?");
     if (ok) {
+      setResetting(true);
       await Service.resetStaffAccess(data?.staffNo).catch(() => {});
+      setResetting(false);
     }
   };
 
@@ -96,11 +102,12 @@ function AISStaffAccountCard({ data, isUser }: Props) {
           <>
             <button
               onClick={resetAccess}
-              className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow"
+              disabled={resetting}
+              className="p-1.5 md:py-1 md:px-1 rounded-full flex items-center space-x-4 bg-secondary-accent/5 border border-secondary-accent/20 shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <GoPasskeyFill className="text-secondary-accent h-8 w-8 md:h-10 md:w-10 p-1 md:p-1.5 bg-white border-2 md:border-4 border-secondary-accent/20 rounded-full" />
-              <span className="font-semibold text-sm md:text-base text-secondary-accent font-noto">
-                Reset User Account
+              <span className={`font-semibold text-sm md:text-base text-secondary-accent font-noto ${resetting ? "animate-pulse" : ""}`}>
+                {resetting ? "Resetting..." : "Reset User Account"}
               </span>
             </button>
 
