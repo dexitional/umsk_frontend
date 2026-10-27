@@ -253,8 +253,10 @@ function Login() {
                     name={`username`}
                     value={form.username}
                     onChange={onChange}
+                    // Students may also use their student ID or index number.
+                    aria-label={["voucher"].includes(loginform) ? "Serial" : "Username, student ID or index number"}
                     placeholder={`${
-                      ["voucher"].includes(loginform) ? "Serial" : "Username"
+                      ["voucher"].includes(loginform) ? "Serial" : "Username / Student ID"
                     }`}
                     className="px-4 py-2 w-full text-border-primary/20 font-medium rounded-md border-2 border-primary/20 focus:border-primary/20 bg-primary-dark/30 focus:ring-0 focus:outline-none  placeholder:text-base md:placeholder:text-base placeholder:text-white/50 placeholder:tracking-widest placeholder:uppercase"
                   />
